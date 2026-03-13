@@ -58,9 +58,9 @@
 
         <h1>مهرجان ألعاب العيد 🌙</h1>
         <p class="sub-title">عيدية مركز الأدب العربي للقراء</p>
-        <button class="menu-btn" onclick="playMemory()">🃏 تحدي الذاكرة (بطاقات)</button>
-        <button class="menu-btn" onclick="playPuzzle()">🧩 بازل السرعة (3 مراحل)</button>
-        <button class="menu-btn" onclick="playGuess()">📚 خمن الغلاف (عشوائي)</button>
+        <button class="menu-btn" onclick="playMemory()">🃏 تحدي الذاكرة </button>
+        <button class="menu-btn" onclick="playPuzzle()">🧩 بازل السرعة </button>
+        <button class="menu-btn" onclick="playGuess()">📚 خمن الغلاف </button>
     </div>
 
     <div id="game-area">
@@ -73,12 +73,12 @@
 
 <script>
     const books = [
-        { n: "أبابيل", i: "https://adab-book.com" },
-        { n: "صخب الخسيف", i: "https://adab-book.com" },
-        { n: "خوف", i: "https://adab-book.com" },
-        { n: "لجين", i: "https://adab-book.com" },
-        { n: "جصّاص", i: "https://adab-book.com" },
-        { n: "نبض", i: "https://adab-book.com" }
+        { n: "متلازمة فريجويلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
+        { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
+        { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
+        { n: "بيتشيني", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/83aea5be-3950-4056-b793-be588d6d6fd8.jpg" },
+        { n: "قصّاص", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/32a21b7b-f3c9-400a-bb27-9c104f13f32a.png" },
+        { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" }
     ];
 
     let score = 0, timer, sec, level = 1, flipped = [], matched = 0;
