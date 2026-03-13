@@ -7,32 +7,26 @@
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
-        
         body { 
             font-family: 'Tajawal', sans-serif; background-color: var(--bg); 
             background-image: url('https://www.transparenttextures.com'); 
             margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden;
         }
-
         .main-card { 
-            background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 20px; 
+            background: rgba(255, 255, 255, 0.9); padding: 1.5rem; border-radius: 20px; 
             box-shadow: 0 15px 35px rgba(26, 147, 151, 0.2); width: 90%; max-width: 450px; 
             text-align: center; border: 2px solid var(--teal); border-top: 8px solid var(--teal); position: relative;
         }
-
-        h1 { color: var(--teal); font-size: 1.5rem; margin-bottom: 5px; }
-        .sub-title { color: var(--burgundy); font-weight: bold; margin-bottom: 20px; font-size: 0.9rem; }
-
         .menu-btn { 
             background: var(--teal); color: white; border: none; padding: 14px; 
             border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: bold; 
             width: 100%; margin-bottom: 12px; transition: 0.3s; box-shadow: 0 4px 0 #147174;
         }
         .menu-btn:hover { background: var(--burgundy); box-shadow: 0 4px 0 #7a1720; transform: translateY(2px); }
-
         #game-area { display: none; width: 100%; }
         .stats { display: flex; justify-content: space-around; background: #f1f1f1; padding: 8px; border-radius: 10px; margin-bottom: 15px; font-weight: bold; font-size: 0.85rem; }
         
+        /* الألعاب */
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .m-card { height: 90px; position: relative; transform-style: preserve-3d; transition: 0.6s; cursor: pointer; }
         .m-card.flipped { transform: rotateY(180deg); }
@@ -42,10 +36,8 @@
         .front img { width: 100%; height: 100%; object-fit: cover; }
 
         .puzzle { display: grid; margin: 10px auto; border: 2px solid var(--gold); background: #fff; }
-        .piece { cursor: pointer; border: 0.2px solid #eee; }
-
+        .piece { cursor: pointer; border: 0.5px solid #eee; }
         .opt-btn { background: white; border: 2px solid var(--teal); padding: 10px; border-radius: 10px; cursor: pointer; font-family: inherit; margin-bottom: 8px; width: 100%; font-weight: bold; }
-        
         .final-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px; box-sizing: border-box; }
     </style>
 </head>
@@ -53,14 +45,13 @@
 
 <div class="main-card" id="container">
     <div id="home">
-        <img src=<img src="https://media.zid.store/cdn-cgi/image/h=200,q=75,f=auto/https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/6033f10f-1803-46d8-87c8-91a83b92a272.jpg" 
-     style="width: 220px; margin-bottom: 20px; filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));">
-
-        <h1>مهرجان ألعاب العيد 🌙</h1>
-        <p class="sub-title">عيدية مركز الأدب العربي للقراء</p>
-        <button class="menu-btn" onclick="playMemory()">🃏 تحدي الذاكرة </button>
-        <button class="menu-btn" onclick="playPuzzle()">🧩 بازل السرعة </button>
-        <button class="menu-btn" onclick="playGuess()">📚 خمن الغلاف </button>
+        <img <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" 
+     style="width: 200px; margin-bottom: 20px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));">
+        <h1 style="color:var(--teal)">مهرجان ألعاب العيد 🌙</h1>
+        <p style="color:var(--burgundy); font-weight: bold; margin-bottom: 20px;">عيدية مركز الأدب العربي للقراء</p>
+        <button class="menu-btn" onclick="playMemory()">🃏 تحدي الذاكرة (40 ثانية)</button>
+        <button class="menu-btn" onclick="playPuzzle()">🧩 البازل المقلوبة (وقت سريع)</button>
+        <button class="menu-btn" onclick="playGuess()">📚 خمن الغلاف (25 ثانية)</button>
     </div>
 
     <div id="game-area">
@@ -72,26 +63,61 @@
 </div>
 
 <script>
+    // قائمة الكتب الـ 30 المحدثة
     const books = [
-        { n: "متلازمة فريجويلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
+           const books = [
+        { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
         { n: "بيتشيني", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/83aea5be-3950-4056-b793-be588d6d6fd8.jpg" },
         { n: "قصّاص", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/32a21b7b-f3c9-400a-bb27-9c104f13f32a.png" },
-        { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" }
+        { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" },
+        { n: "لأنها كيارا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0579a21c-9a8a-4110-a706-d11747f904cb.png" },
+        { n: "قوت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd25b623-314d-4d3c-9b40-04f32216e854.jpg" },
+        { n: "عزير", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0691769a-513b-4e54-8d36-f68ac0f80a1a.png" },
+        { n: "بيت الخناس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/679c4645-834e-42f9-a351-8cde94d5a123.png" },
+        { n: "حسناء الدم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c32925e4-2631-4e5f-8041-2097e8b1c36b.jpg" },
+        { n: "طائفة الشعيبة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a178864f-98f0-4682-b36e-c21344d49f96.png" },
+        { n: "جمنون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8d3a83f9-7dd5-4939-88d2-31aaa09c4119.jpg" },
+        { n: "لج", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/95e264c6-5f16-4d89-b6fa-11bd8866bcda.png" },
+        { n: "فندق المقبرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/27ee3566-761c-40f1-b5eb-37df72dd242e.png" },
+        { n: "هلاك مبهم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/795aee56-ca9c-45f5-a686-5ee25b243456.jpg" },
+        { n: "خربوشة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/80fc325c-722c-47cb-9b4d-d5c7d6642b83.png" },
+        { n: "إخلاد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/b8f4b8bc-40a4-477e-a6d0-395053b6e192.jpg" },
+        { n: "سكاى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/6485a3a0-8234-4623-b9f8-21b80ccfb175.jpg" },
+        { n: "زيروس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/7c8a684e-81a3-4875-9182-41328fd2c313.jpg" },
+        { n: "اكاسيا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/625d085f-9b81-4e5f-ab85-b26c08a8bafb.png" },
+        { n: "الممر الرابع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/62c01320-e152-4dfd-a780-07aa439264e4.jpg" },
+        { n: "ذكريات ومخبوزات", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16c54ecf-6295-47fd-bd62-ab2d13d61426.png" },
+        { n: "بصمة مبهرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/da7534a6-eb04-49c4-841a-4f556322eaed.jpg" },
+        { n: "فردوس بوعلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/edc7725c-73f7-443f-a7b1-872502d3b4c3.jpg" },
+        { n: "فندق السيد إنسان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/97e24005-045e-4ea3-be60-531d1f165259.jpg" }, 
+        { n: "الأعمدة والكجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd3e1d97-4baa-4d29-93ac-a9dbb677cc48.jpg" },
+        { n: "نحن موتى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a9bf694e-1c06-4b78-91f4-fc3565077f3e.jpg" },
+        { n: "مذكرات محامية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/18bdeeb2-e433-4ee3-a1a2-1e1cbcd7639d.jpg" },
+        { n: "هجرة مزارع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd3e1d97-4baa-4d29-93ac-a9dbb677cc48.jpg" },
+        { n: "البارون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/fdf02b08-b4cb-4e4d-b594-804bad8cf800.jpg" }
+
     ];
 
-    let score = 0, timer, sec, level = 1, flipped = [], matched = 0;
+    const encouragement = [
+        "بطل! ذاكرتك كذاكرة كاتب يحفظ تفاصيل روايته! ✨",
+        "عبقري! يبدو أنك تقرأ الكتب بعينك وبقلبك أيضاً! 📖",
+        "مذهل! أنت فعلاً من قراء المركز المخلصين! 🏆"
+    ];
+
+    let score = 0, timer, sec, level = 1, flipped = [], matched = 0, gameFinished = false;
 
     function init() {
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
         score = 0; document.getElementById('pts').innerText = 0;
         document.getElementById('msg').innerText = "";
+        gameFinished = false;
     }
 
     function playMemory() {
-        init(); sec = 60; matched = 0; clock(over);
+        init(); sec = 40; matched = 0; clock(over);
         const div = document.getElementById('content');
         div.innerHTML = '<div class="grid" id="g"></div>';
         let sel = books.sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -105,7 +131,7 @@
                     if(flipped.length === 2) {
                         if(flipped[0].n === flipped[1].n) { 
                             score += 25; matched += 2; flipped = []; 
-                            if(matched === 16) over(); 
+                            if(matched === 16) { gameFinished = true; over(); }
                         } else setTimeout(() => { flipped.forEach(x => x.c.classList.remove('flipped')); flipped = []; }, 700);
                     }
                 }
@@ -116,56 +142,91 @@
 
     function playPuzzle() { init(); level = 1; loadP(); }
     function loadP() {
-        let sz = level + 1; sec = level === 1 ? 60 : 30; clock(over);
+        let sz = level + 1; 
+        sec = level === 1 ? 40 : (level === 2 ? 25 : 15); 
+        clock(over);
         const bk = books[Math.floor(Math.random()*books.length)];
         const div = document.getElementById('content');
-        div.innerHTML = `<div id="pb" class="puzzle" style="grid-template-columns:repeat(${sz},1fr);width:210px;height:280px;"></div>`;
+        div.innerHTML = `<p style="font-size:0.8rem; color:var(--teal)">طابق القطع المقلوبة لتكشف الغلاف!</p><div id="pb" class="puzzle" style="grid-template-columns:repeat(${sz},1fr);width:210px;height:280px;margin:auto;"></div>`;
         let pc = [...Array(sz*sz).keys()].sort(() => Math.random() - 0.5);
+        window.selIdx = undefined;
         const draw = () => {
-            const b = document.getElementById('pb'); b.innerHTML = "";
+            const board = document.getElementById('pb'); board.innerHTML = ""; 
             pc.forEach((idx, i) => {
                 const p = document.createElement('div'); p.className = 'piece';
-                p.style.width = (210/sz)+"px"; p.style.height = (280/sz)+"px";
-                p.style.backgroundImage = `url(${bk.i})`;
-                p.style.backgroundPosition = `${-(idx % sz) * (210/sz)}px ${-Math.floor(idx/sz) * (280/sz)}px`;
-                p.style.backgroundSize = "210px 280px";
+                p.style.width = (210/sz) + "px"; p.style.height = (280/sz) + "px";
+                if (window.selIdx === i) {
+                    p.style.backgroundImage = `url(${bk.i})`;
+                    p.style.backgroundPosition = `${-(idx % sz) * (210/sz)}px ${-Math.floor(idx/sz) * (280/sz)}px`;
+                    p.style.backgroundSize = "210px 280px";
+                    p.style.backgroundColor = "transparent"; p.style.outline = "3px solid gold";
+                } else { p.style.backgroundColor = "var(--teal)"; p.style.backgroundImage = "none"; }
                 p.onclick = () => {
-                    if(window.sp === undefined) { window.sp = i; p.style.outline = "2px solid gold"; }
-                    else { [pc[window.sp], pc[i]] = [pc[i], pc[window.sp]]; window.sp = undefined; draw(); if(pc.every((v,x)=>v===x)) { score += 50; if(level < 3) { level++; loadP(); } else over(); } }
+                    if (window.selIdx === undefined) { window.selIdx = i; draw(); } 
+                    else {
+                        let temp = pc[window.selIdx]; pc[window.selIdx] = pc[i]; pc[i] = temp;
+                        window.selIdx = undefined; draw();
+                        if (pc.every((v, x) => v === x)) {
+                            score += (level * 50);
+                            if (level < 3) { level++; setTimeout(loadP, 800); } 
+                            else { gameFinished = true; over(); }
+                        }
+                    }
                 };
-                b.appendChild(p);
+                board.appendChild(p);
             });
         }; draw();
     }
 
-    function playGuess() { init(); sec = 30; clock(over); loadG(); }
+    function playGuess() { init(); sec = 25; clock(over); loadG(); }
     function loadG() {
-        const bk = books[Math.floor(Math.random()*books.length)];
+        const correctBook = books[Math.floor(Math.random() * books.length)];
+        let options = [correctBook.n];
+        while (options.length < 4) {
+            let rand = books[Math.floor(Math.random() * books.length)].n;
+            if (!options.includes(rand)) options.push(rand);
+        }
+        options.sort(() => 0.5 - Math.random());
         const div = document.getElementById('content');
-        div.innerHTML = `<div style="height:220px;border:1px solid #ddd;border-radius:10px;overflow:hidden;margin-bottom:15px;"><img src="${bk.i}" style="width:100%;height:100%;object-fit:contain;filter:blur(25px)"></div><div id="os"></div>`;
-        [bk.n, "خوف", "لجين", "صخب"].sort(() => 0.5-Math.random()).forEach(o => {
-            const b = document.createElement('button'); b.className = 'opt-btn'; b.innerText = o;
-            b.onclick = () => { if(o === bk.n) { score += 20; loadG(); } };
+        div.innerHTML = `<div style="height:220px;border:2px solid var(--gold);border-radius:10px;overflow:hidden;margin-bottom:15px;background:#fff;"><img src="${correctBook.i}" style="width:100%;height:100%;object-fit:contain;filter:blur(12px)"></div><div id="os" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>`;
+        options.forEach(opt => {
+            const b = document.createElement('button'); b.className = 'opt-btn'; b.innerText = opt;
+            b.onclick = () => {
+                if(opt === correctBook.n) { 
+                    score += 20; document.getElementById('pts').innerText = score;
+                    document.getElementById('msg').innerText = "صح! ✨"; setTimeout(() => { document.getElementById('msg').innerText = ""; loadG(); }, 600);
+                } else { document.getElementById('msg').innerText = "خطأ! ❌"; }
+            };
             document.getElementById('os').appendChild(b);
         });
     }
 
-    function clock(cb) { clearInterval(timer); timer = setInterval(() => { sec--; document.getElementById('time').innerText = sec; document.getElementById('pts').innerText = score; if(sec <= 0) { clearInterval(timer); cb(); } }, 1000); }
+    function clock(cb) { clearInterval(timer); timer = setInterval(() => { sec--; document.getElementById('time').innerText = sec; if(sec <= 0) { clearInterval(timer); cb(); } }, 1000); }
 
     function over() {
         clearInterval(timer);
+        const container = document.getElementById('container');
         const promo = "ADAB-EID";
-        document.getElementById('container').innerHTML = `
-            <div class="final-screen">
-                <h2 style="color:var(--teal)">عاش بطل القراءة! 🏆</h2>
-                <div style="font-size:3.5rem; color:var(--gold); font-weight:bold;">${score}</div>
-                <p style="padding:0 20px;">بطل! ذاكرتك كذاكرة كاتب يحفظ تفاصيل روايته! ✨</p>
-                <div style="background:#fff9e6; border:2px dashed var(--gold); padding:15px; border-radius:10px; margin:15px 0;">
-                    <p style="margin:0; font-size:0.8rem;">🎁 عيدية المركز لك:</p>
-                    <div style="font-size:1.5rem; font-weight:bold; color:var(--teal); letter-spacing:2px;">${promo}</div>
-                </div>
-                <button class="menu-btn" onclick="location.reload()">🔄 العب مجدداً</button>
-            </div>`;
+        let finalHTML = "";
+        if(gameFinished || score >= 150) {
+            finalHTML = `<h2 style="color:var(--teal)">عاش بطل القراءة! 🏆</h2>
+                         <div style="font-size:3rem; color:var(--gold); font-weight:bold;">${score}</div>
+                         <p>${encouragement[Math.floor(Math.random()*encouragement.length)]}</p>
+                         <div style="background:#fff9e6; border:2px dashed var(--gold); padding:15px; border-radius:10px; margin:15px 0;">
+                            <p style="margin:0; font-size:0.8rem;">🎁 عيدية المركز لك:</p>
+                            <div style="font-size:1.5rem; font-weight:bold; color:var(--teal); letter-spacing:2px;">${promo}</div>
+                         </div>`;
+        } else {
+            finalHTML = `<h2 style="color:var(--burgundy)">حظاً أوفر! 🌙</h2>
+                         <div style="font-size:3rem; color:#999; font-weight:bold;">${score}</div>
+                         <p>لقد كنت قريباً! حاول مرة أخرى بتركيز أعلى لتفوز بالعيدية ✨</p>`;
+        }
+        container.innerHTML = `<div class="final-screen">
+            <img src="https://ibharbooks.com" style="width: 100px; margin-bottom: 10px;">
+            ${finalHTML}
+            <button class="menu-btn" onclick="location.reload()">🔄 العودة للرئيسية</button>
+            <button class="menu-btn" style="background:var(--burgundy)" onclick="window.open('https://adab-book.com', '_blank')">🛒 تسوق الآن</button>
+        </div>`;
     }
 </script>
 </body>
