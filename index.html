@@ -9,25 +9,18 @@
     <style>
         :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        .main-card { background: white; padding: 1.5rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); width: 90%; max-width: 420px; text-align: center; border-top: 10px solid var(--teal); position: relative; min-height: 580px; display: flex; flex-direction: column; }
-        
-        /* شريط الوقت */
+        .main-card { background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); width: 90%; max-width: 420px; text-align: center; border-top: 10px solid var(--teal); position: relative; min-height: 620px; display: flex; flex-direction: column; }
+        #home { animation: slideIn 0.6s ease-out; }
+        .logo-container img { width: 180px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.08)); margin-bottom: 20px; }
+        .welcome-text h1 { color: var(--teal); font-size: 1.6rem; margin: 0; }
+        .welcome-text p { color: var(--burgundy); font-weight: bold; margin-bottom: 30px; }
+        .menu-container { display: flex; flex-direction: column; gap: 12px; }
+        .menu-btn { background: white; color: var(--teal); border: 2px solid var(--teal); padding: 14px; border-radius: 18px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .menu-btn:hover { background: var(--teal); color: white; transform: translateY(-3px); }
+        #game-area { display: none; width: 100%; flex-grow: 1; animation: fadeIn 0.5s; }
         .timer-bar-container { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
         .timer-bar { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-
-        .menu-btn { background: var(--teal); color: white; border: none; padding: 16px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; margin-bottom: 15px; transition: 0.3s; }
-        .menu-btn:hover { background: var(--burgundy); transform: scale(1.02); }
-
-        #game-area { display: none; width: 100%; flex-grow: 1; }
-        .stats { display: flex; justify-content: space-around; background: #f8f8f8; padding: 10px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 1px solid #eee; }
-
-        /* أساليب التشويش */
-        .guess-img { width: 160px; height: 230px; border-radius: 15px; margin-bottom: 15px; border: 3px solid var(--teal); transition: 0.5s; object-fit: cover; }
-        .blur-lvl1 { filter: blur(5px) grayscale(20%); }
-        .blur-lvl2 { filter: blur(10px) grayscale(60%); }
-        .blur-lvl3 { filter: blur(18px) grayscale(100%) contrast(130%); }
-
-        /* الذاكرة */
+        .stats { display: flex; justify-content: space-around; background: #f8f8f8; padding: 12px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 1px solid #eee; }
         .grid { display: grid; gap: 8px; margin: auto; }
         .m-card { height: 85px; position: relative; transform-style: preserve-3d; transition: 0.5s; cursor: pointer; }
         .m-card.flipped { transform: rotateY(180deg); }
@@ -35,38 +28,47 @@
         .back { background: var(--teal) url('https://www.transparenttextures.com'); }
         .front { background: white; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; }
         .front img { width: 90%; height: 90%; object-fit: contain; }
-
-        /* البازل */
         .puzzle-grid { display: grid; gap: 2px; margin: 0 auto; border: 3px solid var(--teal); border-radius: 10px; overflow: hidden; }
         .puzzle-piece { background-size: 240px 320px; cursor: pointer; }
-        .selected { filter: brightness(1.2); outline: 4px solid var(--gold); z-index: 5; }
-
-        .opt-btn { background: white; border: 2px solid #ddd; padding: 12px; border-radius: 12px; cursor: pointer; margin-bottom: 10px; width: 100%; font-weight: bold; font-family: inherit; transition: 0.2s; }
-        .opt-btn:hover { border-color: var(--teal); background: #f0fafa; }
-
-        .final-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-sizing: border-box; z-index: 100; }
+        .selected { filter: brightness(1.1); outline: 4px solid var(--gold); z-index: 5; }
+        .guess-img { width: 160px; height: 230px; border-radius: 15px; margin-bottom: 15px; border: 3px solid var(--teal); transition: 0.5s; object-fit: cover; }
+        .blur-lvl1 { filter: blur(5px) grayscale(20%); }
+        .blur-lvl2 { filter: blur(10px) grayscale(60%); }
+        .blur-lvl3 { filter: blur(18px) grayscale(100%); }
+        .opt-btn { background: white; border: 2px solid #ddd; padding: 12px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; width: 100%; font-weight: bold; font-family: inherit; }
+        .final-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-sizing: border-box; z-index: 100; animation: fadeIn 0.5s; }
+        .badge { background: var(--teal); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; }
+        .result-card { background: #fff; border-radius: 25px; padding: 20px; width: 85%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-top: 15px; }
+        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="main-card" id="container">
     <div id="home">
-        <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" style="width: 180px; margin-bottom: 15px;">
-        <h1 style="color:var(--teal); font-size: 1.5rem; margin-bottom: 30px;">مهرجان ألعاب الأدب العربي 🌙</h1>
-        <button class="menu-btn" onclick="startFlow('memory')">🃏 تحدي الذاكرة </button>
-        <button class="menu-btn" onclick="startFlow('puzzle')">🧩 تركيب الأغلفة </button>
-        <button class="menu-btn" onclick="startFlow('guess')">📚 خمن الكتاب </button>
+        <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" alt="Logo">
+        <div class="welcome-text">
+            <h1>مهرجان ألعاب الأدب 🌙</h1>
+            <p>تحديات القراء الثلاثة</p>
+        </div>
+        <div class="menu-container">
+            <button class="menu-btn" onclick="startFlow('memory')">🃏 ذاكرة الأغلفة</button>
+            <button class="menu-btn" onclick="startFlow('puzzle')">🧩 لغز التركيب</button>
+            <button class="menu-btn" onclick="startFlow('guess')">📚 خمن الإصدار</button>
+        </div>
+        <div style="margin-top: 30px; font-size: 0.8rem; color: #999;">أفضل نتيجة: <b id="high-score-main">0</b></div>
     </div>
 
     <div id="game-area">
-        <div onclick="location.reload()" style="cursor:pointer; color:#999; text-align:left; font-size:0.9rem; margin-bottom:10px;">✖ إنهاء</div>
+        <div onclick="location.reload()" style="cursor:pointer; color:#999; text-align:left; font-size:0.9rem; margin-bottom:10px;">✕ خروج</div>
         <div class="timer-bar-container"><div id="t-bar" class="timer-bar"></div></div>
         <div class="stats">
-            <span>المستوى: <span id="lvl" style="color:var(--burgundy)">1</span> / 3</span>
+            <span>المستوى <span id="lvl" style="color:var(--burgundy)">1</span> / 3</span>
             <span>⭐ <span id="pts">0</span></span>
         </div>
         <div id="content"></div>
-        <div id="msg" style="margin-top:15px; font-weight:bold; color:var(--teal); min-height:24px;"></div>
+        <div id="msg" style="margin-top:10px; font-weight:bold; color:var(--teal); min-height:24px;"></div>
     </div>
 </div>
 
@@ -108,6 +110,13 @@
     ];
 
     let score = 0, timer, sec, totalSec, currentLvl = 1, currentGame = '', selectedPiece = null;
+    document.getElementById('high-score-main').innerText = localStorage.getItem('litScore') || 0;
+
+    const config = {
+        memory: { times: [40, 30, 20], pairs: [4, 6, 8], cols: [2, 3, 4] },
+        puzzle: { times: [60, 45, 30], sizes: [2, 3, 4] },
+        guess:  { times: [30, 25, 15], rounds: [3, 4, 5], opts: [2, 3, 4] }
+    };
 
     function startFlow(type) {
         currentGame = type; currentLvl = 1; score = 0;
@@ -122,14 +131,7 @@
         document.getElementById('pts').innerText = score;
         document.getElementById('msg').innerText = "";
         
-        // إعدادات الوقت لكل لعبة ومستوى
-        const config = {
-            memory: { times: [40, 30, 25], pairs: [2, 6, 8], cols: [2, 4, 4] },
-            puzzle: { times: [50, 40, 35], sizes: [2, 3, 4] },
-            guess:  { times: [25, 20, 15], rounds: [2, 3, 4], opts: [2, 3, 4] }
-        };
-
-        totalSec = config[currentGame].times[currentLvl-1];
+        totalSec = config[currentGame].times[currentLvl - 1];
         sec = totalSec;
         updateBar();
 
@@ -147,21 +149,20 @@
     function updateBar() {
         const perc = (sec / totalSec) * 100;
         document.getElementById('t-bar').style.width = perc + "%";
+        document.getElementById('t-bar').style.backgroundColor = perc < 30 ? "var(--burgundy)" : "var(--teal)";
     }
 
     function winLvl() {
         clearInterval(timer);
+        let bonus = sec * 5; score += bonus;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         if (currentLvl < 3) {
             currentLvl++;
-            document.getElementById('msg').innerText = "رائع! استعد للمرحلة " + currentLvl;
+            document.getElementById('msg').innerHTML = `<span style="color:var(--gold)">+${bonus} بونص سرعة! ⚡</span>`;
             setTimeout(loadLevel, 1500);
-        } else {
-            showFinal(true);
-        }
+        } else showFinal(true);
     }
 
-    // --- 1. تحدي الذاكرة ---
     function initMemory(pairs, cols) {
         const div = document.getElementById('content');
         div.innerHTML = `<div class="grid" style="grid-template-columns: repeat(${cols}, 1fr)"></div>`;
@@ -189,11 +190,10 @@
         });
     }
 
-    // --- 2. تركيب الأغلفة (البازل) ---
     function initPuzzle(size) {
         const book = books[Math.floor(Math.random()*books.length)];
         const div = document.getElementById('content');
-        div.innerHTML = `<p style="font-size:0.8rem">رتب قطع الغلاف (${size}x${size})</p><div class="puzzle-grid" id="pg" style="grid-template-columns:repeat(${size},1fr); width:240px; height:320px;"></div>`;
+        div.innerHTML = `<div class="puzzle-grid" id="pg" style="grid-template-columns:repeat(${size},1fr); width:240px; height:320px;"></div>`;
         let pieces = Array.from({length: size*size}, (_, i) => i).sort(() => Math.random() - 0.5);
         pieces.forEach((p) => {
             const pc = document.createElement('div'); pc.className = 'puzzle-piece';
@@ -220,105 +220,59 @@
     function checkPuzzle(size) {
         const ps = document.querySelectorAll('.puzzle-piece');
         let win = true;
-        ps.forEach((p, i) => {
-            let x = (i % size) * (100/(size-1)), y = Math.floor(i / size) * (100/(size-1));
-            if(p.style.backgroundPosition !== `${x}% ${y}%`) win = false;
-        });
+        ps.forEach((p, i) => { if(parseInt(p.dataset.correctIdx) !== i) win = false; });
         if(win) { score += 150; winLvl(); }
     }
 
-    // --- 3. خمن الكتاب (التشويش) ---
-    function initGuess(rounds, optCount) {
+    function initGuess(rounds, opts) {
         let currentRound = 0;
         const render = () => {
             const correct = books[Math.floor(Math.random()*books.length)];
             const div = document.getElementById('content');
-            const blurClass = `blur-lvl${currentLvl}`;
-            div.innerHTML = `<img src="${correct.i}" class="guess-img ${blurClass}">`;
-            let choices = [correct, ...books.filter(b=>b.n!==correct.n).sort(()=>0.5-Math.random()).slice(0, optCount-1)].sort(()=>0.5-Math.random());
+            div.innerHTML = `<img src="${correct.i}" class="guess-img blur-lvl${currentLvl}">`;
+            let choices = [correct, ...books.filter(b=>b.n!==correct.n).sort(()=>0.5-Math.random()).slice(0, opts-1)].sort(()=>0.5-Math.random());
             choices.forEach(ch => {
                 const b = document.createElement('button'); b.className = 'opt-btn'; b.innerText = ch.n;
                 b.onclick = () => {
-                    if(ch.n === correct.n) {
-                        score += 40; currentRound++;
-                        if(currentRound >= rounds) winLvl(); else render();
-                    } else {
-                        b.style.borderColor = 'var(--burgundy)';
-                        setTimeout(() => b.style.borderColor = '#ddd', 400);
-                    }
+                    if(ch.n === correct.n) { score += 40; currentRound++; if(currentRound >= rounds) winLvl(); else render(); }
+                    else { b.style.borderColor = 'var(--burgundy)'; setTimeout(() => b.style.borderColor = '#ddd', 400); }
                 };
                 div.appendChild(b);
             });
         };
         render();
     }
+
     function showFinal(win) {
         clearInterval(timer);
-        
-        // حفظ أعلى نتيجة في المتصفح
-        const highScore = localStorage.getItem('litHighScore') || 0;
-        if (score > highScore) {
-            localStorage.setItem('litHighScore', score);
-        }
-
+        let highScore = localStorage.getItem('litScore') || 0;
+        if (score > highScore) localStorage.setItem('litScore', score);
         const final = document.createElement('div');
         final.className = 'final-screen';
-        
-        // تحديد النجوم بناءً على النتيجة
-        let starCount = 0;
-        if (score > 100) starCount = 1;
-        if (score > 400) starCount = 2;
-        if (score > 800) starCount = 3;
-        
-        const starsHtml = '<span style="color:var(--gold); font-size:2.5rem;">' + 
-                          '⭐'.repeat(starCount) + '</span>' + 
-                          '<span style="color:#ddd; font-size:2.5rem;">' + 
-                          '⭐'.repeat(3 - starCount) + '</span>';
-
-        const title = win ? "بطل مركز الأدب العربي! 🏆" : "انتهى الوقت! 🕒";
-        const message = win ? "لقد أثبتّ أنك قارئ مثقف وذو ذاكرة حديدية!" : "لا بأس، العظمة تتطلب المحاولة مرة أخرى.";
-
+        let starCount = score > 800 ? 3 : (score > 400 ? 2 : 1);
         final.innerHTML = `
-            <div style="background: white; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.5s ease;">
-                <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" 
-                     style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
-                
-                <h2 style="color:var(--teal); margin-bottom: 5px; font-size: 1.6rem;">${title}</h2>
-                <div class="stars-container" style="margin-bottom: 15px;">${starsHtml}</div>
-                
-                <div style="background: #fdfaf0; padding: 20px; border-radius: 20px; width: 80%; border: 1px dashed var(--gold); margin-bottom: 25px;">
-                    <p style="color: #666; margin: 0 0 10px 0; font-size: 0.9rem;">${message}</p>
-                    <div style="display: flex; justify-content: space-around; align-items: center;">
-                        <div>
-                            <span style="display: block; font-size: 0.7rem; color: #999; text-transform: uppercase;">نقاطك</span>
-                            <span style="font-size: 1.8rem; font-weight: bold; color: var(--burgundy);">${score}</span>
-                        </div>
-                        <div style="width: 1px; height: 30px; background: #ddd;"></div>
-                        <div>
-                            <span style="display: block; font-size: 0.7rem; color: #999; text-transform: uppercase;">أفضل نتيجة</span>
-                            <span style="font-size: 1.8rem; font-weight: bold; color: var(--teal);">${localStorage.getItem('litHighScore')}</span>
-                        </div>
+            <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" style="width: 120px; margin-bottom: 10px;">
+            <div class="badge">${win ? 'إنجاز أدبي مذهل' : 'محاولة جيدة'}</div>
+            <h2 style="color:var(--teal); margin: 5px 0;">${win ? 'تهانينا يا بطل! 🎉' : 'انتهى الوقت! 🕒'}</h2>
+            <div style="font-size: 2.5rem; margin: 10px 0;">${'⭐'.repeat(starCount)}${'<span style="color:#ddd">⭐</span>'.repeat(3-starCount)}</div>
+            <div class="result-card">
+                <div style="display: flex; justify-content: space-around; align-items: center;">
+                    <div style="text-align: center;">
+                        <span style="color: #999; font-size: 0.75rem; display: block;">النقاط</span>
+                        <span style="color: var(--burgundy); font-size: 1.8rem; font-weight: 900;">${score}</span>
+                    </div>
+                    <div style="width: 1px; height: 40px; background: #eee;"></div>
+                    <div style="text-align: center;">
+                        <span style="color: #999; font-size: 0.75rem; display: block;">الأفضل</span>
+                        <span style="color: var(--teal); font-size: 1.8rem; font-weight: 900;">${localStorage.getItem('litScore')}</span>
                     </div>
                 </div>
-
-                <button class="menu-btn" onclick="location.reload()" 
-                        style="width: 80%; box-shadow: 0 10px 20px rgba(26, 147, 151, 0.3);">
-                    العودة للرئيسية ↩️
-                </button>
-                
-                <p style="margin-top: 20px; font-size: 0.8rem; color: #bbb;">شارك نتيجتك مع أصدقائك القراء</p>
             </div>
+            <button class="menu-btn" onclick="location.reload()" style="width: 85%; height: 50px; background: var(--teal); color: white; border: none; margin-top: 25px;">العودة للرئيسية ↩️</button>
         `;
-
         document.getElementById('container').appendChild(final);
-        
-        // إطلاق القصاصات الملونة إذا كان فائزاً أو حقق نتيجة ممتازة
-        if(win || score > 500) {
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#1a9397', '#a11f2a', '#c6922a']
-            });
-        }
+        if(win || score > 400) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
+</script>
+</body>
+</html>
