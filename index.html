@@ -311,19 +311,19 @@ let gameActive=true, animationFrame=null, isMuted=false, combo=0;
 let validBooks=[...books], audioContext=null, soundsUnlocked=false;
 
 const easyPool=[
-    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب (سهل)"},
-    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات (سهل)"},
-    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف (2×2)"}
+    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب "},
+    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات "},
+    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف"}
 ];
 const medPool=[
-    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب (متوسط)"},
-    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة (متوسط)"},
-    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف (3×3)"}
+    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب "},
+    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة "},
+    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف "}
 ];
 const hardPool=[
-    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب (صعب)"},
-    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية (صعب)"},
-    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى (4×4)"}
+    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب "},
+    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية "},
+    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى"}
 ];
 
 // ===== الصوت =====
@@ -750,11 +750,11 @@ function finish(msg,wonAll){
                 <div class="promo-code">${promo}</div>
                 <button class="copy-btn" onclick="navigator.clipboard.writeText('${promo}').then(()=>{this.innerText='✅ تم النسخ!';setTimeout(()=>this.innerText='نسخ الكود 📋',2000)})">نسخ الكود 📋</button>
             </div>
-            <div class="adabbook-link">
+            <div class="https://adab-book.com/">
                 <p style="font-size:0.95rem;margin-bottom:4px;">📚 تسوق الآن من</p>
                 <h3 style="font-size:1.4rem;margin-bottom:4px;">متجر أدب بوك</h3>
                 <p style="font-size:0.82rem;opacity:0.85;margin-bottom:6px;">أفضل الكتب الأدبية بانتظارك</p>
-                <a href="https://adabbook.com" target="_blank" class="shop-btn">تسوق الآن 🛒</a>
+                <a href="https://adab-book.com/" target="_blank" class="shop-btn">تسوق الآن 🛒</a>
             </div>
             <div class="leaderboard">
                 <h4 style="padding-bottom:6px;border-bottom:1px solid #e0f0f0;margin-bottom:6px;color:var(--teal);">🏆 أفضل 10 اليوم</h4>
