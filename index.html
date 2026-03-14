@@ -15,19 +15,20 @@
         .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 10px; font-size: 0.8rem; color: var(--teal); font-weight: bold; }
         .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
         #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        .grid { display: grid; gap: 6px; justify-content: center; }
+        
+        .grid { display: grid; gap: 6px; justify-content: center; margin: 0 auto; }
         .m-card { width: 70px; height: 95px; cursor: pointer; perspective: 1000px; }
         .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.4s; transform-style: preserve-3d; }
+        .flipped .card-inner { transform: rotateY(180deg); }
         .face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; border: 2px solid #eee; }
         .back { background: var(--teal); }
         .front { background: white; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .front img { width: 100%; height: 100%; object-fit: cover; }
+        
         .puzzle-grid { display: grid; gap: 2px; margin: 0 auto; background: #eee; border: 3px solid var(--teal); border-radius: 8px; }
         .puzzle-piece { cursor: pointer; background-size: cover; }
         .coupon-box { background: #fff9e6; border: 2px dashed var(--gold); padding: 15px; border-radius: 20px; margin: 15px 0; }
         .shop-btn { display: block; background: var(--teal); color: white; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-        .success-flash { animation: flash 0.5s; }
-        @keyframes flash { 0%, 100% { background: white; } 50% { background: #e0f2f2; } }
     </style>
 </head>
 <body onload="initApp()">
@@ -35,9 +36,9 @@
 <div class="main-card" id="card">
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo">
-        <h3 style="color: var(--burgundy); margin-bottom: 5px;">تحدي للقراء  ⚡</h3>
+        <h3 style="color: var(--burgundy); margin-bottom: 5px;">مهرجان الأدب االعربي ⚡</h3>
         <p id="tries-text" style="font-size: 0.85rem; color: var(--teal); font-weight: bold; margin-bottom: 15px;"></p>
-        <input type="text" id="player-name" style="width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin-bottom: 12px; font-weight: bold;" placeholder="اكتب اسمك..." maxlength="12" oninput="validateInput()">
+        <input type="text" id="player-name" style="width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin-bottom: 12px; font-weight: bold;" placeholder="اكتب اسمك للمنافسة..." maxlength="12" oninput="validateInput()">
         <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي  🚀</button>
     </div>
 
@@ -54,7 +55,6 @@
 </div>
 
 <script>
-    // روابط الأصوات المدمجة
     const sounds = {
         flip: new Audio('https://assets.mixkit.co'),
         success: new Audio('https://assets.mixkit.co'),
@@ -62,10 +62,7 @@
         win: new Audio('https://assets.mixkit.co')
     };
 
-    function playSfx(name) { 
-        sounds[name].currentTime = 0; 
-        sounds[name].play().catch(e => console.log("الصوت يتطلب تفاعل المستخدم أولاً")); 
-    }
+    function playSfx(name) { sounds[name].currentTime = 0; sounds[name].play().catch(() => {}); }
 
     const books = [
        
@@ -103,27 +100,27 @@
 
     ];
 
-    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", festivalPath = [];
+    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", festivalPath = [], flippedCards = [];
 
     function initApp() {
         const today = new Date().toDateString();
-        let tries = JSON.parse(localStorage.getItem('adab_v7_limit') || '{"date":"","count":0}');
+        let tries = JSON.parse(localStorage.getItem('adab_v8_limit') || '{"date":"","count":0}');
         if (tries.date !== today) tries = { date: today, count: 0 };
-        localStorage.setItem('adab_v7_limit', JSON.stringify(tries));
+        localStorage.setItem('adab_v8_limit', JSON.stringify(tries));
         document.getElementById('tries-text').innerText = `المحاولات المتبقية: ${3 - tries.count}`;
         validateInput();
     }
 
     function validateInput() {
         const val = document.getElementById('player-name').value.trim();
-        const tries = JSON.parse(localStorage.getItem('adab_v7_limit'));
+        const tries = JSON.parse(localStorage.getItem('adab_v8_limit'));
         document.getElementById('btn-start').disabled = (val.length < 2 || tries.count >= 3);
     }
 
     function startFestival() {
-        let tries = JSON.parse(localStorage.getItem('adab_v7_limit'));
+        let tries = JSON.parse(localStorage.getItem('adab_v8_limit'));
         tries.count++;
-        localStorage.setItem('adab_v7_limit', JSON.stringify(tries));
+        localStorage.setItem('adab_v8_limit', JSON.stringify(tries));
         playerName = document.getElementById('player-name').value.trim();
         
         festivalPath = [
@@ -133,7 +130,7 @@
             { type: 'guess', blur: 8, time: 20, desc: "خمن الغلاف  📚" },
             { type: 'memory', pairs: 4, time: 30, desc: "ذاكرة الأبطال 🃏" },
             { type: 'puzzle', size: 3, time: 40, desc: "تحدي اللغز 🧩" },
-            { type: 'guess', blur: 10, time: 15, desc: "خمن الغلاف الغامض 📚" },
+            { type: 'guess', blur: 15, time: 15, desc: "خمن الغلاف الغامض 📚" },
             { type: 'memory', pairs: 6, time: 25, desc: "الذاكرة الفولاذية 🃏" },
             { type: 'puzzle', size: 4, time: 45, desc: "المرحلة الكبرى 🧩" }
         ];
@@ -167,29 +164,43 @@
         const div = document.getElementById('game-content'); div.innerHTML = "";
         
         if (step.type === 'memory') {
-            let cards = [...books.slice(0, step.pairs), ...books.slice(0, step.pairs)].sort(() => 0.5 - Math.random());
+            flippedCards = [];
+            let cardsData = [...books.slice(0, step.pairs), ...books.slice(0, step.pairs)].sort(() => 0.5 - Math.random());
             const grid = document.createElement('div');
             grid.className = 'grid'; grid.style.gridTemplateColumns = "repeat(3, 1fr)";
-            let flipped = [], matched = 0;
-            cards.forEach(b => {
-                const c = document.createElement('div'); c.className = 'm-card';
-                c.innerHTML = `<div class="card-inner" style="width:100%;height:100%;"><div class="face back"></div><div class="face front"><img src="${b.i}"></div></div>`;
-                c.onclick = () => {
-                    if (flipped.length < 2 && !c.classList.contains('ok')) {
+            let matchedCount = 0;
+
+            cardsData.forEach((book, index) => {
+                const card = document.createElement('div');
+                card.className = 'm-card';
+                card.innerHTML = `<div class="card-inner"><div class="face back"></div><div class="face front"><img src="${book.i}"></div></div>`;
+                
+                card.onclick = function() {
+                    if (flippedCards.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
                         playSfx('flip');
-                        c.querySelector('.card-inner').style.transform = "rotateY(180deg)";
-                        flipped.push({c, b});
-                        if (flipped.length === 2) {
-                            if (flipped.b.n === flipped.b.n) {
-                                matched++; score += 50 + (sec * 2); flipped.forEach(x => x.c.classList.add('ok')); flipped = [];
-                                if (matched === step.pairs) { playSfx('success'); flashEffect(); setTimeout(nextStep, 600); }
+                        card.classList.add('flipped');
+                        flippedCards.push({ card, name: book.n });
+
+                        if (flippedCards.length === 2) {
+                            if (flippedCards[0].name === flippedCards[1].name) {
+                                flippedCards.forEach(c => c.card.classList.add('matched'));
+                                score += 50 + (sec * 2);
+                                matchedCount++;
+                                flippedCards = [];
+                                if (matchedCount === step.pairs) { 
+                                    playSfx('success'); 
+                                    setTimeout(nextStep, 800); 
+                                }
                             } else {
-                                setTimeout(() => { flipped.forEach(x => x.c.querySelector('.card-inner').style.transform = "rotateY(0deg)"); flipped = []; }, 600);
+                                setTimeout(() => {
+                                    flippedCards.forEach(c => c.card.classList.remove('flipped'));
+                                    flippedCards = [];
+                                }, 600);
                             }
                         }
                     }
                 };
-                grid.appendChild(c);
+                grid.appendChild(card);
             });
             div.appendChild(grid);
         } else if (step.type === 'guess') {
@@ -199,9 +210,8 @@
             [book.n, ...books.filter(x=>x.n!=book.n).slice(0,3).map(x=>x.n)].sort().forEach(o => {
                 const btn = document.createElement('button'); btn.className = 'start-btn'; btn.style.fontSize="0.8rem"; btn.innerText = o;
                 btn.onclick = () => { 
-                    if(o === book.n) { 
-                        playSfx('success'); flashEffect(); score += 100 + (sec * 5); nextStep(); 
-                    } else { playSfx('fail'); finish(`للأسف! كان الكتاب هو "${book.n}"`); }
+                    if(o === book.n) { playSfx('success'); score += 100 + (sec * 5); nextStep(); } 
+                    else { playSfx('fail'); finish(`للأسف! كان الكتاب هو "${book.n}"`); }
                 };
                 document.getElementById('opts').appendChild(btn);
             });
@@ -212,22 +222,28 @@
             pGrid.className = 'puzzle-grid'; pGrid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
             pGrid.style.width = "210px";
             let pieces = Array.from({length: size*size}, (_, i) => i).sort(() => 0.5 - Math.random());
+            let selected = null;
+
             pieces.forEach((pos, idx) => {
-                const p = document.createElement('div'); p.className = 'puzzle-piece';
+                const p = document.createElement('div');
+                p.className = 'puzzle-piece';
                 p.style.width = `${210/size}px`; p.style.height = `${280/size}px`;
                 p.style.backgroundImage = `url(${book.i})`;
                 p.style.backgroundPosition = `${-(pos % size) * (210/size)}px ${-Math.floor(pos / size) * (280/size)}px`;
                 p.dataset.orig = pos;
+                
                 p.onclick = () => {
                     playSfx('flip');
-                    let sel = document.querySelector('.selected-piece');
-                    if(!sel) { p.style.outline = "3px solid gold"; p.classList.add('selected-piece'); }
-                    else {
+                    if(!selected) { 
+                        selected = p; p.style.outline = "3px solid gold"; 
+                    } else {
                         let tBg = p.style.backgroundPosition, tO = p.dataset.orig;
-                        p.style.backgroundPosition = sel.style.backgroundPosition; p.dataset.orig = sel.dataset.orig;
-                        sel.style.backgroundPosition = tBg; sel.dataset.orig = tO;
-                        sel.style.outline = "none"; sel.classList.remove('selected-piece');
-                        if([...pGrid.children].every((pc, i) => parseInt(pc.dataset.orig) === i)) { playSfx('success'); score += 150 + (sec * 10); setTimeout(nextStep, 600); }
+                        p.style.backgroundPosition = selected.style.backgroundPosition; p.dataset.orig = selected.dataset.orig;
+                        selected.style.backgroundPosition = tBg; selected.dataset.orig = tO;
+                        selected.style.outline = "none"; selected = null;
+                        if([...pGrid.children].every((pc, i) => parseInt(pc.dataset.orig) === i)) { 
+                            playSfx('success'); score += 150 + (sec * 10); setTimeout(nextStep, 600); 
+                        }
                     }
                 };
                 pGrid.appendChild(p);
@@ -236,23 +252,17 @@
         }
     }
 
-    function flashEffect() {
-        const card = document.getElementById('card');
-        card.classList.add('success-flash');
-        setTimeout(() => card.classList.remove('success-flash'), 500);
-    }
-
     function nextStep() {
         if(currentStep < 9) { currentStep++; loadStep(); }
-        else { playSfx('win'); finish("🏆 كفو! أتممت المهرجان بنجاح مذهل."); }
+        else { playSfx('win'); finish("🏆 كفو! أتممت التحدي بنجاح مذهل."); }
     }
 
     function finish(msg) {
         clearInterval(timer);
-        let b = JSON.parse(localStorage.getItem('adab_v7_lb') || '[]');
+        let b = JSON.parse(localStorage.getItem('adab_v8_lb') || '[]');
         if (msg.includes("نجاح")) {
             b.push({n: playerName, s: score}); b.sort((x,y) => y.s - x.s);
-            localStorage.setItem('adab_v7_lb', JSON.stringify(b.slice(0, 10)));
+            localStorage.setItem('adab_v8_lb', JSON.stringify(b.slice(0, 10)));
         }
         let rank = b.findIndex(i => i.n === playerName && i.s === score) + 1;
         let coupon = "GIFT5", disc = "5%";
@@ -264,11 +274,11 @@
             <h3 style="color:var(--burgundy)">${msg}</h3>
             <p style="font-weight:bold; margin-top:8px; color:var(--teal)">نقاطك: ${score}</p>
             <div class="coupon-box">
-                <p style="font-size:0.8rem; font-weight:bold;">ترتيبك: ${rank || 'المشارك'}</p>
+                <p style="font-size:0.8rem; font-weight:bold;">ترتيبك: ${rank || 'مشارك'}</p>
                 <h2 style="color:var(--teal); letter-spacing:2px; margin:8px 0;">${coupon}</h2>
                 <p style="font-size:0.85rem;">كود خصم بقيمة <b>${disc}</b></p>
             </div>
-            <a href="https://adab-book.com" target="_blank" class="shop-btn">🛒 زور موقعنا</a>
+            <a href="https://adab-book.com" target="_blank" class="shop-btn">🛒 تسوق الآن في أدب بوك</a>
             <button class="start-btn" onclick="location.reload()" style="margin-top:15px; background:white; color:var(--teal); border:2px solid var(--teal); font-size:0.8rem;">🔄 العودة للرئيسية</button>
         `;
     }
