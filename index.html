@@ -9,51 +9,43 @@
         :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: manipulation; }
-        .main-card { background: white; padding: 1.5rem; border-radius: 30px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); width: 95%; max-width: 400px; text-align: center; border-top: 10px solid var(--teal); max-height: 98vh; overflow-y: auto; position: relative; }
-        .logo { width: 100%; max-width: 200px; margin-bottom: 15px; border-radius: 12px; }
-        .name-field { width: 100%; padding: 14px; border-radius: 15px; border: 2px solid #eee; text-align: center; margin: 15px 0; font-size: 1.1rem; font-weight: bold; outline: none; transition: 0.3s; }
-        .name-field:focus { border-color: var(--teal); background: #f0fafa; }
-        .start-btn { background: var(--teal); color: white; border: none; padding: 16px; border-radius: 18px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
+        .main-card { background: white; padding: 1.2rem; border-radius: 30px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); width: 95%; max-width: 400px; text-align: center; border-top: 10px solid var(--teal); max-height: 98vh; overflow-y: auto; position: relative; }
+        .logo { width: 100%; max-width: 180px; margin-bottom: 10px; border-radius: 10px; }
+        .name-field { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; outline: none; }
+        .start-btn { background: var(--teal); color: white; border: none; padding: 14px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
         .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; }
-        
-        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; }
-        #countdown-text { font-size: 6rem; font-weight: bold; color: var(--teal); }
-
-        .stats-header { display: flex; justify-content: space-around; padding: 10px; background: #f0fafa; border-radius: 15px; margin-bottom: 10px; font-size: 0.9rem; color: var(--teal); font-weight: bold; }
-        .timer-container { background: #eee; height: 10px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; pointer-events: none; }
+        #countdown-text { font-size: 5rem; font-weight: bold; color: var(--teal); }
+        .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 8px; font-size: 0.85rem; color: var(--teal); font-weight: bold; }
+        .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
         #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        
-        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 12px; overflow: hidden; }
+        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; }
         .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.1px solid rgba(255,255,255,0.2); }
-        .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.96); }
-        
-        .memory-card { height: 90px; background: var(--teal); border-radius: 12px; cursor: pointer; color: white; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
-        .rank-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; align-items: center; font-size: 0.9rem; }
-        .lb-container { background: #f9f9f9; border-radius: 20px; padding: 15px; text-align: right; margin: 15px 0; max-height: 220px; overflow-y: auto; border: 1px solid #eee; }
-        .copy-btn { background: #f0f0f0; color: #333; padding: 6px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; margin-top: 8px; border: 1px solid #ddd; font-weight: bold; }
+        .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.98); }
+        .memory-card { height: 85px; background: var(--teal); border-radius: 10px; cursor: pointer; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
+        .rank-item { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #eee; align-items: center; font-size: 0.85rem; }
+        .lb-container { background: #f9f9f9; border-radius: 15px; padding: 12px; text-align: right; margin: 15px 0; max-height: 180px; overflow-y: auto; }
     </style>
 </head>
 <body onload="initApp()">
 
 <div class="main-card">
     <div id="countdown-overlay"><div id="countdown-text">3</div></div>
-
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo">
-        <h2 style="color: var(--burgundy); margin-bottom: 10px;">تحدي الأدب العربي ⚡</h2>
-        <p id="tries-text" style="font-size: 0.9rem; color: var(--teal); font-weight: bold; margin-bottom: 15px;"></p>
-        
-        <input type="text" id="player-name" class="name-field" placeholder="ادخل اسمك هنا..." maxlength="12" oninput="validateInput()">
-        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ المهرجان  🚀</button>
+        <h3 style="color: var(--burgundy);">مهرجان ألعاب الأدب ⚡</h3>
+        <p id="tries-text" style="font-size: 0.8rem; color: var(--teal); margin: 5px 0; font-weight: bold;"></p>
+        <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()">
+        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي العشوائي 🚀</button>
     </div>
 
     <div id="game-area" style="display: none;">
         <div class="stats-header">
             <span>⭐ <span id="score-num">0</span></span>
+            <span id="lives-box" style="color:#e74c3c">❤️ <span id="lives-num">3</span></span>
             <span>المرحلة: <span id="lvl-num">1</span>/9</span>
-            <span>اللاعب: <span id="p-display"></span></span>
         </div>
-        <p id="lvl-desc" style="font-size: 0.85rem; color: var(--teal); font-weight: bold; margin-bottom: 8px;"></p>
+        <p id="lvl-desc" style="font-size: 0.8rem; color: var(--teal); font-weight: bold; margin-bottom: 5px;"></p>
         <div class="timer-container"><div id="timer-line"></div></div>
         <div id="game-content"></div>
     </div>
@@ -61,7 +53,7 @@
 
 <script>
     const books = [
-       
+      
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -96,42 +88,49 @@
 
     ];
 
-    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [];
+    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], errors = 0, randomizedSteps = [];
 
-    const steps = [
-        { type: 'guess', t: 20, d: "خمن الكتاب  📚" },
-        { type: 'memory', t: 30, pairs: 3, d: "طابق البطاقات  🃏" },
-        { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف  🧩" },
-        { type: 'guess', t: 15, d: "خمن الكتاب ⚡" },
-        { type: 'memory', t: 35, pairs: 4, d: "تحدي الذاكرة 🃏" },
-        { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف  🧩" },
-        { type: 'guess', t: 12, d: "تخمين الكتاب  🔥" },
-        { type: 'memory', t: 45, pairs: 8, d: "الذاكرة الفولاذية  🃏" },
-        { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى  🏆" }
+    const easyPool = [
+        { type: 'guess', t: 20, blur: 5, d: "خمن الكتاب (سهل) 📚" },
+        { type: 'memory', t: 30, pairs: 2, d: "طابق البطاقات (سهل) 🃏" },
+        { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف (2×2) 🧩" }
     ];
+    const medPool = [
+        { type: 'guess', t: 15, blur: 10, d: "خمن الكتاب (متوسط) ⚡" },
+        { type: 'memory', t: 35, pairs: 3, d: "تحدي الذاكرة (متوسط) 🃏" },
+        { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف (3×3) 🧩" }
+    ];
+    const hardPool = [
+        { type: 'guess', t: 12, blur: 18, d: "خمن الكتاب (صعب) 🔥" },
+        { type: 'memory', t: 45, pairs: 4, d: "الذاكرة الفولاذية (صعب) 🃏" },
+        { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
+    ];
+
+    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
 
     function initApp() {
         const d = new Date().toDateString();
-        let t = JSON.parse(localStorage.getItem('adab_final_v10_limit') || '{"date":"","count":0}');
+        let t = JSON.parse(localStorage.getItem('adab_final_limit') || '{"date":"","count":0}');
         if (t.date !== d) t = { date: d, count: 0 };
-        localStorage.setItem('adab_final_v10_limit', JSON.stringify(t));
-        document.getElementById('tries-text').innerText = `محاولاتك المتبقية اليوم: ${3 - t.count}`;
+        localStorage.setItem('adab_final_limit', JSON.stringify(t));
+        document.getElementById('tries-text').innerText = `محاولاتك اليوم: ${3 - t.count}`;
     }
 
     function validateInput() {
         const v = document.getElementById('player-name').value.trim();
-        const t = JSON.parse(localStorage.getItem('adab_final_v10_limit'));
+        const t = JSON.parse(localStorage.getItem('adab_final_limit'));
         document.getElementById('btn-start').disabled = (v.length < 2 || t.count >= 3);
     }
 
     function startFestival() {
-        let t = JSON.parse(localStorage.getItem('adab_final_v10_limit'));
-        t.count++; localStorage.setItem('adab_final_v10_limit', JSON.stringify(t));
+        let t = JSON.parse(localStorage.getItem('adab_final_limit'));
+        t.count++; localStorage.setItem('adab_final_limit', JSON.stringify(t));
+        randomizedSteps = [...shuffle([...easyPool]), ...shuffle([...medPool]), ...shuffle([...hardPool])];
         playerName = document.getElementById('player-name').value.trim();
-        score = 0; currentStep = 1;
+        score = 0; currentStep = 1; errors = 0;
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
-        document.getElementById('p-display').innerText = playerName;
+        document.getElementById('lives-num').innerText = "3";
         showCountdown(loadStep);
     }
 
@@ -140,23 +139,24 @@
         const txt = document.getElementById('countdown-text');
         ov.style.display = 'flex';
         let c = 3; txt.innerText = c;
-        let t = setInterval(() => {
+        let ct = setInterval(() => {
             c--;
             if (c > 0) txt.innerText = c;
             else if (c === 0) txt.innerText = "انطلق!";
-            else { clearInterval(t); ov.style.display = 'none'; cb(); }
+            else { clearInterval(ct); ov.style.display = 'none'; cb(); }
         }, 800);
     }
 
     function loadStep() {
-        clearInterval(timer); selectedPiece = null; memoryFlipped = [];
-        const s = steps[currentStep-1];
+        clearInterval(timer);
+        selectedPiece = null; memoryFlipped = [];
+        const s = randomizedSteps[currentStep-1];
         document.getElementById('lvl-num').innerText = currentStep;
         document.getElementById('lvl-desc').innerText = s.d;
         sec = s.t;
         const div = document.getElementById('game-content'); div.innerHTML = "";
 
-        if (s.type === 'guess') renderGuess();
+        if (s.type === 'guess') renderGuess(s.blur);
         else if (s.type === 'memory') renderMemory(s.pairs);
         else if (s.type === 'puzzle') renderPuzzle(s.s);
 
@@ -167,24 +167,33 @@
         }, 1000);
     }
 
-    function renderGuess() {
+    function renderGuess(blurValue) {
         const correct = books[Math.floor(Math.random()*books.length)];
-        const options = [...books].sort(() => 0.5 - Math.random());
-        const div = document.getElementById('game-content');
-        div.innerHTML = `<img src="${correct.i}" style="width:160px; filter:blur(${10-currentStep}px); border-radius:15px; margin-bottom:20px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            ${options.map(b => `<button class="start-btn" style="font-size:0.9rem; padding:12px;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
-        </div>`;
+        let options = shuffle(books.filter(b => b.n !== correct.n)).slice(0, 3);
+        options.push(correct);
+        shuffle(options);
+        document.getElementById('game-content').innerHTML = `
+            <img src="${correct.i}" style="width:160px; filter:blur(${blurValue}px); border-radius:15px; margin-bottom:20px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                ${options.map(b => `<button class="start-btn" style="font-size:0.85rem; padding:12px;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
+            </div>`;
     }
 
-    function checkGuess(s, c) { if (s === c) { score += (sec * 5) + 50; nextStep(); } else finish("إجابة خاطئة! ❌"); }
+    function checkGuess(s, c) { 
+        if (s === c) { score += (sec * 5) + 50; nextStep(); } 
+        else {
+            errors++; document.getElementById('lives-num').innerText = 3 - errors;
+            if (errors >= 3) finish("نفدت الأرواح! ❌");
+            else alert("خطأ! بقيت لك " + (3 - errors) + " أرواح");
+        }
+    }
 
     function renderMemory(pairs) {
         const div = document.getElementById('game-content');
-        let gameBooks = books.slice(0, pairs);
-        let cards = [...gameBooks, ...gameBooks].sort(() => 0.5 - Math.random());
+        let gameBooks = shuffle([...books]).slice(0, pairs);
+        let cards = shuffle([...gameBooks, ...gameBooks]);
         const grid = document.createElement('div');
-        grid.style = `display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;`;
+        grid.style = `display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;`;
         cards.forEach(book => {
             const card = document.createElement('div');
             card.className = 'memory-card'; card.innerText = "?";
@@ -193,6 +202,7 @@
                     card.innerText = ""; card.style.backgroundImage = `url(${book.i})`;
                     card.dataset.name = book.n; card.dataset.open = "true"; memoryFlipped.push(card);
                     if (memoryFlipped.length === 2) {
+                        // تصحيح الخطأ هنا باستخدام الفهرس [0] و [1]
                         if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
                             memoryFlipped.forEach(c => { c.dataset.done = "true"; c.style.opacity = "0.5"; });
                             memoryFlipped = [];
@@ -214,10 +224,8 @@
         const grid = document.createElement('div');
         grid.className = 'puzzle-grid'; grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
         grid.style.width = "280px"; grid.style.height = "380px";
-        let piecesData = Array.from({length: size*size}, (_, i) => i);
-        let shuffled = [...piecesData].sort(() => 0.5 - Math.random());
-
-        shuffled.forEach(posIndex => {
+        let pieces = shuffle(Array.from({length: size*size}, (_, i) => i));
+        pieces.forEach(posIndex => {
             const p = document.createElement('div');
             p.className = 'puzzle-piece';
             const w = 280/size, h = 380/size;
@@ -226,7 +234,6 @@
             p.style.backgroundSize = `280px 380px`;
             p.style.backgroundPosition = `-${(posIndex%size)*w}px -${Math.floor(posIndex/size)*h}px`;
             p.dataset.correctId = posIndex;
-
             p.onclick = () => {
                 if (!selectedPiece) { selectedPiece = p; p.classList.add('selected-piece'); }
                 else {
@@ -246,47 +253,33 @@
     }
 
     function nextStep() {
-        clearInterval(timer); document.getElementById('score-num').innerText = score;
+        clearInterval(timer); 
+        document.getElementById('score-num').innerText = score;
         if (currentStep < 9) { currentStep++; setTimeout(() => showCountdown(loadStep), 500); }
-        else finish("🏆 مبروك! ختمت المهرجان بنجاح");
+        else finish("🏆 مبروك! ختمت التحدي");
     }
 
     function finish(msg) {
         clearInterval(timer);
         const today = new Date().toDateString();
-        let d = JSON.parse(localStorage.getItem('adab_final_v10_lb') || '[]');
+        let d = JSON.parse(localStorage.getItem('adab_final_lb') || '[]');
         d.push({ name: playerName, score: score, date: today });
-        localStorage.setItem('adab_final_v10_lb', JSON.stringify(d));
-
+        localStorage.setItem('adab_final_lb', JSON.stringify(d));
         const daily = d.filter(e => e.date === today).sort((a,b) => b.score - a.score);
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
         let promo = rank === 1 ? "ADAB30" : rank === 2 ? "ADAB25" : rank === 3 ? "ADAB15" : (rank/daily.length <= 0.3 ? "ADAB10" : "");
         
-        const lbHTML = daily.slice(0, 10).map((u, i) => `
-            <div class="rank-item" style="${u.name === playerName && u.score === score ? 'background:#fff9e6; font-weight:bold;' : ''}">
-                <span>${i+1}. ${u.name} ${i<3?['🥇','🥈','🥉'][i]:''}</span>
-                <span style="color:var(--teal)">${u.score}⚡</span>
-            </div>`).join('');
-
         document.getElementById('game-content').innerHTML = `
-            <h2 style="color:var(--burgundy)">${msg}</h2>
-            <h1 style="font-size:3.5rem; color:var(--teal); margin:10px 0;">${score}⚡</h1>
-            <p>ترتيبك اليوم: <b>#${rank}</b></p>
-            ${promo ? `<div style="background:#fff9e6; padding:15px; border-radius:20px; margin:15px 0; border:2px dashed var(--gold);"><p>كود خصمك المكتسب: <b>${promo}</b></p><div class="copy-btn" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود')">نسخ الكود 📋</div></div>` : ''}
+            <h2>${msg}</h2>
+            <h1 style="font-size:3rem; color:var(--teal)">${score}⚡</h1>
+            <p>ترتيبك اليوم: #${rank}</p>
+            ${promo ? `<div style="background:#fff9e6; padding:12px; border-radius:15px; margin:10px 0; border:2px dashed var(--gold);"><p>كود خصمك: ${promo}</p><button class="start-btn" onclick="navigator.clipboard.writeText('${promo}');alert('تم النسخ')">نسخ الكود 📋</button></div>` : ''}
             <div class="lb-container">
-                <h4 style="color:var(--burgundy); border-bottom:2px solid #ddd; padding-bottom:5px; margin-bottom:10px;">🏆 قائمة المتصدرين اليوم:</h4>
-                ${lbHTML}
+                <h4 style="color:var(--burgundy)">🏆 قائمة المتصدرين اليوم:</h4>
+                ${daily.slice(0, 10).map((u, i) => `<div class="rank-item"><span>${i+1}. ${u.name}</span><span>${u.score}⚡</span></div>`).join('')}
             </div>
-            <a href="https://adab-book.com" target="_blank" class="start-btn" style="background:var(--burgundy)">استخدم الخصم في المتجر 🛒</a>
-            <button onclick="shareRes()" class="start-btn" style="background:#25D366; margin-top:10px;">مشاركة النتيجة 📲</button>
-            <button onclick="location.reload()" class="start-btn" style="background:#888; margin-top:10px;">العودة للرئيسية</button>
+            <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة</button>
         `;
-    }
-
-    async function shareRes() {
-        const t = `حققت ${score} نقطة في تحدي الأدب وترتيبي حالياً #${playerName}! هل يمكنك هزيمتي؟ ⚡📚`;
-        if (navigator.share) await navigator.share({ text: t, url: window.location.href });
-        else window.open(`https://wa.me{encodeURIComponent(t + " " + window.location.href)}`);
     }
 </script>
 </body>
