@@ -9,41 +9,42 @@
         :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: manipulation; }
-        .main-card { background: white; padding: 1.2rem; border-radius: 30px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); width: 95%; max-width: 400px; text-align: center; border-top: 10px solid var(--teal); max-height: 98vh; overflow-y: auto; }
-        .logo { width: 100%; max-width: 180px; margin-bottom: 10px; border-radius: 10px; }
-        .name-field { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; outline: none; }
-        .start-btn { background: var(--teal); color: white; border: none; padding: 14px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
+        .main-card { background: white; padding: 1.5rem; border-radius: 30px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); width: 95%; max-width: 400px; text-align: center; border-top: 10px solid var(--teal); max-height: 98vh; overflow-y: auto; position: relative; }
+        .logo { width: 100%; max-width: 200px; margin-bottom: 15px; border-radius: 12px; }
+        .name-field { width: 100%; padding: 14px; border-radius: 15px; border: 2px solid #eee; text-align: center; margin: 15px 0; font-size: 1.1rem; font-weight: bold; outline: none; transition: 0.3s; }
+        .name-field:focus { border-color: var(--teal); background: #f0fafa; }
+        .start-btn { background: var(--teal); color: white; border: none; padding: 16px; border-radius: 18px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
         .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; }
-        .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; color: var(--teal); font-weight: bold; }
-        #score-num { color: #e67e22; font-size: 1.1rem; font-weight: bold; }
-        .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+        
+        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; }
+        #countdown-text { font-size: 6rem; font-weight: bold; color: var(--teal); }
+
+        .stats-header { display: flex; justify-content: space-around; padding: 10px; background: #f0fafa; border-radius: 15px; margin-bottom: 10px; font-size: 0.9rem; color: var(--teal); font-weight: bold; }
+        .timer-container { background: #eee; height: 10px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
         #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        .puzzle-grid { display: grid; gap: 2px; margin: 10px auto; background: #ddd; border: 3px solid var(--teal); border-radius: 10px; overflow: hidden; touch-action: none; }
-        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; transition: transform 0.1s; border: 0.5px solid rgba(255,255,255,0.3); }
-        .selected-piece { outline: 4px solid var(--gold); z-index: 10; transform: scale(1.05); }
-        .leaderboard-box { margin: 15px 0; padding: 10px; background: #fffdf5; border-radius: 15px; font-size: 0.85rem; border: 1px solid #f9ebbe; }
-        .rank-item { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #eee; align-items: center; }
-        .coupon-badge { background: var(--gold); color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; }
-        .copy-btn { background: #eee; color: #333; padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; border: 1px solid #ddd; cursor: pointer; display: inline-block; margin-top: 5px; }
-        .share-btn { background: #25D366; color: white; }
-        .shop-btn { background: var(--burgundy); color: white; margin-top: 10px; }
+        
+        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 12px; overflow: hidden; }
+        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.1px solid rgba(255,255,255,0.2); }
+        .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.96); }
+        
+        .memory-card { height: 90px; background: var(--teal); border-radius: 12px; cursor: pointer; color: white; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
+        .rank-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; align-items: center; font-size: 0.9rem; }
+        .lb-container { background: #f9f9f9; border-radius: 20px; padding: 15px; text-align: right; margin: 15px 0; max-height: 220px; overflow-y: auto; border: 1px solid #eee; }
+        .copy-btn { background: #f0f0f0; color: #333; padding: 6px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; margin-top: 8px; border: 1px solid #ddd; font-weight: bold; }
     </style>
 </head>
 <body onload="initApp()">
 
 <div class="main-card">
+    <div id="countdown-overlay"><div id="countdown-text">3</div></div>
+
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo">
-        <h3 style="color: var(--burgundy);">مهرجان ألعاب الأدب ⚡</h3>
-        <p id="tries-text" style="font-size: 0.8rem; color: var(--teal); margin: 5px 0; font-weight: bold;"></p>
+        <h2 style="color: var(--burgundy); margin-bottom: 10px;">تحدي الأدب العربي ⚡</h2>
+        <p id="tries-text" style="font-size: 0.9rem; color: var(--teal); font-weight: bold; margin-bottom: 15px;"></p>
         
-        <div class="leaderboard-box">
-            <h4 style="color: var(--burgundy); margin-bottom: 5px;">🏆 جوائز المتصدرين اليوم (TOP 5)</h4>
-            <div id="top-5-list" style="color: #666;">— كن أول الفائزين اليوم! —</div>
-        </div>
-
-        <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()">
-        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي (9 مراحل) 🚀</button>
+        <input type="text" id="player-name" class="name-field" placeholder="ادخل اسمك هنا..." maxlength="12" oninput="validateInput()">
+        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ المهرجان  🚀</button>
     </div>
 
     <div id="game-area" style="display: none;">
@@ -52,7 +53,7 @@
             <span>المرحلة: <span id="lvl-num">1</span>/9</span>
             <span>اللاعب: <span id="p-display"></span></span>
         </div>
-        <p id="lvl-desc" style="font-size: 0.8rem; color: var(--teal); font-weight: bold; margin-bottom: 5px;"></p>
+        <p id="lvl-desc" style="font-size: 0.85rem; color: var(--teal); font-weight: bold; margin-bottom: 8px;"></p>
         <div class="timer-container"><div id="timer-line"></div></div>
         <div id="game-content"></div>
     </div>
@@ -95,70 +96,70 @@
 
     ];
 
-    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null;
+    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [];
+
+    const steps = [
+        { type: 'guess', t: 20, d: "خمن الكتاب  📚" },
+        { type: 'memory', t: 30, pairs: 3, d: "طابق البطاقات  🃏" },
+        { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف  🧩" },
+        { type: 'guess', t: 15, d: "خمن الكتاب ⚡" },
+        { type: 'memory', t: 35, pairs: 4, d: "تحدي الذاكرة 🃏" },
+        { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف  🧩" },
+        { type: 'guess', t: 12, d: "تخمين الكتاب  🔥" },
+        { type: 'memory', t: 45, pairs: 8, d: "الذاكرة الفولاذية  🃏" },
+        { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى  🏆" }
+    ];
 
     function initApp() {
         const d = new Date().toDateString();
-        let t = JSON.parse(localStorage.getItem('adab_v4_limit') || '{"date":"","count":0}');
+        let t = JSON.parse(localStorage.getItem('adab_final_v10_limit') || '{"date":"","count":0}');
         if (t.date !== d) t = { date: d, count: 0 };
-        localStorage.setItem('adab_v4_limit', JSON.stringify(t));
-        document.getElementById('tries-text').innerText = `محاولاتك اليوم: ${3 - t.count}`;
-        updateLeaderboardUI();
+        localStorage.setItem('adab_final_v10_limit', JSON.stringify(t));
+        document.getElementById('tries-text').innerText = `محاولاتك المتبقية اليوم: ${3 - t.count}`;
     }
 
     function validateInput() {
         const v = document.getElementById('player-name').value.trim();
-        const t = JSON.parse(localStorage.getItem('adab_v4_limit'));
+        const t = JSON.parse(localStorage.getItem('adab_final_v10_limit'));
         document.getElementById('btn-start').disabled = (v.length < 2 || t.count >= 3);
     }
 
-    function updateLeaderboardUI() {
-        const today = new Date().toDateString();
-        let data = JSON.parse(localStorage.getItem('adab_v4_lb') || '[]');
-        const top5 = data.filter(e => e.date === today).sort((a, b) => b.score - a.score).slice(0, 5);
-        const listDiv = document.getElementById('top-5-list');
-        if (top5.length > 0) {
-            listDiv.innerHTML = top5.map((u, i) => {
-                let p = i === 0 ? "30%" : i === 1 ? "25%" : i === 2 ? "15%" : "";
-                return `<div class="rank-item">
-                    <span>${i+1}. ${u.name} ${p ? `<span class="coupon-badge">${p}</span>` : ''}</span>
-                    <span style="font-weight:700; color:var(--teal);">${u.score}⚡</span>
-                </div>`;
-            }).join('');
-        }
-    }
-
     function startFestival() {
-        let t = JSON.parse(localStorage.getItem('adab_v4_limit'));
-        t.count++; 
-        localStorage.setItem('adab_v4_limit', JSON.stringify(t));
+        let t = JSON.parse(localStorage.getItem('adab_final_v10_limit'));
+        t.count++; localStorage.setItem('adab_final_v10_limit', JSON.stringify(t));
         playerName = document.getElementById('player-name').value.trim();
         score = 0; currentStep = 1;
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
         document.getElementById('p-display').innerText = playerName;
-        loadStep();
+        showCountdown(loadStep);
+    }
+
+    function showCountdown(cb) {
+        const ov = document.getElementById('countdown-overlay');
+        const txt = document.getElementById('countdown-text');
+        ov.style.display = 'flex';
+        let c = 3; txt.innerText = c;
+        let t = setInterval(() => {
+            c--;
+            if (c > 0) txt.innerText = c;
+            else if (c === 0) txt.innerText = "انطلق!";
+            else { clearInterval(t); ov.style.display = 'none'; cb(); }
+        }, 800);
     }
 
     function loadStep() {
-        clearInterval(timer);
-        selectedPiece = null;
-        const steps = [
-            { t: 30, s: 2, d: "رتب الغلاف  🧩" },
-            { t: 25, s: 2, d: "تحدي السرعة الخاطفة ⚡" },
-            { t: 40, s: 3, d: "المستوى المتوسط  🧩" },
-            { t: 35, s: 3, d: "تركيز عالي.. 🧩" },
-            { t: 30, s: 3, d: "أسرع للحصول على بونص! 🚀" },
-            { t: 50, s: 4, d: "المستوى الصعب ) 🧩" },
-            { t: 45, s: 4, d: "تحدي العباقرة 🧠" },
-            { t: 40, s: 4, d: "اقتربت من النهاية! 🔥" },
-            { t: 60, s: 5, d: "المرحلة الكبرى  🏆" }
-        ];
+        clearInterval(timer); selectedPiece = null; memoryFlipped = [];
         const s = steps[currentStep-1];
         document.getElementById('lvl-num').innerText = currentStep;
         document.getElementById('lvl-desc').innerText = s.d;
         sec = s.t;
-        renderPuzzle(s.s);
+        const div = document.getElementById('game-content'); div.innerHTML = "";
+
+        if (s.type === 'guess') renderGuess();
+        else if (s.type === 'memory') renderMemory(s.pairs);
+        else if (s.type === 'puzzle') renderPuzzle(s.s);
+
         timer = setInterval(() => {
             sec--;
             document.getElementById('timer-line').style.width = (sec/s.t*100) + "%";
@@ -166,37 +167,77 @@
         }, 1000);
     }
 
+    function renderGuess() {
+        const correct = books[Math.floor(Math.random()*books.length)];
+        const options = [...books].sort(() => 0.5 - Math.random());
+        const div = document.getElementById('game-content');
+        div.innerHTML = `<img src="${correct.i}" style="width:160px; filter:blur(${10-currentStep}px); border-radius:15px; margin-bottom:20px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            ${options.map(b => `<button class="start-btn" style="font-size:0.9rem; padding:12px;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
+        </div>`;
+    }
+
+    function checkGuess(s, c) { if (s === c) { score += (sec * 5) + 50; nextStep(); } else finish("إجابة خاطئة! ❌"); }
+
+    function renderMemory(pairs) {
+        const div = document.getElementById('game-content');
+        let gameBooks = books.slice(0, pairs);
+        let cards = [...gameBooks, ...gameBooks].sort(() => 0.5 - Math.random());
+        const grid = document.createElement('div');
+        grid.style = `display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;`;
+        cards.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'memory-card'; card.innerText = "?";
+            card.onclick = () => {
+                if (memoryFlipped.length < 2 && !card.dataset.done && !card.dataset.open) {
+                    card.innerText = ""; card.style.backgroundImage = `url(${book.i})`;
+                    card.dataset.name = book.n; card.dataset.open = "true"; memoryFlipped.push(card);
+                    if (memoryFlipped.length === 2) {
+                        if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
+                            memoryFlipped.forEach(c => { c.dataset.done = "true"; c.style.opacity = "0.5"; });
+                            memoryFlipped = [];
+                            if (document.querySelectorAll('[data-done="true"]').length === pairs * 2) { score += (sec * 5) + 100; nextStep(); }
+                        } else {
+                            setTimeout(() => { memoryFlipped.forEach(c => { c.innerText = "?"; c.style.backgroundImage = ""; delete c.dataset.open; }); memoryFlipped = []; }, 600);
+                        }
+                    }
+                }
+            };
+            grid.appendChild(card);
+        });
+        div.appendChild(grid);
+    }
+
     function renderPuzzle(size) {
         const div = document.getElementById('game-content');
-        div.innerHTML = "";
         const book = books[Math.floor(Math.random()*books.length)];
-        const containerSize = 280;
         const grid = document.createElement('div');
-        grid.className = 'puzzle-grid';
-        grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-        grid.style.width = containerSize + "px"; grid.style.height = (containerSize * 1.4) + "px";
-        let pieces = Array.from({length: size*size}, (_, i) => i).sort(() => 0.5 - Math.random());
-        pieces.forEach((pos) => {
+        grid.className = 'puzzle-grid'; grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        grid.style.width = "280px"; grid.style.height = "380px";
+        let piecesData = Array.from({length: size*size}, (_, i) => i);
+        let shuffled = [...piecesData].sort(() => 0.5 - Math.random());
+
+        shuffled.forEach(posIndex => {
             const p = document.createElement('div');
             p.className = 'puzzle-piece';
-            const w = containerSize/size, h = (containerSize*1.4)/size;
+            const w = 280/size, h = 380/size;
             p.style.width = w + "px"; p.style.height = h + "px";
             p.style.backgroundImage = `url(${book.i})`;
-            p.style.backgroundSize = `${containerSize}px ${containerSize*1.4}px`;
-            const bx = (pos % size) * w, by = Math.floor(pos / size) * h;
-            p.style.backgroundPosition = `-${bx}px -${by}px`;
-            p.dataset.correctPos = pos;
+            p.style.backgroundSize = `280px 380px`;
+            p.style.backgroundPosition = `-${(posIndex%size)*w}px -${Math.floor(posIndex/size)*h}px`;
+            p.dataset.correctId = posIndex;
+
             p.onclick = () => {
                 if (!selectedPiece) { selectedPiece = p; p.classList.add('selected-piece'); }
                 else {
-                    let tBG = p.style.backgroundPosition, tPos = p.dataset.correctPos;
+                    let tBG = p.style.backgroundPosition, tID = p.dataset.correctId;
                     p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-                    p.dataset.correctPos = selectedPiece.dataset.correctPos;
+                    p.dataset.correctId = selectedPiece.dataset.correctId;
                     selectedPiece.style.backgroundPosition = tBG;
-                    selectedPiece.dataset.correctPos = tPos;
-                    selectedPiece.classList.remove('selected-piece');
-                    selectedPiece = null;
-                    checkWin(size);
+                    selectedPiece.dataset.correctId = tID;
+                    selectedPiece.classList.remove('selected-piece'); selectedPiece = null;
+                    const all = document.querySelectorAll('.puzzle-piece');
+                    if (Array.from(all).every((p, i) => parseInt(p.dataset.correctId) === i)) { score += (sec * 10) + 200; nextStep(); }
                 }
             };
             grid.appendChild(p);
@@ -204,64 +245,48 @@
         div.appendChild(grid);
     }
 
-    function checkWin(size) {
-        const pieces = document.querySelectorAll('.puzzle-piece');
-        let win = Array.from(pieces).every((p, i) => parseInt(p.dataset.correctPos) === i);
-        if (win) {
-            clearInterval(timer);
-            score += (sec * 10) + (currentStep * 50);
-            document.getElementById('score-num').innerText = score;
-            if (currentStep < 9) { currentStep++; setTimeout(loadStep, 600); }
-            else finish("🏆 مبروك! ختمت التحدي بنجاح");
-        }
-    }
-
-    function copyCode(code) {
-        navigator.clipboard.writeText(code).then(() => {
-            alert("تم نسخ الكود: " + code);
-        });
+    function nextStep() {
+        clearInterval(timer); document.getElementById('score-num').innerText = score;
+        if (currentStep < 9) { currentStep++; setTimeout(() => showCountdown(loadStep), 500); }
+        else finish("🏆 مبروك! ختمت المهرجان بنجاح");
     }
 
     function finish(msg) {
         clearInterval(timer);
         const today = new Date().toDateString();
-        let data = JSON.parse(localStorage.getItem('adab_v4_lb') || '[]');
-        data.push({ name: playerName, score: score, date: today });
-        localStorage.setItem('adab_v4_lb', JSON.stringify(data));
-        const daily = data.filter(e => e.date === today).sort((a,b) => b.score - a.score);
+        let d = JSON.parse(localStorage.getItem('adab_final_v10_lb') || '[]');
+        d.push({ name: playerName, score: score, date: today });
+        localStorage.setItem('adab_final_v10_lb', JSON.stringify(d));
+
+        const daily = d.filter(e => e.date === today).sort((a,b) => b.score - a.score);
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
+        let promo = rank === 1 ? "ADAB30" : rank === 2 ? "ADAB25" : rank === 3 ? "ADAB15" : (rank/daily.length <= 0.3 ? "ADAB10" : "");
         
-        let promo = "", gift = "";
-        if(rank === 1) { promo = "ADAB30"; gift = "خصم 30% للمركز الأول!"; }
-        else if(rank === 2) { promo = "ADAB25"; gift = "خصم 25% للمركز الثاني!"; }
-        else if(rank === 3) { promo = "ADAB15"; gift = "خصم 15% للمركز الثالث!"; }
-        else if((rank/daily.length) <= 0.3) { promo = "ADAB10"; gift = "خصم 10% (نخبة الـ 30%)"; }
-        else { gift = "محاولة رائعة! نافس غداً للصدراة"; }
+        const lbHTML = daily.slice(0, 10).map((u, i) => `
+            <div class="rank-item" style="${u.name === playerName && u.score === score ? 'background:#fff9e6; font-weight:bold;' : ''}">
+                <span>${i+1}. ${u.name} ${i<3?['🥇','🥈','🥉'][i]:''}</span>
+                <span style="color:var(--teal)">${u.score}⚡</span>
+            </div>`).join('');
 
         document.getElementById('game-content').innerHTML = `
-            <div style="padding:10px;">
-                <h2 style="color:var(--burgundy)">${msg}</h2>
-                <h1 style="font-size:3rem; margin:5px 0; color:var(--teal)">${score}</h1>
-                <p>ترتيبك اليوم: <b>#${rank}</b></p>
-                <div style="background:#fff9e6; border:2px dashed var(--gold); padding:15px; border-radius:20px; margin:15px 0;">
-                    <p style="font-size:0.9rem;">${gift}</p>
-                    ${promo ? `<h2 id="final-promo" style="letter-spacing:2px; color:var(--burgundy); margin:5px 0;">${promo}</h2>
-                    <div class="copy-btn" onclick="copyCode('${promo}')">نسخ كود الخصم 📋</div>` : ''}
-                </div>
-                <a href="https://adab-book.com" target="_blank" class="start-btn shop-btn">زيارة المتجر واستخدام الخصم 🛒</a>
-                <button onclick="shareResult()" class="start-btn share-btn">مشاركة النتيجة 📲</button>
-                <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة للرئيسية</button>
+            <h2 style="color:var(--burgundy)">${msg}</h2>
+            <h1 style="font-size:3.5rem; color:var(--teal); margin:10px 0;">${score}⚡</h1>
+            <p>ترتيبك اليوم: <b>#${rank}</b></p>
+            ${promo ? `<div style="background:#fff9e6; padding:15px; border-radius:20px; margin:15px 0; border:2px dashed var(--gold);"><p>كود خصمك المكتسب: <b>${promo}</b></p><div class="copy-btn" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود')">نسخ الكود 📋</div></div>` : ''}
+            <div class="lb-container">
+                <h4 style="color:var(--burgundy); border-bottom:2px solid #ddd; padding-bottom:5px; margin-bottom:10px;">🏆 قائمة المتصدرين اليوم:</h4>
+                ${lbHTML}
             </div>
+            <a href="https://adab-book.com" target="_blank" class="start-btn" style="background:var(--burgundy)">استخدم الخصم في المتجر 🛒</a>
+            <button onclick="shareRes()" class="start-btn" style="background:#25D366; margin-top:10px;">مشاركة النتيجة 📲</button>
+            <button onclick="location.reload()" class="start-btn" style="background:#888; margin-top:10px;">العودة للرئيسية</button>
         `;
     }
 
-    async function shareResult() {
-        const text = `حققت ${score} نقطة في تحدي الأدب التفاعلي وترتيبي حالياً #${playerName}! هل يمكنك هزيمتي؟ ⚡📚`;
-        if (navigator.share) {
-            try { await navigator.share({ title: 'تحدي الأدب', text: text, url: window.location.href }); } catch(e){}
-        } else {
-            window.open(`https://wa.me{encodeURIComponent(text + " " + window.location.href)}`, '_blank');
-        }
+    async function shareRes() {
+        const t = `حققت ${score} نقطة في تحدي الأدب وترتيبي حالياً #${playerName}! هل يمكنك هزيمتي؟ ⚡📚`;
+        if (navigator.share) await navigator.share({ text: t, url: window.location.href });
+        else window.open(`https://wa.me{encodeURIComponent(t + " " + window.location.href)}`);
     }
 </script>
 </body>
