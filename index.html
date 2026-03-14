@@ -14,17 +14,21 @@
         .name-field { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; outline: none; }
         .start-btn { background: var(--teal); color: white; border: none; padding: 14px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
         .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; }
-        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; pointer-events: none; }
+        
+        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; }
         #countdown-text { font-size: 5rem; font-weight: bold; color: var(--teal); }
+
         .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 8px; font-size: 0.85rem; color: var(--teal); font-weight: bold; }
+        #score-num { color: #e67e22; font-size: 1.1rem; }
         .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
         #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; }
-        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.1px solid rgba(255,255,255,0.2); }
+        
+        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; touch-action: none; }
+        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.5px solid rgba(255,255,255,0.2); }
         .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.98); }
+        
         .memory-card { height: 85px; background: var(--teal); border-radius: 10px; cursor: pointer; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
         .rank-item { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #eee; align-items: center; font-size: 0.85rem; }
-        .lb-container { background: #f9f9f9; border-radius: 15px; padding: 12px; text-align: right; margin: 15px 0; max-height: 180px; overflow-y: auto; }
     </style>
 </head>
 <body onload="initApp()">
@@ -36,13 +40,12 @@
         <h3 style="color: var(--burgundy);">مهرجان ألعاب الأدب ⚡</h3>
         <p id="tries-text" style="font-size: 0.8rem; color: var(--teal); margin: 5px 0; font-weight: bold;"></p>
         <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()">
-        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي العشوائي 🚀</button>
+        <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي 🚀</button>
     </div>
 
     <div id="game-area" style="display: none;">
         <div class="stats-header">
             <span>⭐ <span id="score-num">0</span></span>
-            <span id="lives-box" style="color:#e74c3c">❤️ <span id="lives-num">3</span></span>
             <span>المرحلة: <span id="lvl-num">1</span>/9</span>
         </div>
         <p id="lvl-desc" style="font-size: 0.8rem; color: var(--teal); font-weight: bold; margin-bottom: 5px;"></p>
@@ -88,20 +91,20 @@
 
     ];
 
-    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], errors = 0, randomizedSteps = [];
+    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], randomizedSteps = [];
 
     const easyPool = [
-        { type: 'guess', t: 20, blur: 5, d: "خمن الكتاب (سهل) 📚" },
+        { type: 'guess', t: 20, blur: 2, d: "خمن الكتاب (سهل) 📚" },
         { type: 'memory', t: 30, pairs: 2, d: "طابق البطاقات (سهل) 🃏" },
         { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف (2×2) 🧩" }
     ];
     const medPool = [
-        { type: 'guess', t: 15, blur: 10, d: "خمن الكتاب (متوسط) ⚡" },
+        { type: 'guess', t: 15, blur: 5, d: "خمن الكتاب (متوسط) ⚡" },
         { type: 'memory', t: 35, pairs: 3, d: "تحدي الذاكرة (متوسط) 🃏" },
         { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف (3×3) 🧩" }
     ];
     const hardPool = [
-        { type: 'guess', t: 12, blur: 18, d: "خمن الكتاب (صعب) 🔥" },
+        { type: 'guess', t: 12, blur: 8, d: "خمن الكتاب (صعب) 🔥" },
         { type: 'memory', t: 45, pairs: 4, d: "الذاكرة الفولاذية (صعب) 🃏" },
         { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
     ];
@@ -110,27 +113,26 @@
 
     function initApp() {
         const d = new Date().toDateString();
-        let t = JSON.parse(localStorage.getItem('adab_final_limit') || '{"date":"","count":0}');
+        let t = JSON.parse(localStorage.getItem('adab_v15_limit') || '{"date":"","count":0}');
         if (t.date !== d) t = { date: d, count: 0 };
-        localStorage.setItem('adab_final_limit', JSON.stringify(t));
+        localStorage.setItem('adab_v15_limit', JSON.stringify(t));
         document.getElementById('tries-text').innerText = `محاولاتك اليوم: ${3 - t.count}`;
     }
 
     function validateInput() {
         const v = document.getElementById('player-name').value.trim();
-        const t = JSON.parse(localStorage.getItem('adab_final_limit'));
+        const t = JSON.parse(localStorage.getItem('adab_v15_limit'));
         document.getElementById('btn-start').disabled = (v.length < 2 || t.count >= 3);
     }
 
     function startFestival() {
-        let t = JSON.parse(localStorage.getItem('adab_final_limit'));
-        t.count++; localStorage.setItem('adab_final_limit', JSON.stringify(t));
+        let t = JSON.parse(localStorage.getItem('adab_v15_limit'));
+        t.count++; localStorage.setItem('adab_v15_limit', JSON.stringify(t));
         randomizedSteps = [...shuffle([...easyPool]), ...shuffle([...medPool]), ...shuffle([...hardPool])];
         playerName = document.getElementById('player-name').value.trim();
-        score = 0; currentStep = 1; errors = 0;
+        score = 0; currentStep = 1;
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
-        document.getElementById('lives-num').innerText = "3";
         showCountdown(loadStep);
     }
 
@@ -163,30 +165,23 @@
         timer = setInterval(() => {
             sec--;
             document.getElementById('timer-line').style.width = (sec/s.t*100) + "%";
-            if (sec <= 0) finish("انتهى الوقت! حاول غداً ⏰");
+            if (sec <= 0) finish("للأسف، انتهى الوقت! ⏰");
         }, 1000);
     }
 
-    function renderGuess(blurValue) {
+    function renderGuess(blur) {
         const correct = books[Math.floor(Math.random()*books.length)];
         let options = shuffle(books.filter(b => b.n !== correct.n)).slice(0, 3);
         options.push(correct);
         shuffle(options);
         document.getElementById('game-content').innerHTML = `
-            <img src="${correct.i}" style="width:160px; filter:blur(${blurValue}px); border-radius:15px; margin-bottom:20px;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                ${options.map(b => `<button class="start-btn" style="font-size:0.85rem; padding:12px;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
+            <img src="${correct.i}" style="width:160px; filter:blur(${blur}px); border-radius:15px; margin-bottom:15px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                ${options.map(b => `<button class="start-btn" style="font-size:0.85rem;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
             </div>`;
     }
 
-    function checkGuess(s, c) { 
-        if (s === c) { score += (sec * 5) + 50; nextStep(); } 
-        else {
-            errors++; document.getElementById('lives-num').innerText = 3 - errors;
-            if (errors >= 3) finish("نفدت الأرواح! ❌");
-            else alert("خطأ! بقيت لك " + (3 - errors) + " أرواح");
-        }
-    }
+    function checkGuess(s, c) { if (s === c) { score += (sec * 5) + 50; nextStep(); } else finish("إجابة خاطئة! ❌"); }
 
     function renderMemory(pairs) {
         const div = document.getElementById('game-content');
@@ -202,7 +197,7 @@
                     card.innerText = ""; card.style.backgroundImage = `url(${book.i})`;
                     card.dataset.name = book.n; card.dataset.open = "true"; memoryFlipped.push(card);
                     if (memoryFlipped.length === 2) {
-                        // تصحيح الخطأ هنا باستخدام الفهرس [0] و [1]
+                        // تصحيح الخطأ المنطقي: مقارنة العنصر الأول بالثاني
                         if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
                             memoryFlipped.forEach(c => { c.dataset.done = "true"; c.style.opacity = "0.5"; });
                             memoryFlipped = [];
@@ -222,29 +217,51 @@
         const div = document.getElementById('game-content');
         const book = books[Math.floor(Math.random()*books.length)];
         const grid = document.createElement('div');
-        grid.className = 'puzzle-grid'; grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        grid.className = 'puzzle-grid'; 
+        grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
         grid.style.width = "280px"; grid.style.height = "380px";
-        let pieces = shuffle(Array.from({length: size*size}, (_, i) => i));
-        pieces.forEach(posIndex => {
+        
+        // إصلاح مشكلة الانعكاس: إنشاء شبكة مرتبة برمجياً
+        let correctOrder = Array.from({length: size*size}, (_, i) => i);
+        let shuffledOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+
+        shuffledOrder.forEach((originalPos) => {
             const p = document.createElement('div');
             p.className = 'puzzle-piece';
             const w = 280/size, h = 380/size;
             p.style.width = w + "px"; p.style.height = h + "px";
             p.style.backgroundImage = `url(${book.i})`;
             p.style.backgroundSize = `280px 380px`;
-            p.style.backgroundPosition = `-${(posIndex%size)*w}px -${Math.floor(posIndex/size)*h}px`;
-            p.dataset.correctId = posIndex;
+            
+            // تحديد مكان الصورة بناءً على الرقم الأصلي للقطعة
+            const bx = (originalPos % size) * w;
+            const by = Math.floor(originalPos / size) * h;
+            p.style.backgroundPosition = `-${bx}px -${by}px`;
+            p.dataset.correctId = originalPos; // هوية القطعة الحقيقية
+
             p.onclick = () => {
-                if (!selectedPiece) { selectedPiece = p; p.classList.add('selected-piece'); }
-                else {
-                    let tBG = p.style.backgroundPosition, tID = p.dataset.correctId;
+                if (!selectedPiece) { 
+                    selectedPiece = p; 
+                    p.classList.add('selected-piece'); 
+                } else {
+                    // تبديل الخصائص البصرية والهوية بين القطعتين المغلقتين
+                    let tempBG = p.style.backgroundPosition;
+                    let tempID = p.dataset.correctId;
+                    
                     p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
                     p.dataset.correctId = selectedPiece.dataset.correctId;
-                    selectedPiece.style.backgroundPosition = tBG;
-                    selectedPiece.dataset.correctId = tID;
-                    selectedPiece.classList.remove('selected-piece'); selectedPiece = null;
-                    const all = document.querySelectorAll('.puzzle-piece');
-                    if (Array.from(all).every((p, i) => parseInt(p.dataset.correctId) === i)) { score += (sec * 10) + 200; nextStep(); }
+                    
+                    selectedPiece.style.backgroundPosition = tempBG;
+                    selectedPiece.dataset.correctId = tempID;
+                    
+                    selectedPiece.classList.remove('selected-piece');
+                    selectedPiece = null;
+                    
+                    // التحقق الصارم: هل كل قطعة (correctId) في مكانها الصحيح في الـ DOM؟
+                    const allPieces = document.querySelectorAll('.puzzle-piece');
+                    const isWin = Array.from(allPieces).every((piece, index) => parseInt(piece.dataset.correctId) === index);
+                    
+                    if (isWin) { score += (sec * 10) + 200; nextStep(); }
                 }
             };
             grid.appendChild(p);
@@ -253,32 +270,30 @@
     }
 
     function nextStep() {
-        clearInterval(timer); 
+        clearInterval(timer);
         document.getElementById('score-num').innerText = score;
-        if (currentStep < 9) { currentStep++; setTimeout(() => showCountdown(loadStep), 500); }
-        else finish("🏆 مبروك! ختمت التحدي");
+        if (currentStep < 9) { currentStep++; loadStep(); }
+        else finish("🎉 مبروك! لقد أتممت جميع التحديات");
     }
 
     function finish(msg) {
         clearInterval(timer);
         const today = new Date().toDateString();
-        let d = JSON.parse(localStorage.getItem('adab_final_lb') || '[]');
+        let d = JSON.parse(localStorage.getItem('adab_v15_lb') || '[]');
         d.push({ name: playerName, score: score, date: today });
-        localStorage.setItem('adab_final_lb', JSON.stringify(d));
+        localStorage.setItem('adab_v15_lb', JSON.stringify(d));
         const daily = d.filter(e => e.date === today).sort((a,b) => b.score - a.score);
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
-        let promo = rank === 1 ? "ADAB30" : rank === 2 ? "ADAB25" : rank === 3 ? "ADAB15" : (rank/daily.length <= 0.3 ? "ADAB10" : "");
         
         document.getElementById('game-content').innerHTML = `
-            <h2>${msg}</h2>
+            <h2 style="color:var(--burgundy)">${msg}</h2>
             <h1 style="font-size:3rem; color:var(--teal)">${score}⚡</h1>
             <p>ترتيبك اليوم: #${rank}</p>
-            ${promo ? `<div style="background:#fff9e6; padding:12px; border-radius:15px; margin:10px 0; border:2px dashed var(--gold);"><p>كود خصمك: ${promo}</p><button class="start-btn" onclick="navigator.clipboard.writeText('${promo}');alert('تم النسخ')">نسخ الكود 📋</button></div>` : ''}
-            <div class="lb-container">
-                <h4 style="color:var(--burgundy)">🏆 قائمة المتصدرين اليوم:</h4>
-                ${daily.slice(0, 10).map((u, i) => `<div class="rank-item"><span>${i+1}. ${u.name}</span><span>${u.score}⚡</span></div>`).join('')}
+            <div style="background:#f9f9f9; border-radius:15px; padding:12px; margin:10px 0; max-height:180px; overflow-y:auto; text-align:right;">
+                <h4 style="border-bottom:1px solid #ddd; padding-bottom:5px;">🏆 أفضل 10 اليوم:</h4>
+                ${daily.slice(0, 10).map((u, i) => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee; font-size:0.8rem;"><span>${i+1}. ${u.name}</span><span>${u.score}⚡</span></div>`).join('')}
             </div>
-            <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة</button>
+            <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة للرئيسية</button>
         `;
     }
 </script>
