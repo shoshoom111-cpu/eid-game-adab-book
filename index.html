@@ -15,7 +15,7 @@
             --bg: #f0f8f8;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
- 
+
         body {
             background: linear-gradient(135deg, #e8f5f5 0%, #fdf6ec 100%);
             min-height: 100vh;
@@ -25,7 +25,7 @@
             overflow: hidden;
             touch-action: manipulation;
         }
- 
+
         .main-card {
             background: white;
             padding: 1.4rem;
@@ -44,7 +44,7 @@
             from { opacity: 0; transform: translateY(30px) scale(0.95); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
- 
+
         .logo {
             width: 100%; max-width: 170px; margin-bottom: 8px;
             border-radius: 14px;
@@ -71,7 +71,7 @@
             transition: 0.3s; background: #f8fdfd;
         }
         .name-field:focus { border-color: var(--teal); background: white; box-shadow: 0 0 0 4px rgba(26,147,151,0.1); }
- 
+
         .start-btn {
             background: linear-gradient(135deg, var(--teal), var(--teal-dark));
             color: white; border: none; padding: 15px; border-radius: 16px;
@@ -82,7 +82,7 @@
         .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; box-shadow: none; }
         .start-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(26,147,151,0.4); }
         .start-btn:not(:disabled):active { transform: scale(0.97); }
- 
+
         #countdown-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.96); z-index: 100; display: none;
@@ -95,7 +95,7 @@
             to   { transform: scale(1); opacity: 1; }
         }
         #countdown-label { font-size: 1rem; color: #aaa; font-weight: bold; }
- 
+
         .game-topbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
         .stat-pill {
             background: linear-gradient(135deg, #e8f8f8, #f0fdfd);
@@ -112,20 +112,20 @@
             display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
         .mute-btn:active { transform: scale(0.9); }
- 
+
         .progress-wrap { margin-bottom: 6px; }
         .progress-steps { display: flex; gap: 4px; margin-bottom: 6px; }
         .step-dot { flex: 1; height: 5px; border-radius: 10px; background: #e5e5e5; transition: 0.4s; }
         .step-dot.done { background: var(--teal); }
         .step-dot.active { background: var(--gold); animation: dotPulse 1s ease-in-out infinite; }
         @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
- 
+
         .timer-bar-wrap { background: #eee; height: 7px; border-radius: 10px; overflow: hidden; }
         #timer-line { height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); width: 100%; transition: 1s linear; border-radius: 10px; }
         #timer-line.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); }
- 
+
         .lvl-desc { font-size: 0.88rem; color: var(--teal-dark); font-weight: bold; margin-bottom: 8px; background: #f0fdfd; border-radius: 10px; padding: 5px 10px; }
- 
+
         .guess-img-wrap { position: relative; display: inline-block; margin: 10px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
         .guess-img-wrap img { display: block; width: 160px; border-radius: 16px; transition: filter 0.5s; }
         .guess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -139,7 +139,7 @@
         .guess-btn:active { transform: scale(0.96); }
         .guess-btn.correct-ans { background: linear-gradient(135deg, #1a9397, #127a7e); color: white; border-color: var(--teal); }
         .guess-btn.wrong-ans { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border-color: #e74c3c; }
- 
+
         .memory-grid { display: grid; gap: 8px; margin: 8px 0; }
         .memory-card {
             height: 80px; border-radius: 12px; cursor: pointer;
@@ -154,7 +154,13 @@
         .memory-card[data-done="true"] { opacity: 0.45; pointer-events: none; box-shadow: none; }
         .memory-card[data-open="true"] { pointer-events: none; }
         .memory-card.matched { outline: 3px solid var(--gold); outline-offset: 2px; }
- 
+        .memory-card { position: relative; overflow: hidden; background: none !important; }
+        .card-back { position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,var(--teal),var(--teal-dark));transition:opacity 0.3s; }
+        .card-front { position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;overflow:hidden;opacity:0;transition:opacity 0.3s; }
+        .card-front img { width:100%;height:100%;object-fit:cover;display:block; }
+        .memory-card.flipped .card-back { opacity:0;pointer-events:none; }
+        .memory-card.flipped .card-front { opacity:1; }
+
         .puzzle-grid {
             display: grid; gap: 2px; margin: 8px auto;
             border: 3px solid var(--teal); border-radius: 12px; overflow: hidden;
@@ -163,7 +169,7 @@
         .puzzle-piece { cursor: pointer; background-repeat: no-repeat; width: 100%; height: 100%; transition: 0.15s; }
         .puzzle-piece:hover { filter: brightness(1.08); }
         .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.96); filter: brightness(1.1); }
- 
+
         .score-popup {
             position: fixed; font-size: 1.5rem; font-weight: 900;
             color: var(--gold); pointer-events: none; z-index: 9998;
@@ -174,7 +180,7 @@
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
         }
- 
+
         .result-screen { animation: fadeInUp 0.5s ease; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
         .result-score {
@@ -188,59 +194,59 @@
         .rank-2 { background: linear-gradient(135deg, #d5d5d5, #a0a0a0); color: #333; }
         .rank-3 { background: linear-gradient(135deg, #d4a57a, #a0622a); color: #fff; }
         .rank-other { background: #f0fdfd; color: var(--teal); border: 2px solid #c5eaea; }
- 
+
         .promo-box { background: linear-gradient(135deg, #fff9ec, #fff3d0); border: 2px dashed var(--gold); padding: 18px; border-radius: 18px; margin: 14px 0; }
         .promo-code { font-size: 2.2rem; font-weight: 900; letter-spacing: 4px; color: var(--burgundy); margin: 8px 0; }
         .copy-btn { background: var(--gold); color: white; border: none; padding: 8px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 0.9rem; transition: 0.2s; margin-top: 6px; }
         .copy-btn:active { transform: scale(0.95); }
- 
+
         .leaderboard { background: #f8fdfd; border-radius: 16px; padding: 12px; margin: 12px 0; max-height: 175px; overflow-y: auto; text-align: right; border: 1.5px solid #e0f0f0; }
         .leaderboard-item { display: flex; justify-content: space-between; padding: 5px 4px; border-bottom: 1px solid #eef8f8; font-size: 0.82rem; align-items: center; }
         .leaderboard-item:last-child { border-bottom: none; }
         .lb-rank { font-weight: 900; color: var(--teal); margin-left: 6px; }
         .lb-me { background: #f0fdfd; border-radius: 8px; padding: 2px 6px; }
- 
+
         .adabbook-link { margin: 14px 0; padding: 16px; background: linear-gradient(135deg, #1a9397 0%, #a11f2a 100%); border-radius: 18px; color: white; }
         .shop-btn { display: inline-block; background: white; color: var(--burgundy); padding: 10px 28px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 1rem; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s; }
         .shop-btn:active { transform: scale(0.97); }
- 
+
         @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes glow { 0%,100% { box-shadow: 0 0 8px var(--gold); } 50% { box-shadow: 0 0 35px var(--gold), 0 0 70px rgba(198,146,42,0.4); } }
         .shake { animation: shake 0.4s ease-in-out; }
         .bounce { animation: bounce 0.4s ease; }
         .glow-anim { animation: glow 1.5s ease-in-out infinite; }
- 
+
         #confetti-canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
- 
+
         .loading-wrap { padding: 40px 20px; }
         .loading-spinner { width: 50px; height: 50px; border: 4px solid #e0f0f0; border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-bar-wrap { background: #e0f0f0; height: 6px; border-radius: 10px; overflow: hidden; margin-top: 12px; }
         .loading-bar { height: 100%; background: var(--teal); border-radius: 10px; width: 0%; transition: width 0.3s; }
- 
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #c5eaea; border-radius: 10px; }
     </style>
 </head>
 <body onload="initApp()">
- 
+
 <div class="main-card">
     <div id="countdown-overlay">
         <div id="countdown-text">3</div>
         <div id="countdown-label">استعد!</div>
     </div>
- 
+
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo" alt="مركز الأدب العربي">
         <div class="home-title">مهرجان ألعاب الأدب ⚡</div>
-        <div class="home-subtitle">9 مراحل • 3 ألعاب • جوائز حقيقية</div>
+        <div class="home-subtitle">9 مراحل • 3 ألعاب • جوائز </div>
         <div class="tries-badge" id="tries-text">المحاولات المتبقية: ...</div>
         <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()" onkeypress="if(event.key==='Enter') startFestival()">
         <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي 🚀</button>
     </div>
- 
+
     <div id="game-area" style="display:none;">
         <div class="game-topbar">
             <div class="stat-pill">⭐ <span class="val" id="score-num">0</span></div>
@@ -255,12 +261,12 @@
         <div id="game-content"></div>
     </div>
 </div>
- 
+
 <canvas id="confetti-canvas"></canvas>
- 
+
 <script>
 const books = [
-    
+   
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -299,11 +305,11 @@ const books = [
         { n: "دجن دعجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c3a260c7-9699-49e3-92c8-241989269be7.jpg" },
         { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
 ];
- 
+
 let score=0, currentStep=1, sec=30, timer, playerName="", selectedPiece=null, randomizedSteps=[];
 let gameActive=true, animationFrame=null, isMuted=false, combo=0;
 let validBooks=[...books], audioContext=null, soundsUnlocked=false;
- 
+
 const easyPool=[
     {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب (سهل)"},
     {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات (سهل)"},
@@ -319,7 +325,7 @@ const hardPool=[
     {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية (صعب)"},
     {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى (4×4)"}
 ];
- 
+
 // ===== الصوت =====
 function initAudio(){try{audioContext=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
 function unlockAudio(){
@@ -354,7 +360,7 @@ function toggleMute(){isMuted=!isMuted;document.getElementById('mute-btn').inner
 document.addEventListener('click',unlockAudio,{once:true});
 document.addEventListener('touchstart',unlockAudio,{once:true});
 window.addEventListener('load',initAudio);
- 
+
 // ===== كونفيتي =====
 function startCelebration(){
     const canvas=document.getElementById('confetti-canvas');
@@ -383,7 +389,7 @@ function startCelebration(){
     animate();
     setTimeout(()=>{cancelAnimationFrame(animationFrame);ctx.clearRect(0,0,canvas.width,canvas.height);},8000);
 }
- 
+
 // ===== إشعار النقاط =====
 function showScorePopup(pts,isCombo){
     const el=document.createElement('div');
@@ -395,13 +401,13 @@ function showScorePopup(pts,isCombo){
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),1300);
 }
- 
+
 function shuffle(arr){
     let a=[...arr];
     for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
     return a;
 }
- 
+
 function filterBrokenImages(){
     return new Promise(resolve=>{
         let done=0; const working=[];
@@ -414,7 +420,7 @@ function filterBrokenImages(){
         });
     });
 }
- 
+
 function initApp(){
     const d=new Date().toDateString();
     let t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
@@ -431,7 +437,7 @@ function validateInput(){
     const t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
     document.getElementById('btn-start').disabled=!(v.length>=2&&t.count<3);
 }
- 
+
 function startFestival(){
     const t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
     const today=new Date().toDateString();
@@ -441,7 +447,7 @@ function startFestival(){
     if(playerName.length<2){alert("أدخل اسمًا صحيحًا");return;}
     t.count++; localStorage.setItem('adab_v19_limit',JSON.stringify(t));
     updateTriesDisplay();
- 
+
     document.getElementById('home').style.display='none';
     document.getElementById('game-area').style.display='block';
     document.getElementById('score-num').innerText='0';
@@ -451,14 +457,14 @@ function startFestival(){
             <p style="color:var(--teal);font-weight:bold;">جاري تحميل الصور...</p>
             <div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div>
         </div>`;
- 
+
     let prog=0;
     const li=setInterval(()=>{
         prog=Math.min(prog+Math.random()*15,90);
         const b=document.getElementById('load-bar');
         if(b) b.style.width=prog+'%';
     },200);
- 
+
     filterBrokenImages().then(()=>{
         clearInterval(li);
         const b=document.getElementById('load-bar');
@@ -471,7 +477,7 @@ function startFestival(){
         },300);
     });
 }
- 
+
 function buildProgressDots(){
     const wrap=document.getElementById('progress-steps');
     wrap.innerHTML='';
@@ -489,7 +495,7 @@ function updateProgressDots(){
         d.className='step-dot'+(i<currentStep?' done':i===currentStep?' active':'');
     }
 }
- 
+
 function showCountdown(cb){
     const ov=document.getElementById('countdown-overlay');
     const txt=document.getElementById('countdown-text');
@@ -505,7 +511,7 @@ function showCountdown(cb){
         else{clearInterval(ct);ov.style.display='none';cb();}
     },750);
 }
- 
+
 function loadStep(){
     if(!gameActive) return;
     clearInterval(timer); selectedPiece=null;
@@ -517,11 +523,11 @@ function loadStep(){
     const tl=document.getElementById('timer-line');
     tl.style.width='100%'; tl.classList.remove('danger');
     document.getElementById('game-content').innerHTML='';
- 
+
     if(s.type==='guess') renderGuess(s.blur);
     else if(s.type==='memory') renderMemory(s.pairs);
     else if(s.type==='puzzle') renderPuzzle(s.s);
- 
+
     timer=setInterval(()=>{
         sec--;
         const pct=sec/s.t*100;
@@ -531,13 +537,13 @@ function loadStep(){
         if(sec<=0){clearInterval(timer);gameActive=false;finish("للأسف، انتهى الوقت! ⏰",false);}
     },1000);
 }
- 
+
 // ===== التخمين =====
 function renderGuess(blur){
     const correct=validBooks[Math.floor(Math.random()*validBooks.length)];
     let options=shuffle(validBooks.filter(b=>b.n!==correct.n)).slice(0,3);
     options.push(correct); options=shuffle(options);
- 
+
     const div=document.getElementById('game-content');
     const wrap=document.createElement('div');
     wrap.innerHTML=`
@@ -546,7 +552,7 @@ function renderGuess(blur){
         </div>
         <div class="guess-grid" id="guess-btns"></div>`;
     div.appendChild(wrap);
- 
+
     const grid=document.getElementById('guess-btns');
     options.forEach(b=>{
         const btn=document.createElement('button');
@@ -563,7 +569,7 @@ function checkGuess(selected,correct,btn,grid){
     });
     const img=document.getElementById('guess-img');
     if(img) img.style.filter='blur(0)';
- 
+
     if(selected===correct){
         combo++;
         const pts=(sec*5)+50+(combo>1?combo*20:0);
@@ -581,7 +587,7 @@ function checkGuess(selected,correct,btn,grid){
         setTimeout(()=>{gameActive=false;finish("إجابة خاطئة ❌",false);},1000);
     }
 }
- 
+
 // ===== الذاكرة =====
 function renderMemory(pairs){
     const div=document.getElementById('game-content');
@@ -589,24 +595,39 @@ function renderMemory(pairs){
     let cards=[];
     sel.forEach(b=>{cards.push({n:b.n,i:b.i,id:b.n});cards.push({n:b.n,i:b.i,id:b.n});});
     cards=shuffle(cards);
- 
+
     const cols=pairs<=2?2:pairs<=3?3:4;
     const grid=document.createElement('div');
     grid.className='memory-grid';
     grid.style.gridTemplateColumns=`repeat(${cols}, 1fr)`;
- 
+
     let flipped=[],matchedCount=0,isChecking=false;
- 
+
     cards.forEach(card=>{
         const el=document.createElement('div');
-        el.className='memory-card'; el.innerHTML='❓';
+        el.className='memory-card';
+
+        const back=document.createElement('div');
+        back.className='card-back';
+        back.innerText='❓';
+
+        const front=document.createElement('div');
+        front.className='card-front';
+        const img=document.createElement('img');
+        img.src=card.i;
+        img.alt=card.n;
+        img.onerror=()=>{ front.style.background='linear-gradient(135deg,var(--teal-dark),#0a5a5e)'; img.style.display='none'; const t=document.createElement('div'); t.style.cssText='color:white;font-size:0.7rem;font-weight:bold;padding:4px;text-align:center;'; t.innerText=card.n; front.appendChild(t); };
+        front.appendChild(img);
+
+        el.appendChild(back);
+        el.appendChild(front);
+
         el.onclick=()=>{
             if(!gameActive||isChecking||el.dataset.done==='true'||el.dataset.open==='true') return;
-            el.dataset.open='true'; el.innerHTML='';
-            el.style.backgroundImage=`url(${card.i})`; el.style.backgroundSize='cover';
-            el.style.backgroundPosition='center'; el.style.background='';
+            el.dataset.open='true';
+            el.classList.add('flipped');
             playSound('click'); flipped.push({el,card});
- 
+
             if(flipped.length===2){
                 isChecking=true;
                 const [a,b]=flipped;
@@ -630,9 +651,8 @@ function renderMemory(pairs){
                     playSound('wrong'); combo=0;
                     setTimeout(()=>{
                         [a,b].forEach(x=>{
-                            x.el.dataset.open='false'; x.el.innerHTML='❓';
-                            x.el.style.backgroundImage='';
-                            x.el.style.background='linear-gradient(135deg, var(--teal), var(--teal-dark))';
+                            x.el.dataset.open='false';
+                            x.el.classList.remove('flipped');
                         });
                         flipped=[]; isChecking=false;
                     },900);
@@ -643,7 +663,7 @@ function renderMemory(pairs){
     });
     div.appendChild(grid);
 }
- 
+
 // ===== البازل =====
 function renderPuzzle(size){
     const div=document.getElementById('game-content');
@@ -654,7 +674,7 @@ function renderPuzzle(size){
     grid.style.direction='ltr';
     const W=280,H=380;
     const shuffled=shuffle(Array.from({length:size*size},(_,i)=>i));
- 
+
     shuffled.forEach((pos,idx)=>{
         const p=document.createElement('div');
         p.className='puzzle-piece';
@@ -663,7 +683,7 @@ function renderPuzzle(size){
         p.style.backgroundSize=`${W}px ${H}px`;
         p.style.backgroundPosition=`-${(pos%size)*w}px -${Math.floor(pos/size)*h}px`;
         p.dataset.correctPosition=pos;
- 
+
         p.onclick=()=>{
             if(!gameActive) return;
             playSound('click');
@@ -674,7 +694,7 @@ function renderPuzzle(size){
                 [p1.style.backgroundPosition,p2.style.backgroundPosition]=[p2.style.backgroundPosition,p1.style.backgroundPosition];
                 [p1.dataset.correctPosition,p2.dataset.correctPosition]=[p2.dataset.correctPosition,p1.dataset.correctPosition];
                 p1.classList.remove('selected-piece'); selectedPiece=null;
- 
+
                 const all=document.querySelectorAll('.puzzle-piece');
                 const won=[...all].every((pc,i)=>parseInt(pc.dataset.correctPosition)===i);
                 if(won){
@@ -694,9 +714,9 @@ function renderPuzzle(size){
     });
     div.appendChild(grid);
 }
- 
+
 function nextStep(){clearInterval(timer);if(currentStep<9){currentStep++;loadStep();}}
- 
+
 // ===== النتيجة =====
 function finish(msg,wonAll){
     clearInterval(timer);
@@ -706,20 +726,20 @@ function finish(msg,wonAll){
     if(ei!==-1){if(score>lb[ei].score)lb[ei].score=score;}
     else lb.push({name:playerName,score,date:today});
     localStorage.setItem('adab_v19_lb',JSON.stringify(lb));
- 
+
     const daily=lb.filter(e=>e.date===today).sort((a,b)=>b.score-a.score);
     const rank=daily.findIndex(e=>e.name===playerName)+1;
- 
+
     let promo="ADAB5",prizeMsg="كود الخصم التقديري:";
     if(wonAll){
         promo=rank===1?"ADAB30":rank===2?"ADAB25":rank===3?"ADAB15":"ADAB10";
         prizeMsg="🏆 كود الفوز المكتسب:";
         startCelebration();
     }
- 
+
     const rankClass=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-other';
     const rankEmoji=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'🎯';
- 
+
     document.getElementById('game-content').innerHTML=`
         <div class="result-screen">
             <h2 style="color:${wonAll?'var(--teal)':'var(--burgundy)'};margin:10px 0;font-size:1.3rem;">${msg}</h2>
