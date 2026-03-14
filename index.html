@@ -126,6 +126,7 @@
             transition: 1s linear; 
         }
         
+        /* ألغاز البازل */
         .puzzle-grid { 
             display: grid; 
             gap: 0px; 
@@ -152,6 +153,7 @@
             transform: scale(0.98); 
         }
         
+        /* لعبة الذاكرة */
         .memory-grid {
             display: grid;
             gap: 10px;
@@ -180,6 +182,8 @@
         .memory-card[data-open="true"] { 
             pointer-events: none; 
         }
+        
+        /* لعبة التخمين */
         .guess-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -200,12 +204,16 @@
             background: var(--teal);
             color: white;
         }
+        
+        /* شاشة النتيجة */
         .prize-box {
             background: #fff9e6;
             border: 2px dashed var(--gold);
             padding: 15px;
             border-radius: 15px;
             margin: 15px 0;
+            position: relative;
+            overflow: hidden;
         }
         .leaderboard {
             background: #f9f9f9;
@@ -222,6 +230,85 @@
             padding: 5px;
             border-bottom: 1px solid #eee;
             font-size: 0.8rem;
+        }
+        
+        /* أنميشن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--gold); }
+            50% { box-shadow: 0 0 30px var(--gold), 0 0 60px var(--teal); }
+            100% { box-shadow: 0 0 5px var(--gold); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        .winner-glow {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+        .winner-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .winner-spin {
+            animation: spin 2s linear infinite;
+        }
+        .winner-bounce {
+            animation: bounce 0.5s ease-in-out 3;
+        }
+        
+        /* كونفيتي (مؤثرات احتفالية) */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        /* شارات الفوز */
+        .winner-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--gold), #f5d742);
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 5px 0;
+            box-shadow: 0 5px 15px rgba(198, 146, 42, 0.4);
+        }
+        
+        /* مؤشرات */
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
         }
     </style>
 </head>
@@ -241,9 +328,25 @@
 
     <!-- شاشة اللعبة -->
     <div id="game-area" style="display: none;">
-        <div class="stats-header">
-            <span>⭐ <span id="score-num">0</span></span>
-            <span>المرحلة: <span id="lvl-num">1</span>/9</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <div class="stats-header" style="flex: 1; margin-left: 5px;">
+                <span>⭐ <span id="score-num">0</span></span>
+                <span>المرحلة: <span id="lvl-num">1</span>/9</span>
+            </div>
+            <button id="mute-btn" onclick="toggleMute()" style="
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 5px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #f0fafa;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">🔊</button>
         </div>
         <p id="lvl-desc" style="font-size: 0.8rem; color: var(--teal); font-weight: bold; margin-bottom: 5px;"></p>
         <div class="timer-container"><div id="timer-line"></div></div>
@@ -251,8 +354,11 @@
     </div>
 </div>
 
+<!-- Canvas للاحتفالية -->
+<canvas id="confetti-canvas"></canvas>
+
 <script>
-    // مصفوفة الكتب - يرجى استبدال هذه الروابط بروابط صحيحة للصور
+    // مصفوفة الكتب
     const books = [
       
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
@@ -294,8 +400,13 @@
         { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
     ];
 
+    // المتغيرات العامة
     let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], randomizedSteps = [];
+    let gameActive = true;
+    let confettiInterval = null;
+    let animationFrame = null;
 
+    // مستويات اللعبة
     const easyPool = [
         { type: 'guess', t: 20, blur: 1, d: "خمن الكتاب (سهل) 📚" },
         { type: 'memory', t: 30, pairs: 2, d: "طابق البطاقات (سهل) 🃏" },
@@ -312,16 +423,205 @@
         { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
     ];
 
-    // خوارزمية Fisher-Yates للخلط العشوائي الحقيقي
-    function shuffle(array) {
-        let currentIndex = array.length;
-        let randomIndex;
-        let newArray = [...array];
+    // ==================== نظام الصوت المتكامل ====================
+    let audioContext = null;
+    let isMuted = false;
+
+    function initAudio() {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {}
+    }
+
+    function playCorrectSound() {
+        if (!audioContext || isMuted) return;
+        try {
+            const now = audioContext.currentTime;
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.type = 'sine';
+            osc1.frequency.value = 523.25;
+            gain1.gain.value = 0.15;
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            osc1.start(now);
+            osc1.stop(now + 0.15);
+            
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.value = 659.25;
+            gain2.gain.value = 0.15;
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.start(now + 0.1);
+            osc2.stop(now + 0.25);
+            
+            const osc3 = audioContext.createOscillator();
+            const gain3 = audioContext.createGain();
+            osc3.type = 'sine';
+            osc3.frequency.value = 783.99;
+            gain3.gain.value = 0.15;
+            osc3.connect(gain3);
+            gain3.connect(audioContext.destination);
+            osc3.start(now + 0.2);
+            osc3.stop(now + 0.35);
+        } catch(e) {}
+    }
+
+    function playWrongSound() {
+        if (!audioContext || isMuted) return;
+        try {
+            const now = audioContext.currentTime;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.value = 220;
+            gain.gain.value = 0.15;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.start(now);
+            osc.frequency.exponentialRampToValueAtTime(110, now + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc.stop(now + 0.3);
+        } catch(e) {}
+    }
+
+    function playWinSound() {
+        if (!audioContext || isMuted) return;
+        try {
+            const now = audioContext.currentTime;
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, index) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+                gain.gain.value = 0.15;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.start(now + index * 0.15);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.15 + 0.3);
+                osc.stop(now + index * 0.15 + 0.3);
+            });
+        } catch(e) {}
+    }
+
+    function playTimerSound() {
+        if (!audioContext || isMuted) return;
+        try {
+            const now = audioContext.currentTime;
+            for(let i = 0; i < 3; i++) {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'square';
+                osc.frequency.value = 440;
+                gain.gain.value = 0.1;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.start(now + i * 0.2);
+                osc.stop(now + i * 0.2 + 0.1);
+            }
+        } catch(e) {}
+    }
+
+    function playSound(type) {
+        if (!audioContext) {
+            initAudio();
+            return;
+        }
+        if (audioContext.state === 'suspended') {
+            audioContext.resume().then(() => {
+                playSoundByType(type);
+            });
+        } else {
+            playSoundByType(type);
+        }
+    }
+
+    function playSoundByType(type) {
+        switch(type) {
+            case 'correct': playCorrectSound(); break;
+            case 'wrong': playWrongSound(); break;
+            case 'win': playWinSound(); break;
+            case 'timer': playTimerSound(); break;
+        }
+    }
+
+    function toggleMute() {
+        isMuted = !isMuted;
+        const muteBtn = document.getElementById('mute-btn');
+        if (muteBtn) muteBtn.innerText = isMuted ? '🔇' : '🔊';
+    }
+
+    document.addEventListener('click', function initAudioOnFirstClick() {
+        initAudio();
+        document.removeEventListener('click', initAudioOnFirstClick);
+    }, { once: true });
+
+    // ==================== نظام الاحتفالية (Confetti) ====================
+    function startCelebration() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         
-        while (currentIndex != 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [newArray[currentIndex], newArray[randomIndex]] = [newArray[randomIndex], newArray[currentIndex]];
+        const particles = [];
+        const colors = ['#1a9397', '#a11f2a', '#c6922a', '#f5d742', '#ffffff', '#ff6b6b', '#4ecdc4'];
+        
+        for (let i = 0; i < 150; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                angle: Math.random() * Math.PI * 2,
+                spin: Math.random() * 0.1 - 0.05
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                p.y += p.speed;
+                p.x += Math.sin(p.angle) * 0.5;
+                p.angle += p.spin;
+                
+                if (p.y > canvas.height) {
+                    p.y = -10;
+                    p.x = Math.random() * canvas.width;
+                }
+                
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.restore();
+            });
+            
+            animationFrame = requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // إيقاف الاحتفالية بعد 7 ثوان
+        setTimeout(() => {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }, 7000);
+    }
+
+    // ==================== دوال المساعدة ====================
+    function shuffle(array) {
+        let newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
         }
         return newArray;
     }
@@ -349,6 +649,7 @@
         playerName = document.getElementById('player-name').value.trim();
         score = 0; 
         currentStep = 1;
+        gameActive = true;
         
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
@@ -379,6 +680,8 @@
     }
 
     function loadStep() {
+        if (!gameActive) return;
+        
         clearInterval(timer);
         selectedPiece = null; 
         memoryFlipped = [];
@@ -401,10 +704,17 @@
         timer = setInterval(() => {
             sec--;
             timerLine.style.width = (sec / s.t * 100) + "%";
-            if (sec <= 0) finish("للأسف، انتهى الوقت! ⏰", false);
+            
+            if (sec === 5) playSound('timer');
+            
+            if (sec <= 0) {
+                gameActive = false;
+                finish("للأسف، انتهى الوقت! ⏰", false);
+            }
         }, 1000);
     }
 
+    // ==================== لعبة التخمين ====================
     function renderGuess(blur) {
         const correct = books[Math.floor(Math.random() * books.length)];
         let otherBooks = books.filter(b => b.n !== correct.n);
@@ -426,20 +736,28 @@
     }
 
     function checkGuess(s, c) { 
+        if (!gameActive) return;
+        
         if (s === c) { 
+            playSound('correct');
             score += (sec * 5) + 50; 
             document.getElementById('score-num').innerText = score;
             
             if (currentStep === 9) {
+                gameActive = false;
+                playSound('win');
                 finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
             } else {
                 nextStep(); 
             }
         } else { 
+            playSound('wrong');
+            gameActive = false;
             finish("إجابة خاطئة! ❌", false); 
         } 
     }
 
+    // ==================== لعبة الذاكرة ====================
     function renderMemory(pairs) {
         const div = document.getElementById('game-content');
         let gameBooks = shuffle(books).slice(0, pairs);
@@ -455,6 +773,7 @@
             card.innerText = "?";
             
             card.onclick = () => {
+                if (!gameActive) return;
                 if (memoryFlipped.length < 2 && !card.dataset.done && !card.dataset.open) {
                     card.innerText = ""; 
                     card.style.backgroundImage = `url(${book.i})`;
@@ -464,7 +783,7 @@
                     
                     if (memoryFlipped.length === 2) {
                         if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
-                            // تطابق صحيح
+                            playSound('correct');
                             memoryFlipped.forEach(c => { 
                                 c.dataset.done = "true"; 
                                 c.style.opacity = "0.7";
@@ -476,13 +795,15 @@
                                 document.getElementById('score-num').innerText = score;
                                 
                                 if (currentStep === 9) {
+                                    gameActive = false;
+                                    playSound('win');
                                     finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
                                 } else {
                                     nextStep(); 
                                 }
                             }
                         } else {
-                            // خطأ - إعادة القلب بعد تأخير
+                            playSound('wrong');
                             setTimeout(() => { 
                                 memoryFlipped.forEach(c => { 
                                     c.innerText = "?"; 
@@ -501,6 +822,7 @@
         div.appendChild(grid);
     }
 
+    // ==================== لعبة البازل (مصححة بالكامل) ====================
     function renderPuzzle(size) {
         const div = document.getElementById('game-content');
         const book = books[Math.floor(Math.random() * books.length)];
@@ -511,13 +833,9 @@
         const containerW = 280, containerH = 380;
         let totalPieces = size * size;
         
-        // إنشاء مصفوفة من الأرقام من 0 إلى totalPieces-1 (المواقع الصحيحة)
         let correctPositions = Array.from({ length: totalPieces }, (_, i) => i);
-        
-        // خلط الأرقام لتوزيع القطع بشكل عشوائي
         let shuffledPositions = shuffle(correctPositions);
 
-        // إنشاء القطع حسب الترتيب العشوائي
         shuffledPositions.forEach((position, index) => {
             const p = document.createElement('div');
             p.className = 'puzzle-piece';
@@ -528,15 +846,16 @@
             p.style.backgroundImage = `url(${book.i})`;
             p.style.backgroundSize = `${containerW}px ${containerH}px`;
             
-            // position يحدد أي جزء من الصورة يظهر في هذه القطعة
             const bx = (position % size) * w;
             const by = Math.floor(position / size) * h;
             p.style.backgroundPosition = `-${bx}px -${by}px`;
             
-            // نحفظ الموضع الصحيح الذي يجب أن تكون فيه هذه القطعة
+            p.dataset.currentPosition = index;
             p.dataset.correctPosition = position;
 
             p.onclick = () => {
+                if (!gameActive) return;
+                
                 if (!selectedPiece) {
                     selectedPiece = p;
                     p.classList.add('selected-piece');
@@ -544,22 +863,25 @@
                     selectedPiece.classList.remove('selected-piece');
                     selectedPiece = null;
                 } else {
-                    // تبديل البيانات والمواقع بين القطعتين
-                    let tempCorrectPosition = p.dataset.correctPosition;
-                    let tempBackground = p.style.backgroundPosition;
-
-                    p.dataset.correctPosition = selectedPiece.dataset.correctPosition;
-                    p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-
-                    selectedPiece.dataset.correctPosition = tempCorrectPosition;
-                    selectedPiece.style.backgroundPosition = tempBackground;
-
-                    selectedPiece.classList.remove('selected-piece');
+                    playSound('click');
+                    
+                    let piece1 = selectedPiece;
+                    let piece2 = p;
+                    
+                    let tempBG = piece1.style.backgroundPosition;
+                    piece1.style.backgroundPosition = piece2.style.backgroundPosition;
+                    piece2.style.backgroundPosition = tempBG;
+                    
+                    let tempCorrect = piece1.dataset.correctPosition;
+                    piece1.dataset.correctPosition = piece2.dataset.correctPosition;
+                    piece2.dataset.correctPosition = tempCorrect;
+                    
+                    piece1.classList.remove('selected-piece');
                     selectedPiece = null;
-
-                    // التحقق من الفوز
+                    
                     const allPieces = document.querySelectorAll('.puzzle-piece');
                     let win = true;
+                    
                     allPieces.forEach((piece, idx) => {
                         if (parseInt(piece.dataset.correctPosition) !== idx) {
                             win = false;
@@ -567,10 +889,12 @@
                     });
 
                     if (win) {
+                        playSound('win');
                         score += (sec * 10) + 200;
                         document.getElementById('score-num').innerText = score;
                         
                         if (currentStep === 9) {
+                            gameActive = false;
                             finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
                         } else {
                             nextStep();
@@ -584,6 +908,7 @@
         div.appendChild(grid);
     }
 
+    // ==================== دوال التنقل ====================
     function nextStep() {
         clearInterval(timer);
         if (currentStep < 9) { 
@@ -592,67 +917,32 @@
         }
     }
 
+    // ==================== دالة النهاية مع الاحتفالية ====================
     function finish(msg, wonAll) {
         clearInterval(timer);
         
+        // الخاسر يحتفظ بنقاطه
         const today = new Date().toDateString();
         let leaderboard = JSON.parse(localStorage.getItem('adab_v18_lb') || '[]');
         
-        // التحقق مما إذا كان اللاعب قد لعب اليوم بالفعل
+        // الفائز والخاسر يضافان للوحة المتصدرين
         const existingEntryIndex = leaderboard.findIndex(entry => entry.name === playerName && entry.date === today);
         
         if (existingEntryIndex !== -1) {
-            // إذا كان موجوداً، قم بتحديث النتيجة إذا كانت الجديدة أعلى
             if (score > leaderboard[existingEntryIndex].score) {
                 leaderboard[existingEntryIndex].score = score;
             }
         } else {
-            // إذا لم يكن موجوداً، أضف نتيجة جديدة
             leaderboard.push({ name: playerName, score: score, date: today });
         }
         
         localStorage.setItem('adab_v18_lb', JSON.stringify(leaderboard));
         
-        // ترتيب لوحة المتصدرين لليوم
         const daily = leaderboard
             .filter(e => e.date === today)
             .sort((a, b) => b.score - a.score);
         
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
         
-        // تحديد كود الخصم
-        let promo = "ADAB5"; // الكود الافتراضي
-        let prizeMsg = "كود الخصم التقديري:";
-        
-        if (wonAll) {
-            if (rank === 1) promo = "ADAB30";
-            else if (rank === 2) promo = "ADAB25";
-            else if (rank === 3) promo = "ADAB15";
-            else promo = "ADAB10";
-            prizeMsg = "كود الفوز المكتسب:";
-        }
-
-        document.getElementById('game-content').innerHTML = `
-            <h2 style="color: var(--burgundy); margin: 10px 0;">${msg}</h2>
-            <h1 style="font-size:3rem; color:var(--teal)">${score}⚡</h1>
-            <p style="font-size:1.1rem; margin:10px 0;">ترتيبك اليوم: #${rank}</p>
-            <div class="prize-box">
-                <p style="font-size:0.9rem">${prizeMsg}</p>
-                <h2 style="color:var(--burgundy); letter-spacing:2px; margin:5px 0;">${promo}</h2>
-                <button class="start-btn" style="font-size:0.8rem; padding:8px;" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود بنجاح!')">نسخ الكود 📋</button>
-            </div>
-            <div class="leaderboard">
-                <h4 style="border-bottom:1px solid #ddd; padding-bottom:5px;">🏆 أفضل 10 اليوم:</h4>
-                ${daily.slice(0, 10).map((u, i) => `
-                    <div class="leaderboard-item">
-                        <span>${i+1}. ${u.name} ${u.name === playerName ? '⭐' : ''}</span>
-                        <span>${u.score}⚡</span>
-                    </div>
-                `).join('')}
-            </div>
-            <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة للرئيسية</button>
-        `;
-    }
-</script>
-</body>
-</html>
+        // تحديد كود الخصم - فقط للفائزين
+        let promo =
