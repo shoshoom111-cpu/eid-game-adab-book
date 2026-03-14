@@ -6,335 +6,261 @@
     <title>مهرجان ألعاب مركز الأدب العربي ⚡</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --teal: #1a9397; 
-            --burgundy: #a11f2a; 
-            --gold: #c6922a; 
-            --bg: #fdfcf9; 
+        :root {
+            --teal: #1a9397;
+            --teal-dark: #127a7e;
+            --burgundy: #a11f2a;
+            --gold: #c6922a;
+            --gold-light: #f5d78e;
+            --bg: #f0f8f8;
         }
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            font-family: 'Tajawal', sans-serif; 
-            margin: 0; 
-            padding: 0; 
-        }
-        body { 
-            background: var(--bg); 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-            touch-action: manipulation; 
-        }
-        .main-card { 
-            background: white; 
-            padding: 1.2rem; 
-            border-radius: 30px; 
-            box-shadow: 0 15px 45px rgba(0,0,0,0.12); 
-            width: 95%; 
-            max-width: 400px; 
-            text-align: center; 
-            border-top: 10px solid var(--teal); 
-            max-height: 98vh; 
-            overflow-y: auto; 
-            position: relative; 
-        }
-        .logo { 
-            width: 100%; 
-            max-width: 180px; 
-            margin-bottom: 10px; 
-            border-radius: 10px; 
-        }
-        .name-field { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 12px; 
-            border: 2px solid #eee; 
-            text-align: center; 
-            margin: 10px 0; 
-            font-size: 1.1rem; 
-            font-weight: bold; 
-            outline: none; 
-        }
-        .name-field:focus { border-color: var(--teal); }
-        .start-btn { 
-            background: var(--teal); 
-            color: white; 
-            border: none; 
-            padding: 14px; 
-            border-radius: 15px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            width: 100%; 
-            font-size: 1.1rem; 
-            box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); 
-            transition: 0.2s; 
-            margin-top: 5px; 
-            text-decoration: none; 
-            display: block; 
-        }
-        .start-btn:disabled { 
-            opacity: 0.3; 
-            background: #ccc; 
-            cursor: not-allowed; 
-            box-shadow: none;
-        }
-        .start-btn:active:not(:disabled) { transform: scale(0.97); }
-        #countdown-overlay { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(255,255,255,0.95); 
-            z-index: 100; 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 30px; 
-            pointer-events: none; 
-        }
-        #countdown-text { 
-            font-size: 5rem; 
-            font-weight: bold; 
-            color: var(--teal); 
-        }
-        .stats-header { 
-            display: flex; 
-            justify-content: space-around; 
-            padding: 8px; 
-            background: #f0fafa; 
-            border-radius: 12px; 
-            margin-bottom: 8px; 
-            font-size: 0.85rem; 
-            color: var(--teal); 
-            font-weight: bold; 
-        }
-        .timer-container { 
-            background: #eee; 
-            height: 8px; 
-            border-radius: 10px; 
-            margin-bottom: 10px; 
-            overflow: hidden; 
-        }
-        #timer-line { 
-            height: 100%; 
-            background: var(--teal); 
-            width: 100%; 
-            transition: 1s linear; 
-        }
-        
-        .puzzle-grid { 
-            display: grid; 
-            gap: 0px; 
-            margin: 10px auto; 
-            background: #eee; 
-            border: 4px solid var(--teal); 
-            border-radius: 10px; 
-            overflow: hidden; 
-            width: 280px; 
-            height: 380px; 
-        }
-        .puzzle-piece { 
-            cursor: pointer; 
-            background-repeat: no-repeat; 
-            border: 0.1px solid rgba(255,255,255,0.2); 
-            width: 100%; 
-            height: 100%; 
-            transition: 0.1s;
-        }
-        .selected-piece { 
-            outline: 4px solid var(--gold); 
-            outline-offset: -4px; 
-            z-index: 10; 
-            transform: scale(0.98); 
-        }
-        
-        .memory-grid {
-            display: grid;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .memory-card { 
-            height: 85px; 
-            background: var(--teal); 
-            border-radius: 10px; 
-            cursor: pointer; 
-            color: white; 
-            font-size: 1.5rem; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background-size: cover; 
-            background-position: center; 
-            transition: 0.3s;
-            font-weight: bold;
-        }
-        .memory-card[data-done="true"] { 
-            opacity: 0.5; 
-            pointer-events: none; 
-            cursor: default;
-        }
-        .memory-card[data-open="true"] { 
-            pointer-events: none; 
-        }
-        
-        .guess-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .guess-btn {
-            background: white;
-            border: 2px solid var(--teal);
-            color: var(--teal);
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .guess-btn:active {
-            background: var(--teal);
-            color: white;
-        }
-        
-        .prize-box {
-            background: #fff9e6;
-            border: 2px dashed var(--gold);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 15px 0;
-        }
-        .leaderboard {
-            background: #f9f9f9;
-            border-radius: 15px;
-            padding: 12px;
-            margin: 10px 0;
-            max-height: 180px;
-            overflow-y: auto;
-            text-align: right;
-        }
-        .leaderboard-item {
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
+ 
+        body {
+            background: linear-gradient(135deg, #e8f5f5 0%, #fdf6ec 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
-            padding: 5px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.8rem;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: manipulation;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px var(--gold); }
-            50% { box-shadow: 0 0 30px var(--gold), 0 0 60px var(--teal); }
-            100% { box-shadow: 0 0 5px var(--gold); }
-        }
-        .shake {
-            animation: shake 0.3s ease-in-out;
-        }
-        .winner-glow {
-            animation: glow 1.5s ease-in-out infinite;
-        }
-        
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .adabbook-link {
-            margin: 20px 0;
-            padding: 15px;
-            background: linear-gradient(135deg, #1a9397, #a11f2a);
-            border-radius: 15px;
-            color: white;
-            animation: fadeIn 0.5s ease;
-        }
-        .adabbook-link:hover {
-            transform: scale(1.02);
-            transition: 0.3s;
-        }
-        .shop-btn {
-            display: inline-block;
+ 
+        .main-card {
             background: white;
-            color: var(--burgundy);
-            padding: 10px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            padding: 1.4rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(26,147,151,0.18), 0 4px 15px rgba(0,0,0,0.08);
+            width: 95%;
+            max-width: 410px;
+            text-align: center;
+            border-top: 8px solid var(--teal);
+            max-height: 98vh;
+            overflow-y: auto;
+            position: relative;
+            animation: cardIn 0.5s cubic-bezier(.175,.885,.32,1.275);
         }
-        .shop-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .shop-btn:active {
-            transform: translateY(0);
+ 
+        .logo {
+            width: 100%; max-width: 170px; margin-bottom: 8px;
+            border-radius: 14px;
+            filter: drop-shadow(0 4px 12px rgba(26,147,151,0.2));
+            animation: logoPulse 3s ease-in-out infinite;
         }
+        @keyframes logoPulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .home-title { font-size: 1.4rem; font-weight: 900; color: var(--burgundy); margin-bottom: 4px; letter-spacing: 1px; }
+        .home-subtitle { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
+        .tries-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: white; padding: 6px 18px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: bold; margin: 8px 0 14px;
+            box-shadow: 0 3px 10px rgba(26,147,151,0.3);
+        }
+        .name-field {
+            width: 100%; padding: 13px; border-radius: 14px;
+            border: 2px solid #e0f0f0; text-align: center; margin: 8px 0;
+            font-size: 1.05rem; font-weight: bold; outline: none;
+            transition: 0.3s; background: #f8fdfd;
+        }
+        .name-field:focus { border-color: var(--teal); background: white; box-shadow: 0 0 0 4px rgba(26,147,151,0.1); }
+ 
+        .start-btn {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: white; border: none; padding: 15px; border-radius: 16px;
+            cursor: pointer; font-weight: 900; width: 100%; font-size: 1.15rem;
+            box-shadow: 0 6px 20px rgba(26,147,151,0.35); transition: 0.2s;
+            margin-top: 6px; text-decoration: none; display: block; letter-spacing: 1px;
+        }
+        .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; box-shadow: none; }
+        .start-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(26,147,151,0.4); }
+        .start-btn:not(:disabled):active { transform: scale(0.97); }
+ 
+        #countdown-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.96); z-index: 100; display: none;
+            align-items: center; justify-content: center; border-radius: 32px;
+            pointer-events: none; flex-direction: column; gap: 10px;
+        }
+        #countdown-text { font-size: 6rem; font-weight: 900; color: var(--teal); animation: countPop 0.4s cubic-bezier(.175,.885,.32,1.275); }
+        @keyframes countPop {
+            from { transform: scale(0.3); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        #countdown-label { font-size: 1rem; color: #aaa; font-weight: bold; }
+ 
+        .game-topbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .stat-pill {
+            background: linear-gradient(135deg, #e8f8f8, #f0fdfd);
+            border: 1.5px solid #c5eaea; border-radius: 50px;
+            padding: 6px 14px; font-size: 0.85rem; color: var(--teal-dark);
+            font-weight: bold; display: flex; align-items: center; gap: 5px;
+            flex: 1; justify-content: center;
+        }
+        .stat-pill .val { font-size: 1rem; font-weight: 900; color: var(--teal); }
+        .mute-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: #f0fdfd; border: 1.5px solid #c5eaea;
+            font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        }
+        .mute-btn:active { transform: scale(0.9); }
+ 
+        .progress-wrap { margin-bottom: 6px; }
+        .progress-steps { display: flex; gap: 4px; margin-bottom: 6px; }
+        .step-dot { flex: 1; height: 5px; border-radius: 10px; background: #e5e5e5; transition: 0.4s; }
+        .step-dot.done { background: var(--teal); }
+        .step-dot.active { background: var(--gold); animation: dotPulse 1s ease-in-out infinite; }
+        @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+ 
+        .timer-bar-wrap { background: #eee; height: 7px; border-radius: 10px; overflow: hidden; }
+        #timer-line { height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); width: 100%; transition: 1s linear; border-radius: 10px; }
+        #timer-line.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+ 
+        .lvl-desc { font-size: 0.88rem; color: var(--teal-dark); font-weight: bold; margin-bottom: 8px; background: #f0fdfd; border-radius: 10px; padding: 5px 10px; }
+ 
+        .guess-img-wrap { position: relative; display: inline-block; margin: 10px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .guess-img-wrap img { display: block; width: 160px; border-radius: 16px; transition: filter 0.5s; }
+        .guess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .guess-btn {
+            background: white; border: 2px solid #d5eeee; color: #333;
+            padding: 12px 8px; border-radius: 14px; font-weight: bold;
+            font-size: 0.82rem; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .guess-btn:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(26,147,151,0.15); }
+        .guess-btn:active { transform: scale(0.96); }
+        .guess-btn.correct-ans { background: linear-gradient(135deg, #1a9397, #127a7e); color: white; border-color: var(--teal); }
+        .guess-btn.wrong-ans { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border-color: #e74c3c; }
+ 
+        .memory-grid { display: grid; gap: 8px; margin: 8px 0; }
+        .memory-card {
+            height: 80px; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; font-weight: bold; color: white;
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 3px 10px rgba(26,147,151,0.2);
+            background-size: cover; background-position: center;
+        }
+        .memory-card:active { transform: scale(0.93); }
+        .memory-card[data-done="true"] { opacity: 0.45; pointer-events: none; box-shadow: none; }
+        .memory-card[data-open="true"] { pointer-events: none; }
+        .memory-card.matched { outline: 3px solid var(--gold); outline-offset: 2px; }
+ 
+        .puzzle-grid {
+            display: grid; gap: 2px; margin: 8px auto;
+            border: 3px solid var(--teal); border-radius: 12px; overflow: hidden;
+            width: 280px; height: 380px; box-shadow: 0 8px 25px rgba(26,147,151,0.2);
+        }
+        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; width: 100%; height: 100%; transition: 0.15s; }
+        .puzzle-piece:hover { filter: brightness(1.08); }
+        .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.96); filter: brightness(1.1); }
+ 
+        .score-popup {
+            position: fixed; font-size: 1.5rem; font-weight: 900;
+            color: var(--gold); pointer-events: none; z-index: 9998;
+            animation: scoreFloat 1.2s ease forwards;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        @keyframes scoreFloat {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+        }
+ 
+        .result-screen { animation: fadeInUp 0.5s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+        .result-score {
+            font-size: 3.5rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--teal), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+        .rank-badge { display: inline-block; padding: 6px 20px; border-radius: 50px; font-size: 1rem; font-weight: bold; margin: 8px 0; }
+        .rank-1 { background: linear-gradient(135deg, #f5d78e, #c6922a); color: #5a3b00; }
+        .rank-2 { background: linear-gradient(135deg, #d5d5d5, #a0a0a0); color: #333; }
+        .rank-3 { background: linear-gradient(135deg, #d4a57a, #a0622a); color: #fff; }
+        .rank-other { background: #f0fdfd; color: var(--teal); border: 2px solid #c5eaea; }
+ 
+        .promo-box { background: linear-gradient(135deg, #fff9ec, #fff3d0); border: 2px dashed var(--gold); padding: 18px; border-radius: 18px; margin: 14px 0; }
+        .promo-code { font-size: 2.2rem; font-weight: 900; letter-spacing: 4px; color: var(--burgundy); margin: 8px 0; }
+        .copy-btn { background: var(--gold); color: white; border: none; padding: 8px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 0.9rem; transition: 0.2s; margin-top: 6px; }
+        .copy-btn:active { transform: scale(0.95); }
+ 
+        .leaderboard { background: #f8fdfd; border-radius: 16px; padding: 12px; margin: 12px 0; max-height: 175px; overflow-y: auto; text-align: right; border: 1.5px solid #e0f0f0; }
+        .leaderboard-item { display: flex; justify-content: space-between; padding: 5px 4px; border-bottom: 1px solid #eef8f8; font-size: 0.82rem; align-items: center; }
+        .leaderboard-item:last-child { border-bottom: none; }
+        .lb-rank { font-weight: 900; color: var(--teal); margin-left: 6px; }
+        .lb-me { background: #f0fdfd; border-radius: 8px; padding: 2px 6px; }
+ 
+        .adabbook-link { margin: 14px 0; padding: 16px; background: linear-gradient(135deg, #1a9397 0%, #a11f2a 100%); border-radius: 18px; color: white; }
+        .shop-btn { display: inline-block; background: white; color: var(--burgundy); padding: 10px 28px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 1rem; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s; }
+        .shop-btn:active { transform: scale(0.97); }
+ 
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes glow { 0%,100% { box-shadow: 0 0 8px var(--gold); } 50% { box-shadow: 0 0 35px var(--gold), 0 0 70px rgba(198,146,42,0.4); } }
+        .shake { animation: shake 0.4s ease-in-out; }
+        .bounce { animation: bounce 0.4s ease; }
+        .glow-anim { animation: glow 1.5s ease-in-out infinite; }
+ 
+        #confetti-canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+ 
+        .loading-wrap { padding: 40px 20px; }
+        .loading-spinner { width: 50px; height: 50px; border: 4px solid #e0f0f0; border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-bar-wrap { background: #e0f0f0; height: 6px; border-radius: 10px; overflow: hidden; margin-top: 12px; }
+        .loading-bar { height: 100%; background: var(--teal); border-radius: 10px; width: 0%; transition: width 0.3s; }
+ 
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c5eaea; border-radius: 10px; }
     </style>
 </head>
 <body onload="initApp()">
-
+ 
 <div class="main-card">
-    <div id="countdown-overlay"><div id="countdown-text">3</div></div>
-    
+    <div id="countdown-overlay">
+        <div id="countdown-text">3</div>
+        <div id="countdown-label">استعد!</div>
+    </div>
+ 
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo" alt="مركز الأدب العربي">
-        <h3 style="color: var(--burgundy);">مهرجان ألعاب الأدب ⚡</h3>
-        <p id="tries-text" style="font-size: 1rem; color: var(--teal); margin: 15px 0; font-weight: bold;"></p>
+        <div class="home-title">مهرجان ألعاب الأدب ⚡</div>
+        <div class="home-subtitle">9 مراحل • 3 ألعاب • جوائز حقيقية</div>
+        <div class="tries-badge" id="tries-text">المحاولات المتبقية: ...</div>
         <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()" onkeypress="if(event.key==='Enter') startFestival()">
         <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي 🚀</button>
     </div>
-
-    <div id="game-area" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <div class="stats-header" style="flex: 1; margin-left: 5px;">
-                <span>⭐ <span id="score-num">0</span></span>
-                <span>المرحلة: <span id="lvl-num">1</span>/9</span>
-            </div>
-            <button id="mute-btn" onclick="toggleMute()" style="
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                padding: 5px;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: #f0fafa;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">🔊</button>
+ 
+    <div id="game-area" style="display:none;">
+        <div class="game-topbar">
+            <div class="stat-pill">⭐ <span class="val" id="score-num">0</span></div>
+            <div class="stat-pill">🎯 <span class="val" id="lvl-num">1</span>/9</div>
+            <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</button>
         </div>
-        <p id="lvl-desc" style="font-size: 0.9rem; color: var(--teal); font-weight: bold; margin-bottom: 8px;"></p>
-        <div class="timer-container"><div id="timer-line"></div></div>
+        <div class="progress-wrap">
+            <div class="progress-steps" id="progress-steps"></div>
+            <div class="timer-bar-wrap"><div id="timer-line"></div></div>
+        </div>
+        <div class="lvl-desc" id="lvl-desc"></div>
         <div id="game-content"></div>
     </div>
 </div>
-
+ 
 <canvas id="confetti-canvas"></canvas>
-
+ 
 <script>
-    const books = [
-        
+const books = [
+    
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -372,602 +298,457 @@
         { n: "جنون كاتب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2112536d-526b-4b38-8100-00cf09f4e128.jpg" },
         { n: "دجن دعجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c3a260c7-9699-49e3-92c8-241989269be7.jpg" },
         { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
-    ];
-
-    let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], randomizedSteps = [];
-    let gameActive = true;
-    let animationFrame = null;
-
-    const easyPool = [
-        { type: 'guess', t: 20, blur: 1, d: "خمن الكتاب (سهل) 📚" },
-        { type: 'memory', t: 30, pairs: 2, d: "طابق البطاقات (سهل) 🃏" },
-        { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف (2×2) 🧩" }
-    ];
-    const medPool = [
-        { type: 'guess', t: 15, blur: 3, d: "خمن الكتاب (متوسط) ⚡" },
-        { type: 'memory', t: 35, pairs: 3, d: "تحدي الذاكرة (متوسط) 🃏" },
-        { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف (3×3) 🧩" }
-    ];
-    const hardPool = [
-        { type: 'guess', t: 12, blur: 6, d: "خمن الكتاب (صعب) 🔥" },
-        { type: 'memory', t: 45, pairs: 4, d: "الذاكرة الفولاذية (صعب) 🃏" },
-        { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
-    ];
-
-    // ==================== نظام الصوت ====================
-    let audioContext = null;
-    let isMuted = false;
-
-    function initAudio() {
-        try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        } catch(e) {}
-    }
-
-    function playCorrectSound() {
-        if (!audioContext || isMuted) return;
-        try {
-            const now = audioContext.currentTime;
-            [523.25, 659.25, 783.99].forEach((freq, i) => {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                gain.gain.value = 0.15;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                osc.start(now + i * 0.1);
-                osc.stop(now + i * 0.1 + 0.15);
-            });
-        } catch(e) {}
-    }
-
-    function playWrongSound() {
-        if (!audioContext || isMuted) return;
-        try {
-            const now = audioContext.currentTime;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.value = 220;
-            gain.gain.value = 0.15;
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.start(now);
-            osc.frequency.exponentialRampToValueAtTime(110, now + 0.3);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-            osc.stop(now + 0.3);
-        } catch(e) {}
-    }
-
-    function playWinSound() {
-        if (!audioContext || isMuted) return;
-        try {
-            const now = audioContext.currentTime;
-            const notes = [523.25, 659.25, 783.99, 1046.50];
-            notes.forEach((freq, index) => {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                osc.type = 'triangle';
-                osc.frequency.value = freq;
-                gain.gain.value = 0.15;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                osc.start(now + index * 0.15);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.15 + 0.3);
-                osc.stop(now + index * 0.15 + 0.3);
-            });
-        } catch(e) {}
-    }
-
-    function playTimerSound() {
-        if (!audioContext || isMuted) return;
-        try {
-            const now = audioContext.currentTime;
-            for(let i = 0; i < 3; i++) {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                osc.type = 'square';
-                osc.frequency.value = 440;
-                gain.gain.value = 0.1;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                osc.start(now + i * 0.2);
-                osc.stop(now + i * 0.2 + 0.1);
-            }
-        } catch(e) {}
-    }
-
-    function playSound(type) {
-        if (!audioContext) {
-            initAudio();
-            return;
-        }
-        if (audioContext.state === 'suspended') {
-            audioContext.resume().then(() => {
-                playSoundByType(type);
-            });
-        } else {
-            playSoundByType(type);
-        }
-    }
-
-    function playSoundByType(type) {
-        switch(type) {
-            case 'correct': playCorrectSound(); break;
-            case 'wrong': playWrongSound(); break;
-            case 'win': playWinSound(); break;
-            case 'timer': playTimerSound(); break;
-        }
-    }
-
-    function toggleMute() {
-        isMuted = !isMuted;
-        const muteBtn = document.getElementById('mute-btn');
-        if (muteBtn) muteBtn.innerText = isMuted ? '🔇' : '🔊';
-    }
-
-    document.addEventListener('click', function initAudioOnFirstClick() {
-        initAudio();
-        document.removeEventListener('click', initAudioOnFirstClick);
-    }, { once: true });
-
-    // ==================== نظام الاحتفالية ====================
-    function startCelebration() {
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const particles = [];
-        const colors = ['#1a9397', '#a11f2a', '#c6922a', '#f5d742', '#ffffff', '#ff6b6b', '#4ecdc4'];
-        
-        for (let i = 0; i < 150; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height - canvas.height,
-                size: Math.random() * 8 + 4,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                speed: Math.random() * 3 + 2,
-                angle: Math.random() * Math.PI * 2,
-                spin: Math.random() * 0.1 - 0.05
-            });
-        }
-        
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(p => {
-                p.y += p.speed;
-                p.x += Math.sin(p.angle) * 0.5;
-                p.angle += p.spin;
-                
-                if (p.y > canvas.height) {
-                    p.y = -10;
-                    p.x = Math.random() * canvas.width;
-                }
-                
-                ctx.save();
-                ctx.translate(p.x, p.y);
-                ctx.rotate(p.angle);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
-                ctx.restore();
-            });
-            
-            animationFrame = requestAnimationFrame(animate);
-        }
-        
-        animate();
-        
-        setTimeout(() => {
-            if (animationFrame) {
-                cancelAnimationFrame(animationFrame);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        }, 7000);
-    }
-
-    // ==================== دوال المساعدة ====================
-    function shuffle(array) {
-        let newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-    }
-
-    function initApp() {
-        const d = new Date().toDateString();
-        let t = JSON.parse(localStorage.getItem('adab_v18_limit') || '{"date":"","count":0}');
-        if (t.date !== d) {
-            t = { date: d, count: 0 };
-        }
-        localStorage.setItem('adab_v18_limit', JSON.stringify(t));
-        updateTriesDisplay();
-    }
-
-    function updateTriesDisplay() {
-        const t = JSON.parse(localStorage.getItem('adab_v18_limit') || '{"date":"","count":0}');
-        const remaining = 3 - t.count;
-        document.getElementById('tries-text').innerText = `المحاولات المتبقية اليوم: ${remaining}`;
-    }
-
-    function validateInput() {
-        const v = document.getElementById('player-name').value.trim();
-        const t = JSON.parse(localStorage.getItem('adab_v18_limit') || '{"date":"","count":0}');
-        const btn = document.getElementById('btn-start');
-        
-        if (v.length >= 2 && t.count < 3) {
-            btn.disabled = false;
-        } else {
-            btn.disabled = true;
-        }
-    }
-
-    function startFestival() {
-        const t = JSON.parse(localStorage.getItem('adab_v18_limit') || '{"date":"","count":0}');
-        const today = new Date().toDateString();
-        
-        if (t.date !== today) {
-            t.date = today;
-            t.count = 0;
-        }
-        
-        if (t.count >= 3) {
-            alert("لقد استنفذت جميع محاولاتك اليوم! تعال غداً لتلعب مرة أخرى 🎮");
-            return;
-        }
-        
-        playerName = document.getElementById('player-name').value.trim();
-        if (playerName.length < 2) {
-            alert("الرجاء إدخال اسم صحيح (حرفين على الأقل)");
-            return;
-        }
-        
-        t.count++;
-        localStorage.setItem('adab_v18_limit', JSON.stringify(t));
-        updateTriesDisplay();
-        
-        randomizedSteps = [...shuffle(easyPool), ...shuffle(medPool), ...shuffle(hardPool)];
-        score = 0; 
-        currentStep = 1;
-        gameActive = true;
-        
-        document.getElementById('home').style.display = 'none';
-        document.getElementById('game-area').style.display = 'block';
-        document.getElementById('score-num').innerText = '0';
-        
-        showCountdown(loadStep);
-    }
-
-    function showCountdown(cb) {
-        const ov = document.getElementById('countdown-overlay');
-        const txt = document.getElementById('countdown-text');
-        ov.style.display = 'flex';
-        let c = 3; 
-        txt.innerText = c;
-        
-        let ct = setInterval(() => {
-            c--;
-            if (c > 0) {
-                txt.innerText = c;
-            } else if (c === 0) {
-                txt.innerText = "انطلق!";
-            } else { 
-                clearInterval(ct); 
-                ov.style.display = 'none'; 
-                cb(); 
-            }
-        }, 800);
-    }
-
-    function loadStep() {
-        if (!gameActive) return;
-        
-        clearInterval(timer);
-        selectedPiece = null; 
-        memoryFlipped = [];
-        
-        const s = randomizedSteps[currentStep - 1];
-        document.getElementById('lvl-num').innerText = currentStep;
-        document.getElementById('lvl-desc').innerText = s.d;
-        sec = s.t;
-        
-        const timerLine = document.getElementById('timer-line');
-        timerLine.style.width = "100%";
-        
-        const div = document.getElementById('game-content'); 
-        div.innerHTML = "";
-
-        if (s.type === 'guess') renderGuess(s.blur);
-        else if (s.type === 'memory') renderMemory(s.pairs);
-        else if (s.type === 'puzzle') renderPuzzle(s.s);
-
-        timer = setInterval(() => {
-            sec--;
-            timerLine.style.width = (sec / s.t * 100) + "%";
-            
-            if (sec === 5) playSound('timer');
-            
-            if (sec <= 0) {
-                gameActive = false;
-                finish("للأسف، انتهى الوقت! ⏰", false);
-            }
-        }, 1000);
-    }
-
-    function renderGuess(blur) {
-        const correct = books[Math.floor(Math.random() * books.length)];
-        let otherBooks = books.filter(b => b.n !== correct.n);
-        let options = shuffle(otherBooks).slice(0, 3);
-        options.push(correct);
-        options = shuffle(options);
-        
-        let html = `
-            <img src="${correct.i}" style="width:160px; filter:blur(${blur}px); border-radius:15px; margin:15px auto; display:block;">
-            <div class="guess-grid">
-        `;
-        
-        options.forEach(b => {
-            html += `<button class="guess-btn" onclick="checkGuess('${b.n.replace(/'/g, "\\'")}', '${correct.n.replace(/'/g, "\\'")}')">${b.n}</button>`;
+];
+ 
+let score=0, currentStep=1, sec=30, timer, playerName="", selectedPiece=null, randomizedSteps=[];
+let gameActive=true, animationFrame=null, isMuted=false, combo=0;
+let validBooks=[...books], audioContext=null, soundsUnlocked=false;
+ 
+const easyPool=[
+    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب (سهل)"},
+    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات (سهل)"},
+    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف (2×2)"}
+];
+const medPool=[
+    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب (متوسط)"},
+    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة (متوسط)"},
+    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف (3×3)"}
+];
+const hardPool=[
+    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب (صعب)"},
+    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية (صعب)"},
+    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى (4×4)"}
+];
+ 
+// ===== الصوت =====
+function initAudio(){try{audioContext=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+function unlockAudio(){
+    if(soundsUnlocked)return;
+    if(!audioContext)initAudio();
+    if(audioContext?.state==='suspended'){audioContext.resume().then(()=>{soundsUnlocked=true;});}
+    else soundsUnlocked=true;
+}
+function _play(freq,type,dur,vol=0.15,delay=0){
+    if(!audioContext||isMuted||!soundsUnlocked)return;
+    try{
+        const now=audioContext.currentTime+delay;
+        const o=audioContext.createOscillator(), g=audioContext.createGain();
+        o.type=type; o.frequency.value=freq;
+        g.gain.setValueAtTime(vol,now); g.gain.exponentialRampToValueAtTime(0.01,now+dur);
+        o.connect(g); g.connect(audioContext.destination);
+        o.start(now); o.stop(now+dur);
+    }catch(e){}
+}
+function playSound(t){
+    unlockAudio();
+    setTimeout(()=>{
+        if(t==='correct'){_play(523,'sine',0.15);_play(659,'sine',0.2,0.15,0.1);}
+        else if(t==='wrong'){_play(220,'sawtooth',0.3,0.12);}
+        else if(t==='win'){[523,659,784,1046].forEach((f,i)=>_play(f,'triangle',0.3,0.12,i*0.13));}
+        else if(t==='timer'){for(let i=0;i<3;i++)_play(880,'square',0.08,0.08,i*0.18);}
+        else if(t==='click'){_play(600,'sine',0.05,0.05);}
+        else if(t==='combo'){[659,784,1046].forEach((f,i)=>_play(f,'triangle',0.15,0.12,i*0.1));}
+    },10);
+}
+function toggleMute(){isMuted=!isMuted;document.getElementById('mute-btn').innerText=isMuted?'🔇':'🔊';}
+document.addEventListener('click',unlockAudio,{once:true});
+document.addEventListener('touchstart',unlockAudio,{once:true});
+window.addEventListener('load',initAudio);
+ 
+// ===== كونفيتي =====
+function startCelebration(){
+    const canvas=document.getElementById('confetti-canvas');
+    const ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    const pieces=[], colors=['#1a9397','#a11f2a','#c6922a','#f5d78e','#ffffff'];
+    for(let i=0;i<200;i++) pieces.push({
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height,
+        w:Math.random()*12+4, h:Math.random()*12+4,
+        color:colors[Math.floor(Math.random()*colors.length)],
+        speed:Math.random()*4+2, angle:Math.random()*360, spin:Math.random()*6-3,
+        shape:Math.random()>0.5?'rect':'circle'
+    });
+    function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pieces.forEach(p=>{
+            p.y+=p.speed; p.angle+=p.spin;
+            if(p.y>canvas.height) p.y=-20;
+            ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.angle*Math.PI/180); ctx.fillStyle=p.color;
+            if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.w/2,0,Math.PI*2);ctx.fill();}
+            else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+            ctx.restore();
         });
-        
-        html += `</div>`;
-        document.getElementById('game-content').innerHTML = html;
+        animationFrame=requestAnimationFrame(animate);
     }
-
-    function checkGuess(s, c) { 
-        if (!gameActive) return;
-        
-        if (s === c) { 
-            playSound('correct');
-            score += (sec * 5) + 50; 
-            document.getElementById('score-num').innerText = score;
-            
-            if (currentStep === 9) {
-                gameActive = false;
-                playSound('win');
-                finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
-            } else {
-                nextStep(); 
-            }
-        } else { 
-            playSound('wrong');
-            gameActive = false;
-            finish("إجابة خاطئة! ❌", false); 
-        } 
+    animate();
+    setTimeout(()=>{cancelAnimationFrame(animationFrame);ctx.clearRect(0,0,canvas.width,canvas.height);},8000);
+}
+ 
+// ===== إشعار النقاط =====
+function showScorePopup(pts,isCombo){
+    const el=document.createElement('div');
+    el.className='score-popup';
+    el.innerText=(isCombo?'🔥 COMBO! ':'')+(pts>0?'+'+pts:'');
+    if(isCombo) el.style.fontSize='2rem';
+    el.style.left=(window.innerWidth/2-60)+'px';
+    el.style.top=(window.innerHeight/2-80)+'px';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1300);
+}
+ 
+function shuffle(arr){
+    let a=[...arr];
+    for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+    return a;
+}
+ 
+function filterBrokenImages(){
+    return new Promise(resolve=>{
+        let done=0; const working=[];
+        books.forEach(book=>{
+            const img=new Image();
+            const check=()=>{done++;if(done===books.length){validBooks=working.length>=4?working:[...books];resolve();}};
+            img.onload=()=>{working.push(book);check();};
+            img.onerror=()=>check();
+            img.src=book.i;
+        });
+    });
+}
+ 
+function initApp(){
+    const d=new Date().toDateString();
+    let t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
+    if(t.date!==d) t={date:d,count:0};
+    localStorage.setItem('adab_v19_limit',JSON.stringify(t));
+    updateTriesDisplay();
+}
+function updateTriesDisplay(){
+    const t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
+    document.getElementById('tries-text').innerText=`المحاولات المتبقية اليوم: ${3-t.count}`;
+}
+function validateInput(){
+    const v=document.getElementById('player-name').value.trim();
+    const t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
+    document.getElementById('btn-start').disabled=!(v.length>=2&&t.count<3);
+}
+ 
+function startFestival(){
+    const t=JSON.parse(localStorage.getItem('adab_v19_limit')||'{"date":"","count":0}');
+    const today=new Date().toDateString();
+    if(t.date!==today){t.date=today;t.count=0;}
+    if(t.count>=3){alert("استنفذت محاولاتك اليوم! تعال غداً 🎮");return;}
+    playerName=document.getElementById('player-name').value.trim();
+    if(playerName.length<2){alert("أدخل اسمًا صحيحًا");return;}
+    t.count++; localStorage.setItem('adab_v19_limit',JSON.stringify(t));
+    updateTriesDisplay();
+ 
+    document.getElementById('home').style.display='none';
+    document.getElementById('game-area').style.display='block';
+    document.getElementById('score-num').innerText='0';
+    document.getElementById('game-content').innerHTML=`
+        <div class="loading-wrap">
+            <div class="loading-spinner"></div>
+            <p style="color:var(--teal);font-weight:bold;">جاري تحميل الصور...</p>
+            <div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div>
+        </div>`;
+ 
+    let prog=0;
+    const li=setInterval(()=>{
+        prog=Math.min(prog+Math.random()*15,90);
+        const b=document.getElementById('load-bar');
+        if(b) b.style.width=prog+'%';
+    },200);
+ 
+    filterBrokenImages().then(()=>{
+        clearInterval(li);
+        const b=document.getElementById('load-bar');
+        if(b) b.style.width='100%';
+        setTimeout(()=>{
+            randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
+            score=0; currentStep=1; gameActive=true; combo=0;
+            buildProgressDots();
+            showCountdown(loadStep);
+        },300);
+    });
+}
+ 
+function buildProgressDots(){
+    const wrap=document.getElementById('progress-steps');
+    wrap.innerHTML='';
+    for(let i=1;i<=9;i++){
+        const d=document.createElement('div');
+        d.className='step-dot'+(i===1?' active':'');
+        d.id='dot-'+i;
+        wrap.appendChild(d);
     }
-
-    function renderMemory(pairs) {
-        const div = document.getElementById('game-content');
-        let gameBooks = shuffle(books).slice(0, pairs);
-        let cardsData = shuffle([...gameBooks, ...gameBooks]);
-        
-        const grid = document.createElement('div');
-        grid.className = 'memory-grid';
-        grid.style.gridTemplateColumns = `repeat(2, 1fr)`;
-        
-        cardsData.forEach(book => {
-            const card = document.createElement('div');
-            card.className = 'memory-card';
-            card.innerText = "?";
-            
-            card.onclick = () => {
-                if (!gameActive) return;
-                if (memoryFlipped.length < 2 && !card.dataset.done && !card.dataset.open) {
-                    card.innerText = ""; 
-                    card.style.backgroundImage = `url(${book.i})`;
-                    card.dataset.name = book.n; 
-                    card.dataset.open = "true"; 
-                    memoryFlipped.push(card);
-                    
-                    if (memoryFlipped.length === 2) {
-                        if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
-                            playSound('correct');
-                            memoryFlipped.forEach(c => { 
-                                c.dataset.done = "true"; 
-                                c.style.opacity = "0.7";
-                            });
-                            memoryFlipped = [];
-                            
-                            if (document.querySelectorAll('[data-done="true"]').length === pairs * 2) { 
-                                score += (sec * 5) + 100; 
-                                document.getElementById('score-num').innerText = score;
-                                
-                                if (currentStep === 9) {
-                                    gameActive = false;
-                                    playSound('win');
-                                    finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
-                                } else {
-                                    nextStep(); 
-                                }
-                            }
-                        } else {
-                            playSound('wrong');
-                            setTimeout(() => { 
-                                memoryFlipped.forEach(c => { 
-                                    c.innerText = "?"; 
-                                    c.style.backgroundImage = ""; 
-                                    delete c.dataset.open;
-                                    delete c.dataset.name;
-                                }); 
-                                memoryFlipped = []; 
-                            }, 600);
-                        }
+}
+function updateProgressDots(){
+    for(let i=1;i<=9;i++){
+        const d=document.getElementById('dot-'+i);
+        if(!d) continue;
+        d.className='step-dot'+(i<currentStep?' done':i===currentStep?' active':'');
+    }
+}
+ 
+function showCountdown(cb){
+    const ov=document.getElementById('countdown-overlay');
+    const txt=document.getElementById('countdown-text');
+    const lbl=document.getElementById('countdown-label');
+    ov.style.display='flex';
+    let c=3; txt.innerText=c; lbl.innerText='استعد!';
+    let ct=setInterval(()=>{
+        c--;
+        txt.style.animation='none'; void txt.offsetWidth;
+        txt.style.animation='countPop 0.4s cubic-bezier(.175,.885,.32,1.275)';
+        if(c>0) txt.innerText=c;
+        else if(c===0){txt.innerText='🚀';lbl.innerText='انطلق!';}
+        else{clearInterval(ct);ov.style.display='none';cb();}
+    },750);
+}
+ 
+function loadStep(){
+    if(!gameActive) return;
+    clearInterval(timer); selectedPiece=null;
+    updateProgressDots();
+    const s=randomizedSteps[currentStep-1];
+    document.getElementById('lvl-num').innerText=currentStep;
+    document.getElementById('lvl-desc').innerText=s.d;
+    sec=s.t;
+    const tl=document.getElementById('timer-line');
+    tl.style.width='100%'; tl.classList.remove('danger');
+    document.getElementById('game-content').innerHTML='';
+ 
+    if(s.type==='guess') renderGuess(s.blur);
+    else if(s.type==='memory') renderMemory(s.pairs);
+    else if(s.type==='puzzle') renderPuzzle(s.s);
+ 
+    timer=setInterval(()=>{
+        sec--;
+        const pct=sec/s.t*100;
+        tl.style.width=pct+'%';
+        if(pct<30) tl.classList.add('danger');
+        if(sec===5) playSound('timer');
+        if(sec<=0){clearInterval(timer);gameActive=false;finish("للأسف، انتهى الوقت! ⏰",false);}
+    },1000);
+}
+ 
+// ===== التخمين =====
+function renderGuess(blur){
+    const correct=validBooks[Math.floor(Math.random()*validBooks.length)];
+    let options=shuffle(validBooks.filter(b=>b.n!==correct.n)).slice(0,3);
+    options.push(correct); options=shuffle(options);
+ 
+    const div=document.getElementById('game-content');
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`
+        <div class="guess-img-wrap">
+            <img src="${correct.i}" style="filter:blur(${blur}px);" id="guess-img" width="160">
+        </div>
+        <div class="guess-grid" id="guess-btns"></div>`;
+    div.appendChild(wrap);
+ 
+    const grid=document.getElementById('guess-btns');
+    options.forEach(b=>{
+        const btn=document.createElement('button');
+        btn.className='guess-btn'; btn.innerText=b.n;
+        btn.onclick=()=>checkGuess(b.n,correct.n,btn,grid);
+        grid.appendChild(btn);
+    });
+}
+function checkGuess(selected,correct,btn,grid){
+    if(!gameActive) return;
+    [...grid.children].forEach(b=>{
+        b.disabled=true;
+        if(b.innerText===correct) b.classList.add('correct-ans');
+    });
+    const img=document.getElementById('guess-img');
+    if(img) img.style.filter='blur(0)';
+ 
+    if(selected===correct){
+        combo++;
+        const pts=(sec*5)+50+(combo>1?combo*20:0);
+        score+=pts; document.getElementById('score-num').innerText=score;
+        showScorePopup(pts,combo>1);
+        playSound(combo>1?'combo':'correct');
+        btn.classList.add('bounce');
+        setTimeout(()=>{
+            if(currentStep===9){gameActive=false;playSound('win');finish("🎉 مبروك! أكملت جميع المراحل!",true);}
+            else nextStep();
+        },900);
+    } else {
+        combo=0; btn.classList.add('wrong-ans','shake');
+        playSound('wrong');
+        setTimeout(()=>{gameActive=false;finish("إجابة خاطئة ❌",false);},1000);
+    }
+}
+ 
+// ===== الذاكرة =====
+function renderMemory(pairs){
+    const div=document.getElementById('game-content');
+    const sel=shuffle(validBooks).slice(0,pairs);
+    let cards=[];
+    sel.forEach(b=>{cards.push({n:b.n,i:b.i,id:b.n});cards.push({n:b.n,i:b.i,id:b.n});});
+    cards=shuffle(cards);
+ 
+    const cols=pairs<=2?2:pairs<=3?3:4;
+    const grid=document.createElement('div');
+    grid.className='memory-grid';
+    grid.style.gridTemplateColumns=`repeat(${cols}, 1fr)`;
+ 
+    let flipped=[],matchedCount=0,isChecking=false;
+ 
+    cards.forEach(card=>{
+        const el=document.createElement('div');
+        el.className='memory-card'; el.innerHTML='❓';
+        el.onclick=()=>{
+            if(!gameActive||isChecking||el.dataset.done==='true'||el.dataset.open==='true') return;
+            el.dataset.open='true'; el.innerHTML='';
+            el.style.backgroundImage=`url(${card.i})`; el.style.backgroundSize='cover';
+            el.style.backgroundPosition='center'; el.style.background='';
+            playSound('click'); flipped.push({el,card});
+ 
+            if(flipped.length===2){
+                isChecking=true;
+                const [a,b]=flipped;
+                if(a.card.id===b.card.id){
+                    playSound('correct');
+                    a.el.dataset.done='true'; b.el.dataset.done='true';
+                    a.el.classList.add('matched'); b.el.classList.add('matched');
+                    flipped=[]; isChecking=false; matchedCount++;
+                    if(matchedCount===pairs){
+                        combo++;
+                        const pts=(sec*8)+100+(combo>1?combo*20:0);
+                        score+=pts; document.getElementById('score-num').innerText=score;
+                        showScorePopup(pts,combo>1);
+                        playSound(combo>1?'combo':'win');
+                        setTimeout(()=>{
+                            if(currentStep===9){gameActive=false;finish("🎉 مبروك! أكملت جميع المراحل!",true);}
+                            else nextStep();
+                        },600);
                     }
-                }
-            };
-            grid.appendChild(card);
-        });
-        div.appendChild(grid);
-    }
-
-    function renderPuzzle(size) {
-        const div = document.getElementById('game-content');
-        const book = books[Math.floor(Math.random() * books.length)];
-        const grid = document.createElement('div');
-        grid.className = 'puzzle-grid';
-        grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-        
-        const containerW = 280, containerH = 380;
-        let totalPieces = size * size;
-        
-        let correctPositions = Array.from({ length: totalPieces }, (_, i) => i);
-        let shuffledPositions = shuffle(correctPositions);
-
-        shuffledPositions.forEach((position, index) => {
-            const p = document.createElement('div');
-            p.className = 'puzzle-piece';
-            
-            const w = containerW / size;
-            const h = containerH / size;
-            
-            p.style.backgroundImage = `url(${book.i})`;
-            p.style.backgroundSize = `${containerW}px ${containerH}px`;
-            
-            const bx = (position % size) * w;
-            const by = Math.floor(position / size) * h;
-            p.style.backgroundPosition = `-${bx}px -${by}px`;
-            
-            p.dataset.correctPosition = position;
-
-            p.onclick = () => {
-                if (!gameActive) return;
-                
-                if (!selectedPiece) {
-                    selectedPiece = p;
-                    p.classList.add('selected-piece');
-                } else if (selectedPiece === p) {
-                    selectedPiece.classList.remove('selected-piece');
-                    selectedPiece = null;
                 } else {
-                    let piece1 = selectedPiece;
-                    let piece2 = p;
-                    
-                    let tempBG = piece1.style.backgroundPosition;
-                    piece1.style.backgroundPosition = piece2.style.backgroundPosition;
-                    piece2.style.backgroundPosition = tempBG;
-                    
-                    let tempCorrect = piece1.dataset.correctPosition;
-                    piece1.dataset.correctPosition = piece2.dataset.correctPosition;
-                    piece2.dataset.correctPosition = tempCorrect;
-                    
-                    piece1.classList.remove('selected-piece');
-                    selectedPiece = null;
-                    
-                    const allPieces = document.querySelectorAll('.puzzle-piece');
-                    let win = true;
-                    
-                    allPieces.forEach((piece, idx) => {
-                        if (parseInt(piece.dataset.correctPosition) !== idx) {
-                            win = false;
-                        }
-                    });
-
-                    if (win) {
-                        playSound('win');
-                        score += (sec * 10) + 200;
-                        document.getElementById('score-num').innerText = score;
-                        
-                        if (currentStep === 9) {
-                            gameActive = false;
-                            finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
-                        } else {
-                            nextStep();
-                        }
-                    }
+                    playSound('wrong'); combo=0;
+                    setTimeout(()=>{
+                        [a,b].forEach(x=>{
+                            x.el.dataset.open='false'; x.el.innerHTML='❓';
+                            x.el.style.backgroundImage='';
+                            x.el.style.background='linear-gradient(135deg, var(--teal), var(--teal-dark))';
+                        });
+                        flipped=[]; isChecking=false;
+                    },900);
                 }
-            };
-            grid.appendChild(p);
-        });
-        
-        div.appendChild(grid);
-    }
-
-    function nextStep() {
-        clearInterval(timer);
-        if (currentStep < 9) { 
-            currentStep++; 
-            loadStep(); 
-        }
-    }
-
-        function finish(msg, wonAll) {
-        clearInterval(timer);
-        
-        const today = new Date().toDateString();
-        let leaderboard = JSON.parse(localStorage.getItem('adab_v18_lb') || '[]');
-        
-        const existingEntryIndex = leaderboard.findIndex(entry => entry.name === playerName && entry.date === today);
-        
-        if (existingEntryIndex !== -1) {
-            if (score > leaderboard[existingEntryIndex].score) {
-                leaderboard[existingEntryIndex].score = score;
             }
-        } else {
-            leaderboard.push({ name: playerName, score: score, date: today });
-        }
-        
-        localStorage.setItem('adab_v18_lb', JSON.stringify(leaderboard));
-        
-        const daily = leaderboard
-            .filter(e => e.date === today)
-            .sort((a, b) => b.score - a.score);
-        
-        const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
-        
-        let promo = "ADAB5";
-        let prizeMsg = "كود الخصم التقديري:";
-        
-        if (wonAll) {
-            if (rank === 1) promo = "ADAB30";
-            else if (rank === 2) promo = "ADAB25";
-            else if (rank === 3) promo = "ADAB15";
-            else promo = "ADAB10";
-            prizeMsg = "كود الفوز المكتسب:";
-            startCelebration();
-        }
-
-        document.getElementById('game-content').innerHTML = `
-            <h2 style="color: ${wonAll ? 'var(--teal)' : 'var(--burgundy)'}; margin: 15px 0;">${msg}</h2>
-            <h1 style="font-size:3rem; color:var(--teal); margin: 10px 0;">${score}⚡</h1>
-            <p style="font-size:1.2rem; margin:10px 0;">ترتيبك اليوم: #${rank}</p>
-            <div style="background:#fff9e6; border:2px dashed var(--gold); padding:20px; border-radius:15px; margin:20px 0; ${wonAll ? 'animation: glow 1.5s ease-in-out infinite;' : ''}">
-                <p style="font-size:1rem; margin-bottom:5px;">${prizeMsg}</p>
-                <h2 style="color:var(--burgundy); letter-spacing:2px; margin:10px 0; font-size:2rem;">${promo}</h2>
-                ${wonAll ? `
-                    <button class="start-btn" style="font-size:0.9rem; padding:10px; width:auto; margin:0 auto;" onclick="navigator.clipboard.writeText('${promo}');alert('✅ تم نسخ الكود بنجاح!')">
-                        نسخ الكود 📋
-                    </button>
-                ` : ''}
+        };
+        grid.appendChild(el);
+    });
+    div.appendChild(grid);
+}
+ 
+// ===== البازل =====
+function renderPuzzle(size){
+    const div=document.getElementById('game-content');
+    const book=validBooks[Math.floor(Math.random()*validBooks.length)];
+    const grid=document.createElement('div');
+    grid.className='puzzle-grid';
+    grid.style.gridTemplateColumns=`repeat(${size}, 1fr)`;
+    grid.style.direction='ltr';
+    const W=280,H=380;
+    const shuffled=shuffle(Array.from({length:size*size},(_,i)=>i));
+ 
+    shuffled.forEach((pos,idx)=>{
+        const p=document.createElement('div');
+        p.className='puzzle-piece';
+        const w=W/size,h=H/size;
+        p.style.backgroundImage=`url(${book.i})`;
+        p.style.backgroundSize=`${W}px ${H}px`;
+        p.style.backgroundPosition=`-${(pos%size)*w}px -${Math.floor(pos/size)*h}px`;
+        p.dataset.correctPosition=pos;
+ 
+        p.onclick=()=>{
+            if(!gameActive) return;
+            playSound('click');
+            if(!selectedPiece){selectedPiece=p;p.classList.add('selected-piece');}
+            else if(selectedPiece===p){selectedPiece.classList.remove('selected-piece');selectedPiece=null;}
+            else{
+                const p1=selectedPiece,p2=p;
+                [p1.style.backgroundPosition,p2.style.backgroundPosition]=[p2.style.backgroundPosition,p1.style.backgroundPosition];
+                [p1.dataset.correctPosition,p2.dataset.correctPosition]=[p2.dataset.correctPosition,p1.dataset.correctPosition];
+                p1.classList.remove('selected-piece'); selectedPiece=null;
+ 
+                const all=document.querySelectorAll('.puzzle-piece');
+                const won=[...all].every((pc,i)=>parseInt(pc.dataset.correctPosition)===i);
+                if(won){
+                    combo++;
+                    const pts=(sec*10)+200+(combo>1?combo*30:0);
+                    score+=pts; document.getElementById('score-num').innerText=score;
+                    showScorePopup(pts,combo>1);
+                    playSound('win');
+                    setTimeout(()=>{
+                        if(currentStep===9){gameActive=false;finish("🎉 مبروك! أكملت جميع المراحل!",true);}
+                        else nextStep();
+                    },600);
+                }
+            }
+        };
+        grid.appendChild(p);
+    });
+    div.appendChild(grid);
+}
+ 
+function nextStep(){clearInterval(timer);if(currentStep<9){currentStep++;loadStep();}}
+ 
+// ===== النتيجة =====
+function finish(msg,wonAll){
+    clearInterval(timer);
+    const today=new Date().toDateString();
+    let lb=JSON.parse(localStorage.getItem('adab_v19_lb')||'[]');
+    const ei=lb.findIndex(e=>e.name===playerName&&e.date===today);
+    if(ei!==-1){if(score>lb[ei].score)lb[ei].score=score;}
+    else lb.push({name:playerName,score,date:today});
+    localStorage.setItem('adab_v19_lb',JSON.stringify(lb));
+ 
+    const daily=lb.filter(e=>e.date===today).sort((a,b)=>b.score-a.score);
+    const rank=daily.findIndex(e=>e.name===playerName)+1;
+ 
+    let promo="ADAB5",prizeMsg="كود الخصم التقديري:";
+    if(wonAll){
+        promo=rank===1?"ADAB30":rank===2?"ADAB25":rank===3?"ADAB15":"ADAB10";
+        prizeMsg="🏆 كود الفوز المكتسب:";
+        startCelebration();
+    }
+ 
+    const rankClass=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-other';
+    const rankEmoji=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'🎯';
+ 
+    document.getElementById('game-content').innerHTML=`
+        <div class="result-screen">
+            <h2 style="color:${wonAll?'var(--teal)':'var(--burgundy)'};margin:10px 0;font-size:1.3rem;">${msg}</h2>
+            <div class="result-score">${score}⚡</div>
+            <div class="rank-badge ${rankClass}">${rankEmoji} المركز #${rank} اليوم</div>
+            <div class="promo-box ${wonAll?'glow-anim':''}">
+                <p style="font-size:0.9rem;color:#888;margin-bottom:4px;">${prizeMsg}</p>
+                <div class="promo-code">${promo}</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('${promo}').then(()=>{this.innerText='✅ تم النسخ!';setTimeout(()=>this.innerText='نسخ الكود 📋',2000)})">نسخ الكود 📋</button>
             </div>
-            
-            <!-- رابط متجر أدب بوك -->
-            <div class="https://adab-book.com/">
-                <p style="font-size: 1rem; margin-bottom: 10px;">📚 تسوق الآن من</p>
-                <h3 style="font-size: 1.5rem; margin-bottom: 10px;">متجر أدب بوك</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">أفضل الكتب الأدبية بانتظارك</p>
-                <a href="https://adabbook.com" target="_blank" class="shop-btn">
-                    تسوق الآن 🛒
-                </a>
+            <div class="adabbook-link">
+                <p style="font-size:0.95rem;margin-bottom:4px;">📚 تسوق الآن من</p>
+                <h3 style="font-size:1.4rem;margin-bottom:4px;">متجر أدب بوك</h3>
+                <p style="font-size:0.82rem;opacity:0.85;margin-bottom:6px;">أفضل الكتب الأدبية بانتظارك</p>
+                <a href="https://adabbook.com" target="_blank" class="shop-btn">تسوق الآن 🛒</a>
             </div>
-            
             <div class="leaderboard">
-                <h4 style="border-bottom:1px solid #ddd; padding-bottom:5px;">🏆 أفضل 10 اليوم:</h4>
-                ${daily.slice(0, 10).map((u, i) => `
-                    <div class="leaderboard-item">
-                        <span>${i+1}. ${u.name} ${u.name === playerName ? '⭐' : ''}</span>
-                        <span>${u.score}⚡</span>
-                    </div>
-                `).join('')}
+                <h4 style="padding-bottom:6px;border-bottom:1px solid #e0f0f0;margin-bottom:6px;color:var(--teal);">🏆 أفضل 10 اليوم</h4>
+                ${daily.slice(0,10).map((u,i)=>`
+                    <div class="leaderboard-item ${u.name===playerName?'lb-me':''}">
+                        <span><span class="lb-rank">${i+1}.</span> ${u.name} ${u.name===playerName?'⭐':''}</span>
+                        <span style="font-weight:bold;color:var(--teal)">${u.score}⚡</span>
+                    </div>`).join('')}
             </div>
-            <button onclick="location.reload()" class="start-btn" style="background:#888; margin-top:15px;">
+            <button onclick="location.reload()" class="start-btn" style="background:linear-gradient(135deg,#666,#444);margin-top:10px;">
                 العودة للرئيسية 🏠
             </button>
-        `;
-    }
+        </div>`;
+}
 </script>
 </body>
 </html>
