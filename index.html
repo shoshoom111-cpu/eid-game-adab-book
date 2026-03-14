@@ -2,44 +2,244 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>مهرجان ألعاب مركز الأدب العربي ⚡</title>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: manipulation; }
-        .main-card { background: white; padding: 1.2rem; border-radius: 30px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); width: 95%; max-width: 400px; text-align: center; border-top: 10px solid var(--teal); max-height: 98vh; overflow-y: auto; position: relative; }
-        .logo { width: 100%; max-width: 180px; margin-bottom: 10px; border-radius: 10px; }
-        .name-field { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; outline: none; }
-        .start-btn { background: var(--teal); color: white; border: none; padding: 14px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
-        .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; }
-        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; pointer-events: none; }
-        #countdown-text { font-size: 5rem; font-weight: bold; color: var(--teal); }
-        .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 8px; font-size: 0.85rem; color: var(--teal); font-weight: bold; }
-        .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
-        #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
+        :root { 
+            --teal: #1a9397; 
+            --burgundy: #a11f2a; 
+            --gold: #c6922a; 
+            --bg: #fdfcf9; 
+        }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: 'Tajawal', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+        body { 
+            background: var(--bg); 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+            touch-action: manipulation; 
+        }
+        .main-card { 
+            background: white; 
+            padding: 1.2rem; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12); 
+            width: 95%; 
+            max-width: 400px; 
+            text-align: center; 
+            border-top: 10px solid var(--teal); 
+            max-height: 98vh; 
+            overflow-y: auto; 
+            position: relative; 
+        }
+        .logo { 
+            width: 100%; 
+            max-width: 180px; 
+            margin-bottom: 10px; 
+            border-radius: 10px; 
+        }
+        .name-field { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 12px; 
+            border: 2px solid #eee; 
+            text-align: center; 
+            margin: 10px 0; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            outline: none; 
+        }
+        .name-field:focus { border-color: var(--teal); }
+        .start-btn { 
+            background: var(--teal); 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            font-size: 1.1rem; 
+            box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); 
+            transition: 0.2s; 
+            margin-top: 5px; 
+            text-decoration: none; 
+            display: block; 
+        }
+        .start-btn:disabled { 
+            opacity: 0.3; 
+            background: #ccc; 
+            cursor: not-allowed; 
+            box-shadow: none;
+        }
+        .start-btn:active:not(:disabled) { transform: scale(0.97); }
+        #countdown-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(255,255,255,0.95); 
+            z-index: 100; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 30px; 
+            pointer-events: none; 
+        }
+        #countdown-text { 
+            font-size: 5rem; 
+            font-weight: bold; 
+            color: var(--teal); 
+        }
+        .stats-header { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px; 
+            background: #f0fafa; 
+            border-radius: 12px; 
+            margin-bottom: 8px; 
+            font-size: 0.85rem; 
+            color: var(--teal); 
+            font-weight: bold; 
+        }
+        .timer-container { 
+            background: #eee; 
+            height: 8px; 
+            border-radius: 10px; 
+            margin-bottom: 10px; 
+            overflow: hidden; 
+        }
+        #timer-line { 
+            height: 100%; 
+            background: var(--teal); 
+            width: 100%; 
+            transition: 1s linear; 
+        }
         
-        /* تحسين شبكة الألغاز لمنع الانزياح البصري */
-        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; width: 280px; height: 380px; }
-        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.1px solid rgba(255,255,255,0.2); width: 100%; height: 100%; }
-        .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.98); }
+        .puzzle-grid { 
+            display: grid; 
+            gap: 0px; 
+            margin: 10px auto; 
+            background: #eee; 
+            border: 4px solid var(--teal); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            width: 280px; 
+            height: 380px; 
+        }
+        .puzzle-piece { 
+            cursor: pointer; 
+            background-repeat: no-repeat; 
+            border: 0.1px solid rgba(255,255,255,0.2); 
+            width: 100%; 
+            height: 100%; 
+            transition: 0.1s;
+        }
+        .selected-piece { 
+            outline: 4px solid var(--gold); 
+            outline-offset: -4px; 
+            z-index: 10; 
+            transform: scale(0.98); 
+        }
         
-        .memory-card { height: 85px; background: var(--teal); border-radius: 10px; cursor: pointer; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
+        .memory-grid {
+            display: grid;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .memory-card { 
+            height: 85px; 
+            background: var(--teal); 
+            border-radius: 10px; 
+            cursor: pointer; 
+            color: white; 
+            font-size: 1.5rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-size: cover; 
+            background-position: center; 
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .memory-card[data-done="true"] { 
+            opacity: 0.5; 
+            pointer-events: none; 
+            cursor: default;
+        }
+        .memory-card[data-open="true"] { 
+            pointer-events: none; 
+        }
+        .guess-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .guess-btn {
+            background: white;
+            border: 2px solid var(--teal);
+            color: var(--teal);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .guess-btn:active {
+            background: var(--teal);
+            color: white;
+        }
+        .prize-box {
+            background: #fff9e6;
+            border: 2px dashed var(--gold);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        .leaderboard {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 12px;
+            margin: 10px 0;
+            max-height: 180px;
+            overflow-y: auto;
+            text-align: right;
+        }
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body onload="initApp()">
 
 <div class="main-card">
     <div id="countdown-overlay"><div id="countdown-text">3</div></div>
+    
+    <!-- شاشة البداية -->
     <div id="home">
-        <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo">
+        <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo" alt="مركز الأدب العربي">
         <h3 style="color: var(--burgundy);">مهرجان ألعاب الأدب ⚡</h3>
         <p id="tries-text" style="font-size: 0.8rem; color: var(--teal); margin: 5px 0; font-weight: bold;"></p>
         <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()">
         <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي 🚀</button>
     </div>
 
+    <!-- شاشة اللعبة -->
     <div id="game-area" style="display: none;">
         <div class="stats-header">
             <span>⭐ <span id="score-num">0</span></span>
@@ -52,8 +252,9 @@
 </div>
 
 <script>
+    // مصفوفة الكتب - يرجى استبدال هذه الروابط بروابط صحيحة للصور
     const books = [
-       
+      
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -111,7 +312,19 @@
         { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
     ];
 
-    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+    // خوارزمية Fisher-Yates للخلط العشوائي الحقيقي
+    function shuffle(array) {
+        let currentIndex = array.length;
+        let randomIndex;
+        let newArray = [...array];
+        
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [newArray[currentIndex], newArray[randomIndex]] = [newArray[randomIndex], newArray[currentIndex]];
+        }
+        return newArray;
+    }
 
     function initApp() {
         const d = new Date().toDateString();
@@ -129,12 +342,18 @@
 
     function startFestival() {
         let t = JSON.parse(localStorage.getItem('adab_v18_limit'));
-        t.count++; localStorage.setItem('adab_v18_limit', JSON.stringify(t));
-        randomizedSteps = [...shuffle([...easyPool]), ...shuffle([...medPool]), ...shuffle([...hardPool])];
+        t.count++; 
+        localStorage.setItem('adab_v18_limit', JSON.stringify(t));
+        
+        randomizedSteps = [...shuffle(easyPool), ...shuffle(medPool), ...shuffle(hardPool)];
         playerName = document.getElementById('player-name').value.trim();
-        score = 0; currentStep = 1;
+        score = 0; 
+        currentStep = 1;
+        
         document.getElementById('home').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
+        document.getElementById('score-num').innerText = '0';
+        
         showCountdown(loadStep);
     }
 
@@ -142,23 +361,38 @@
         const ov = document.getElementById('countdown-overlay');
         const txt = document.getElementById('countdown-text');
         ov.style.display = 'flex';
-        let c = 3; txt.innerText = c;
+        let c = 3; 
+        txt.innerText = c;
+        
         let ct = setInterval(() => {
             c--;
-            if (c > 0) txt.innerText = c;
-            else if (c === 0) txt.innerText = "انطلق!";
-            else { clearInterval(ct); ov.style.display = 'none'; cb(); }
+            if (c > 0) {
+                txt.innerText = c;
+            } else if (c === 0) {
+                txt.innerText = "انطلق!";
+            } else { 
+                clearInterval(ct); 
+                ov.style.display = 'none'; 
+                cb(); 
+            }
         }, 800);
     }
 
     function loadStep() {
         clearInterval(timer);
-        selectedPiece = null; memoryFlipped = [];
-        const s = randomizedSteps[currentStep-1];
+        selectedPiece = null; 
+        memoryFlipped = [];
+        
+        const s = randomizedSteps[currentStep - 1];
         document.getElementById('lvl-num').innerText = currentStep;
         document.getElementById('lvl-desc').innerText = s.d;
         sec = s.t;
-        const div = document.getElementById('game-content'); div.innerHTML = "";
+        
+        const timerLine = document.getElementById('timer-line');
+        timerLine.style.width = "100%";
+        
+        const div = document.getElementById('game-content'); 
+        div.innerHTML = "";
 
         if (s.type === 'guess') renderGuess(s.blur);
         else if (s.type === 'memory') renderMemory(s.pairs);
@@ -166,45 +400,98 @@
 
         timer = setInterval(() => {
             sec--;
-            document.getElementById('timer-line').style.width = (sec/s.t*100) + "%";
+            timerLine.style.width = (sec / s.t * 100) + "%";
             if (sec <= 0) finish("للأسف، انتهى الوقت! ⏰", false);
         }, 1000);
     }
 
     function renderGuess(blur) {
-        const correct = books[Math.floor(Math.random()*books.length)];
-        let options = shuffle(books.filter(b => b.n !== correct.n)).slice(0, 3);
+        const correct = books[Math.floor(Math.random() * books.length)];
+        let otherBooks = books.filter(b => b.n !== correct.n);
+        let options = shuffle(otherBooks).slice(0, 3);
         options.push(correct);
-        shuffle(options);
-        document.getElementById('game-content').innerHTML = `
-            <img src="${correct.i}" style="width:160px; filter:blur(${blur}px); border-radius:15px; margin-bottom:15px;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                ${options.map(b => `<button class="start-btn" style="font-size:0.85rem;" onclick="checkGuess('${b.n}','${correct.n}')">${b.n}</button>`).join('')}
-            </div>`;
+        options = shuffle(options);
+        
+        let html = `
+            <img src="${correct.i}" style="width:160px; filter:blur(${blur}px); border-radius:15px; margin:15px auto; display:block;">
+            <div class="guess-grid">
+        `;
+        
+        options.forEach(b => {
+            html += `<button class="guess-btn" onclick="checkGuess('${b.n.replace(/'/g, "\\'")}', '${correct.n.replace(/'/g, "\\'")}')">${b.n}</button>`;
+        });
+        
+        html += `</div>`;
+        document.getElementById('game-content').innerHTML = html;
     }
 
-    function checkGuess(s, c) { if (s === c) { score += (sec * 5) + 50; nextStep(); } else finish("إجابة خاطئة! ❌", false); }
+    function checkGuess(s, c) { 
+        if (s === c) { 
+            score += (sec * 5) + 50; 
+            document.getElementById('score-num').innerText = score;
+            
+            if (currentStep === 9) {
+                finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
+            } else {
+                nextStep(); 
+            }
+        } else { 
+            finish("إجابة خاطئة! ❌", false); 
+        } 
+    }
 
     function renderMemory(pairs) {
         const div = document.getElementById('game-content');
-        let gameBooks = shuffle([...books]).slice(0, pairs);
+        let gameBooks = shuffle(books).slice(0, pairs);
         let cardsData = shuffle([...gameBooks, ...gameBooks]);
+        
         const grid = document.createElement('div');
-        grid.style = `display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;`;
+        grid.className = 'memory-grid';
+        grid.style.gridTemplateColumns = `repeat(2, 1fr)`;
+        
         cardsData.forEach(book => {
             const card = document.createElement('div');
-            card.className = 'memory-card'; card.innerText = "?";
+            card.className = 'memory-card';
+            card.innerText = "?";
+            
             card.onclick = () => {
                 if (memoryFlipped.length < 2 && !card.dataset.done && !card.dataset.open) {
-                    card.innerText = ""; card.style.backgroundImage = `url(${book.i})`;
-                    card.dataset.name = book.n; card.dataset.open = "true"; memoryFlipped.push(card);
+                    card.innerText = ""; 
+                    card.style.backgroundImage = `url(${book.i})`;
+                    card.dataset.name = book.n; 
+                    card.dataset.open = "true"; 
+                    memoryFlipped.push(card);
+                    
                     if (memoryFlipped.length === 2) {
                         if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
-                            memoryFlipped.forEach(c => { c.dataset.done = "true"; c.style.opacity = "0.5"; });
+                            // تطابق صحيح
+                            memoryFlipped.forEach(c => { 
+                                c.dataset.done = "true"; 
+                                c.style.opacity = "0.7";
+                            });
                             memoryFlipped = [];
-                            if (document.querySelectorAll('[data-done="true"]').length === pairs * 2) { score += (sec * 5) + 100; nextStep(); }
+                            
+                            if (document.querySelectorAll('[data-done="true"]').length === pairs * 2) { 
+                                score += (sec * 5) + 100; 
+                                document.getElementById('score-num').innerText = score;
+                                
+                                if (currentStep === 9) {
+                                    finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
+                                } else {
+                                    nextStep(); 
+                                }
+                            }
                         } else {
-                            setTimeout(() => { memoryFlipped.forEach(c => { c.innerText = "?"; c.style.backgroundImage = ""; delete c.dataset.open; }); memoryFlipped = []; }, 600);
+                            // خطأ - إعادة القلب بعد تأخير
+                            setTimeout(() => { 
+                                memoryFlipped.forEach(c => { 
+                                    c.innerText = "?"; 
+                                    c.style.backgroundImage = ""; 
+                                    delete c.dataset.open;
+                                    delete c.dataset.name;
+                                }); 
+                                memoryFlipped = []; 
+                            }, 600);
                         }
                     }
                 }
@@ -214,102 +501,154 @@
         div.appendChild(grid);
     }
 
-    /* --- محرك الألغاز المحسن: التحقق من الهوية والمكان --- */
     function renderPuzzle(size) {
         const div = document.getElementById('game-content');
-        const book = books[Math.floor(Math.random()*books.length)];
+        const book = books[Math.floor(Math.random() * books.length)];
         const grid = document.createElement('div');
         grid.className = 'puzzle-grid';
         grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
         
         const containerW = 280, containerH = 380;
         let totalPieces = size * size;
-        let indices = Array.from({length: totalPieces}, (_, i) => i);
-        let shuffled = shuffle([...indices]);
+        
+        // إنشاء مصفوفة من الأرقام من 0 إلى totalPieces-1 (المواقع الصحيحة)
+        let correctPositions = Array.from({ length: totalPieces }, (_, i) => i);
+        
+        // خلط الأرقام لتوزيع القطع بشكل عشوائي
+        let shuffledPositions = shuffle(correctPositions);
 
-        shuffled.forEach((pieceId) => {
+        // إنشاء القطع حسب الترتيب العشوائي
+        shuffledPositions.forEach((position, index) => {
             const p = document.createElement('div');
             p.className = 'puzzle-piece';
+            
             const w = containerW / size;
             const h = containerH / size;
             
             p.style.backgroundImage = `url(${book.i})`;
             p.style.backgroundSize = `${containerW}px ${containerH}px`;
             
-            // تحديد أي جزء من الصورة ينتمي لهذه القطعة بناءً على معرفها الأصلي (pieceId)
-            const bx = (pieceId % size) * w;
-            const by = Math.floor(pieceId / size) * h;
+            // position يحدد أي جزء من الصورة يظهر في هذه القطعة
+            const bx = (position % size) * w;
+            const by = Math.floor(position / size) * h;
             p.style.backgroundPosition = `-${bx}px -${by}px`;
             
-            p.dataset.correctId = pieceId; // الهوية الرقمية للقطعة
+            // نحفظ الموضع الصحيح الذي يجب أن تكون فيه هذه القطعة
+            p.dataset.correctPosition = position;
 
             p.onclick = () => {
                 if (!selectedPiece) {
                     selectedPiece = p;
                     p.classList.add('selected-piece');
+                } else if (selectedPiece === p) {
+                    selectedPiece.classList.remove('selected-piece');
+                    selectedPiece = null;
                 } else {
-                    // تبديل الهوية والخلفية بين القطعتين المختاريتين
-                    let targetID = p.dataset.correctId;
-                    let targetBG = p.style.backgroundPosition;
+                    // تبديل البيانات والمواقع بين القطعتين
+                    let tempCorrectPosition = p.dataset.correctPosition;
+                    let tempBackground = p.style.backgroundPosition;
 
-                    p.dataset.correctId = selectedPiece.dataset.correctId;
+                    p.dataset.correctPosition = selectedPiece.dataset.correctPosition;
                     p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    selectedPiece.dataset.correctId = targetID;
-                    selectedPiece.style.backgroundPosition = targetBG;
+                    selectedPiece.dataset.correctPosition = tempCorrectPosition;
+                    selectedPiece.style.backgroundPosition = tempBackground;
 
                     selectedPiece.classList.remove('selected-piece');
                     selectedPiece = null;
 
-                    // فحص الفوز: هل رقم القطعة (ID) يطابق ترتيبها الحالي في الـ DOM؟
+                    // التحقق من الفوز
                     const allPieces = document.querySelectorAll('.puzzle-piece');
                     let win = true;
-                    allPieces.forEach((piece, index) => {
-                        if (parseInt(piece.dataset.correctId) !== index) win = false;
+                    allPieces.forEach((piece, idx) => {
+                        if (parseInt(piece.dataset.correctPosition) !== idx) {
+                            win = false;
+                        }
                     });
 
                     if (win) {
                         score += (sec * 10) + 200;
-                        nextStep();
+                        document.getElementById('score-num').innerText = score;
+                        
+                        if (currentStep === 9) {
+                            finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
+                        } else {
+                            nextStep();
+                        }
                     }
                 }
             };
             grid.appendChild(p);
         });
+        
         div.appendChild(grid);
     }
 
     function nextStep() {
         clearInterval(timer);
-        document.getElementById('score-num').innerText = score;
-        if (currentStep < 9) { currentStep++; loadStep(); }
-        else finish("🎉 مبروك! لقد ختمت جميع المراحل بنجاح", true);
+        if (currentStep < 9) { 
+            currentStep++; 
+            loadStep(); 
+        }
     }
 
     function finish(msg, wonAll) {
         clearInterval(timer);
+        
         const today = new Date().toDateString();
-        let d = JSON.parse(localStorage.getItem('adab_v18_lb') || '[]');
-        d.push({ name: playerName, score: score, date: today });
-        localStorage.setItem('adab_v18_lb', JSON.stringify(d));
-        const daily = d.filter(e => e.date === today).sort((a,b) => b.score - a.score);
+        let leaderboard = JSON.parse(localStorage.getItem('adab_v18_lb') || '[]');
+        
+        // التحقق مما إذا كان اللاعب قد لعب اليوم بالفعل
+        const existingEntryIndex = leaderboard.findIndex(entry => entry.name === playerName && entry.date === today);
+        
+        if (existingEntryIndex !== -1) {
+            // إذا كان موجوداً، قم بتحديث النتيجة إذا كانت الجديدة أعلى
+            if (score > leaderboard[existingEntryIndex].score) {
+                leaderboard[existingEntryIndex].score = score;
+            }
+        } else {
+            // إذا لم يكن موجوداً، أضف نتيجة جديدة
+            leaderboard.push({ name: playerName, score: score, date: today });
+        }
+        
+        localStorage.setItem('adab_v18_lb', JSON.stringify(leaderboard));
+        
+        // ترتيب لوحة المتصدرين لليوم
+        const daily = leaderboard
+            .filter(e => e.date === today)
+            .sort((a, b) => b.score - a.score);
+        
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
         
-        let promo = wonAll ? (rank === 1 ? "ADAB30" : rank === 2 ? "ADAB25" : rank === 3 ? "ADAB15" : "ADAB10") : "ADAB5";
-        let prizeMsg = wonAll ? "كود الفوز المكتسب:" : "كود الخصم التقديري:";
+        // تحديد كود الخصم
+        let promo = "ADAB5"; // الكود الافتراضي
+        let prizeMsg = "كود الخصم التقديري:";
+        
+        if (wonAll) {
+            if (rank === 1) promo = "ADAB30";
+            else if (rank === 2) promo = "ADAB25";
+            else if (rank === 3) promo = "ADAB15";
+            else promo = "ADAB10";
+            prizeMsg = "كود الفوز المكتسب:";
+        }
 
         document.getElementById('game-content').innerHTML = `
-            <h2>${msg}</h2>
+            <h2 style="color: var(--burgundy); margin: 10px 0;">${msg}</h2>
             <h1 style="font-size:3rem; color:var(--teal)">${score}⚡</h1>
-            <p>ترتيبك اليوم: #${rank}</p>
-            <div style="background:#fff9e6; border:2px dashed var(--gold); padding:15px; border-radius:15px; margin:15px 0;">
+            <p style="font-size:1.1rem; margin:10px 0;">ترتيبك اليوم: #${rank}</p>
+            <div class="prize-box">
                 <p style="font-size:0.9rem">${prizeMsg}</p>
                 <h2 style="color:var(--burgundy); letter-spacing:2px; margin:5px 0;">${promo}</h2>
-                <button class="start-btn" style="font-size:0.8rem; padding:8px;" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود')">نسخ الكود 📋</button>
+                <button class="start-btn" style="font-size:0.8rem; padding:8px;" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود بنجاح!')">نسخ الكود 📋</button>
             </div>
-            <div style="background:#f9f9f9; border-radius:15px; padding:12px; margin:10px 0; max-height:180px; overflow-y:auto; text-align:right;">
+            <div class="leaderboard">
                 <h4 style="border-bottom:1px solid #ddd; padding-bottom:5px;">🏆 أفضل 10 اليوم:</h4>
-                ${daily.slice(0, 10).map((u, i) => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee; font-size:0.8rem;"><span>${i+1}. ${u.name}</span><span>${u.score}⚡</span></div>`).join('')}
+                ${daily.slice(0, 10).map((u, i) => `
+                    <div class="leaderboard-item">
+                        <span>${i+1}. ${u.name} ${u.name === playerName ? '⭐' : ''}</span>
+                        <span>${u.score}⚡</span>
+                    </div>
+                `).join('')}
             </div>
             <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة للرئيسية</button>
         `;
