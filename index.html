@@ -96,17 +96,17 @@
     let score = 0, currentStep = 1, sec = 30, timer, playerName = "", selectedPiece = null, memoryFlipped = [], randomizedSteps = [];
 
     const easyPool = [
-        { type: 'guess', t: 20, blur: 5, d: "خمن الكتاب (سهل) 📚" },
+        { type: 'guess', t: 20, blur: 1, d: "خمن الكتاب (سهل) 📚" },
         { type: 'memory', t: 30, pairs: 2, d: "طابق البطاقات (سهل) 🃏" },
         { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف (2×2) 🧩" }
     ];
     const medPool = [
-        { type: 'guess', t: 15, blur: 9, d: "خمن الكتاب (متوسط) ⚡" },
+        { type: 'guess', t: 15, blur: 3, d: "خمن الكتاب (متوسط) ⚡" },
         { type: 'memory', t: 35, pairs: 3, d: "تحدي الذاكرة (متوسط) 🃏" },
         { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف (3×3) 🧩" }
     ];
     const hardPool = [
-        { type: 'guess', t: 12, blur: 16, d: "خمن الكتاب (صعب) 🔥" },
+        { type: 'guess', t: 12, blur: 6, d: "خمن الكتاب (صعب) 🔥" },
         { type: 'memory', t: 45, pairs: 4, d: "الذاكرة الفولاذية (صعب) 🃏" },
         { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
     ];
