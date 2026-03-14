@@ -2,276 +2,299 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مهرجان ألعاب مركز الأدب العربي 🌙</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مهرجان ألعاب مركز الأدب العربي ⚡</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net"></script>
     <style>
         :root { --teal: #1a9397; --burgundy: #a11f2a; --gold: #c6922a; --bg: #fdfcf9; }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        .main-card { background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); width: 90%; max-width: 420px; text-align: center; border-top: 10px solid var(--teal); position: relative; min-height: 620px; display: flex; flex-direction: column; }
-        #home { animation: slideIn 0.6s ease-out; }
-        .logo-container img { width: 180px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.08)); margin-bottom: 20px; }
-        .welcome-text h1 { color: var(--teal); font-size: 1.6rem; margin: 0; }
-        .welcome-text p { color: var(--burgundy); font-weight: bold; margin-bottom: 30px; }
-        .menu-container { display: flex; flex-direction: column; gap: 12px; }
-        .menu-btn { background: white; color: var(--teal); border: 2px solid var(--teal); padding: 14px; border-radius: 18px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .menu-btn:hover { background: var(--teal); color: white; transform: translateY(-3px); }
-        #game-area { display: none; width: 100%; flex-grow: 1; animation: fadeIn 0.5s; }
-        .timer-bar-container { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
-        .timer-bar { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        .stats { display: flex; justify-content: space-around; background: #f8f8f8; padding: 12px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 1px solid #eee; }
-        .grid { display: grid; gap: 8px; margin: auto; }
-        .m-card { height: 85px; position: relative; transform-style: preserve-3d; transition: 0.5s; cursor: pointer; }
-        .m-card.flipped { transform: rotateY(180deg); }
-        .face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; border: 2px solid #eee; }
-        .back { background: var(--teal) url('https://www.transparenttextures.com'); }
-        .front { background: white; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; }
-        .front img { width: 90%; height: 90%; object-fit: contain; }
-        .puzzle-grid { display: grid; gap: 2px; margin: 0 auto; border: 3px solid var(--teal); border-radius: 10px; overflow: hidden; }
-        .puzzle-piece { background-size: 240px 320px; cursor: pointer; }
-        .selected { filter: brightness(1.1); outline: 4px solid var(--gold); z-index: 5; }
-        .guess-img { width: 160px; height: 230px; border-radius: 15px; margin-bottom: 15px; border: 3px solid var(--teal); transition: 0.5s; object-fit: cover; }
-        .blur-lvl1 { filter: blur(5px) grayscale(20%); }
-        .blur-lvl2 { filter: blur(10px) grayscale(60%); }
-        .blur-lvl3 { filter: blur(18px) grayscale(100%); }
-        .opt-btn { background: white; border: 2px solid #ddd; padding: 12px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; width: 100%; font-weight: bold; font-family: inherit; }
-        .final-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-sizing: border-box; z-index: 100; animation: fadeIn 0.5s; }
-        .badge { background: var(--teal); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; }
-        .result-card { background: #fff; border-radius: 25px; padding: 20px; width: 85%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-top: 15px; }
-        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Tajawal', sans-serif; }
+        body { background: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        
+        .main-card { background: white; padding: 1.5rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); width: 92%; max-width: 420px; text-align: center; border-top: 12px solid var(--teal); position: relative; max-height: 95vh; overflow-y: auto; transition: 0.3s; }
+        
+        /* شاشة الدخول */
+        .name-field { width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #ddd; text-align: center; font-size: 1.1rem; margin: 10px 0; outline: none; font-weight: bold; }
+        .name-field:focus { border-color: var(--teal); background: #f0fafa; }
+        
+        .menu-btn { background: white; color: var(--teal); border: 2.5px solid var(--teal); padding: 12px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; transition: 0.3s; font-size: 1rem; }
+        .menu-btn:hover:not(:disabled) { background: var(--teal); color: white; }
+        .menu-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .stats-header { display: flex; justify-content: space-around; padding: 10px; background: #f0fafa; border-radius: 12px; margin-bottom: 15px; font-size: 0.85rem; color: var(--teal); font-weight: bold; border: 1px solid #e0f2f2; }
+        .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
+
+        /* الألعاب */
+        .grid { display: grid; gap: 8px; justify-content: center; margin: 0 auto; }
+        .m-card { width: 75px; height: 105px; perspective: 1000px; cursor: pointer; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
+        .flipped .card-inner { transform: rotateY(180deg); }
+        .face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #eee; }
+        .back { background: var(--teal); border: 2px solid white; }
+        .front { background: white; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .front img { width: 100%; height: 100%; object-fit: cover; }
+
+        .puzzle-grid { display: grid; gap: 2px; margin: 0 auto; background: #ddd; border: 3px solid var(--teal); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .puzzle-piece { background-size: 240px 320px; cursor: pointer; transition: 0.2s; }
+        .selected-piece { outline: 4px solid var(--gold); z-index: 10; transform: scale(1.05); box-shadow: 0 0 15px var(--gold); }
+
+        /* شاشة النهاية */
+        .coupon-box { background: #fff9e6; border: 2px dashed var(--gold); padding: 15px; border-radius: 15px; margin: 15px 0; animation: pop 0.5s ease; }
+        @keyframes pop { from {transform: scale(0.8); opacity:0;} to {transform: scale(1); opacity:1;} }
+        
+        .lb-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; background: #fff; border-radius: 10px; overflow: hidden; }
+        .lb-table th { background: var(--teal); color: white; padding: 10px; }
+        .lb-table td { padding: 10px; border-bottom: 1px solid #eee; }
+        .highlight { background: #e0f2f2; font-weight: bold; color: var(--burgundy); }
+        
+        .share-btn { background: #25D366; color: white; border: none; padding: 12px; border-radius: 15px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .copy-btn { background: var(--gold); color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; margin-top: 5px; }
     </style>
 </head>
-<body>
+<body onload="initApp()">
 
-<div class="main-card" id="container">
+<div class="main-card">
+    <!-- شاشة البداية -->
     <div id="home">
-        <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" alt="Logo">
-        <div class="welcome-text">
-            <h1>مهرجان ألعاب الأدب 🌙</h1>
-            <p>تحديات القراء الثلاثة</p>
+<!-- استبدل سطر الصورة بهذا السطر -->
+<a href="https://adab-book.com" target="_blank">
+    <img src="https://adab-book.com" style="width: 140px; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com'">
+</a>
+        <h2 style="color: var(--burgundy); margin: 0;"تحديات للقراء  </h2>
+        <p id="tries-text" style="font-size: 0.9rem; color: var(--teal); font-weight: bold; margin: 10px 0;"></p>
+        
+        <input type="text" id="player-name" class="name-field" placeholder="ادخل اسمك..." maxlength="12" oninput="validateInput()">
+        
+        <div id="main-menu">
+            <button class="menu-btn" id="btn-memory" onclick="startFlow('memory')" disabled>🃏 ذاكرة الأغلفة </button>
+            <button class="menu-btn" id="btn-puzzle" onclick="startFlow('puzzle')" disabled>🧩 لغز التركيب </button>
+            <button class="menu-btn" id="btn-guess" onclick="startFlow('guess')" disabled>📚 خمن العنوان </button>
         </div>
-        <div class="menu-container">
-            <button class="menu-btn" onclick="startFlow('memory')">🃏 ذاكرة الأغلفة</button>
-            <button class="menu-btn" onclick="startFlow('puzzle')">🧩 لغز التركيب</button>
-            <button class="menu-btn" onclick="startFlow('guess')">📚 خمن الإصدار</button>
-        </div>
-        <div style="margin-top: 30px; font-size: 0.8rem; color: #999;">أفضل نتيجة: <b id="high-score-main">0</b></div>
+        <p id="limit-msg" style="color: red; font-size: 0.85rem; display: none; font-weight: bold;">استنفدت محاولاتك الـ 3 لهذا اليوم! نراك غداً.</p>
     </div>
 
-    <div id="game-area">
-        <div onclick="location.reload()" style="cursor:pointer; color:#999; text-align:left; font-size:0.9rem; margin-bottom:10px;">✕ خروج</div>
-        <div class="timer-bar-container"><div id="t-bar" class="timer-bar"></div></div>
-        <div class="stats">
-            <span>المستوى <span id="lvl" style="color:var(--burgundy)">1</span> / 3</span>
-            <span>⭐ <span id="pts">0</span></span>
+    <!-- منطقة اللعب -->
+    <div id="game-area" style="display: none;">
+        <div class="stats-header">
+            <span>اللاعب: <span id="p-display" style="color:var(--burgundy)"></span></span>
+            <span>مرحلة: <span id="lvl-num">1</span>/3</span>
+            <span>⭐ <span id="score-num">0</span></span>
         </div>
-        <div id="content"></div>
-        <div id="msg" style="margin-top:10px; font-weight:bold; color:var(--teal); min-height:24px;"></div>
+        <div class="timer-container"><div id="timer-line"></div></div>
+        <div id="game-content"></div>
     </div>
 </div>
 
 <script>
     const books = [
-      
-        { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
-        { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
-        { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
-        { n: "بيتشيني", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/83aea5be-3950-4056-b793-be588d6d6fd8.jpg" },
-        { n: "قصّاص", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/32a21b7b-f3c9-400a-bb27-9c104f13f32a.png" },
-        { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" },
-        { n: "لأنها كيارا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0579a21c-9a8a-4110-a706-d11747f904cb.png" },
-        { n: "قوت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd25b623-314d-4d3c-9b40-04f32216e854.jpg" },
-        { n: "عزير", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0691769a-513b-4e54-8d36-f68ac0f80a1a.png" },
-        { n: "بيت الخناس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/679c4645-834e-42f9-a351-8cde94d5a123.png" },
-        { n: "حسناء الدم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c32925e4-2631-4e5f-8041-2097e8b1c36b.jpg" },
-        { n: "طائفة الشعيبة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a178864f-98f0-4682-b36e-c21344d49f96.png" },
-        { n: "جمنون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8d3a83f9-7dd5-4939-88d2-31aaa09c4119.jpg" },
-        { n: "لج", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/95e264c6-5f16-4d89-b6fa-11bd8866bcda.png" },
-        { n: "فندق المقبرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/27ee3566-761c-40f1-b5eb-37df72dd242e.png" },
-        { n: "هلاك مبهم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/795aee56-ca9c-45f5-a686-5ee25b243456.jpg" },
-        { n: "خربوشة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/80fc325c-722c-47cb-9b4d-d5c7d6642b83.png" },
-        { n: "إخلاد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/b8f4b8bc-40a4-477e-a6d0-395053b6e192.jpg" },
-        { n: "سكاى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/6485a3a0-8234-4623-b9f8-21b80ccfb175.jpg" },
-        { n: "زيروس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/7c8a684e-81a3-4875-9182-41328fd2c313.jpg" },
-        { n: "اكاسيا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/625d085f-9b81-4e5f-ab85-b26c08a8bafb.png" },
-        { n: "الممر الرابع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/62c01320-e152-4dfd-a780-07aa439264e4.jpg" },
-        { n: "ذكريات ومخبوزات", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16c54ecf-6295-47fd-bd62-ab2d13d61426.png" },
-        { n: "بصمة مبهرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/da7534a6-eb04-49c4-841a-4f556322eaed.jpg" },
-        { n: "فردوس بوعلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/edc7725c-73f7-443f-a7b1-872502d3b4c3.jpg" },
-        { n: "فندق السيد إنسان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/97e24005-045e-4ea3-be60-531d1f165259.jpg" }, 
-        { n: "الأعمدة والكجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd3e1d97-4baa-4d29-93ac-a9dbb677cc48.jpg" },
-        { n: "نحن موتى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a9bf694e-1c06-4b78-91f4-fc3565077f3e.jpg" },
-        { n: "مذكرات محامية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/18bdeeb2-e433-4ee3-a1a2-1e1cbcd7639d.jpg" },
-        { n: "هجرة مزارع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/999e6b0b-cdb9-4f58-a992-a97a68bcddfe.jpg" },
-        { n: "البارون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/fdf02b08-b4cb-4e4d-b594-804bad8cf800.jpg" }
-
+        { n: "خوف", i: "https://picsum.photos" },
+        { n: "الغيهب", i: "https://picsum.photos" },
+        { n: "بيتشيني", i: "https://picsum.photos" },
+        { n: "متلازمة فريجولي", i: "https://picsum.photos" },
+        { n: "أبابيل", i: "https://picsum.photos" },
+        { n: "قوت", i: "https://picsum.photos" }
     ];
 
-    let score = 0, timer, sec, totalSec, currentLvl = 1, currentGame = '', selectedPiece = null;
-    document.getElementById('high-score-main').innerText = localStorage.getItem('litScore') || 0;
-
+    let score = 0, currentLvl = 1, sec = 30, timer, playerName = "", currentGame = "", selectedPiece = null;
+    
+    // إعدادات تدرج الصعوبة لكل لعبة
     const config = {
-        memory: { times: [40, 30, 20], pairs: [4, 6, 8], cols: [2, 3, 4] },
+        memory: { times: [40, 30, 20], pairs: [3, 4, 6], cols: [3, 4, 4] },
         puzzle: { times: [60, 45, 30], sizes: [2, 3, 4] },
-        guess:  { times: [30, 25, 15], rounds: [3, 4, 5], opts: [2, 3, 4] }
+        guess:  { times: [25, 15, 10], blur: [8, 18, 28] }
     };
 
-    function startFlow(type) {
-        currentGame = type; currentLvl = 1; score = 0;
-        document.getElementById('home').style.display = 'none';
-        document.getElementById('game-area').style.display = 'block';
-        loadLevel();
+    function initApp() {
+        const today = new Date().toDateString();
+        let tries = JSON.parse(localStorage.getItem('adab_limit_2026') || '{"date":"","count":0}');
+        
+        if (tries.date !== today) {
+            tries = { date: today, count: 0 };
+            localStorage.setItem('adab_limit_2026', JSON.stringify(tries));
+        }
+        
+        document.getElementById('tries-text').innerText = `المحاولات المتبقية اليوم: ${3 - tries.count}`;
+        if (tries.count >= 3) {
+            document.getElementById('player-name').disabled = true;
+            document.getElementById('limit-msg').style.display = 'block';
+        }
     }
 
-    function loadLevel() {
-        clearInterval(timer);
-        document.getElementById('lvl').innerText = currentLvl;
-        document.getElementById('pts').innerText = score;
-        document.getElementById('msg').innerText = "";
+    function validateInput() {
+        const val = document.getElementById('player-name').value.trim();
+        const tries = JSON.parse(localStorage.getItem('adab_limit_2026'));
+        const isValid = val.length >= 2 && tries.count < 3;
+        ['btn-memory', 'btn-puzzle', 'btn-guess'].forEach(id => document.getElementById(id).disabled = !isValid);
+    }
+
+    function startFlow(type) {
+        let tries = JSON.parse(localStorage.getItem('adab_limit_2026'));
+        tries.count++;
+        localStorage.setItem('adab_limit_2026', JSON.stringify(tries));
         
-        totalSec = config[currentGame].times[currentLvl - 1];
-        sec = totalSec;
-        updateBar();
+        playerName = document.getElementById('player-name').value.trim();
+        score = 0; currentLvl = 1; currentGame = type;
+        document.getElementById('home').style.display = 'none';
+        document.getElementById('game-area').style.display = 'block';
+        document.getElementById('p-display').innerText = playerName;
+        loadGame();
+    }
 
-        if (currentGame === 'memory') initMemory(config.memory.pairs[currentLvl-1], config.memory.cols[currentLvl-1]);
-        else if (currentGame === 'puzzle') initPuzzle(config.puzzle.sizes[currentLvl-1]);
-        else initGuess(config.guess.rounds[currentLvl-1], config.guess.opts[currentLvl-1]);
-
+    function loadGame() {
+        clearInterval(timer);
+        selectedPiece = null;
+        document.getElementById('lvl-num').innerText = currentLvl;
+        document.getElementById('score-num').innerText = score;
+        sec = config[currentGame].times[currentLvl - 1];
+        renderContent();
+        
         timer = setInterval(() => {
             sec--;
-            updateBar();
-            if (sec <= 0) showFinal(false);
+            document.getElementById('timer-line').style.width = (sec/config[currentGame].times[currentLvl-1]*100) + "%";
+            if (sec <= 0) finish("انتهى الوقت! حاول أن تكون أسرع في المرة القادمة.");
         }, 1000);
     }
 
-    function updateBar() {
-        const perc = (sec / totalSec) * 100;
-        document.getElementById('t-bar').style.width = perc + "%";
-        document.getElementById('t-bar').style.backgroundColor = perc < 30 ? "var(--burgundy)" : "var(--teal)";
-    }
-
-    function winLvl() {
-        clearInterval(timer);
-        let bonus = sec * 5; score += bonus;
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        if (currentLvl < 3) {
-            currentLvl++;
-            document.getElementById('msg').innerHTML = `<span style="color:var(--gold)">+${bonus} بونص سرعة! ⚡</span>`;
-            setTimeout(loadLevel, 1500);
-        } else showFinal(true);
-    }
-
-    function initMemory(pairs, cols) {
-        const div = document.getElementById('content');
-        div.innerHTML = `<div class="grid" style="grid-template-columns: repeat(${cols}, 1fr)"></div>`;
-        let sel = books.sort(() => 0.5 - Math.random()).slice(0, pairs);
-        let cards = [...sel, ...sel].sort(() => 0.5 - Math.random());
-        let flipped = [], matched = 0;
-        cards.forEach(b => {
-            const c = document.createElement('div'); c.className = 'm-card';
-            c.innerHTML = `<div class="face back"></div><div class="face front"><img src="${b.i}"></div>`;
-            c.onclick = () => {
-                if (flipped.length < 2 && !c.classList.contains('flipped')) {
-                    c.classList.add('flipped'); flipped.push({el: c, n: b.n});
-                    if (flipped.length === 2) {
-                        if (flipped[0].n === flipped[1].n) {
-                            score += 50; matched += 2; flipped = [];
-                            document.getElementById('pts').innerText = score;
-                            if (matched === pairs * 2) winLvl();
-                        } else {
-                            setTimeout(() => { flipped.forEach(f => f.el.classList.remove('flipped')); flipped = []; }, 600);
+    function renderContent() {
+        const div = document.getElementById('game-content'); div.innerHTML = "";
+        
+        // 🃏 لعبة الذاكرة
+        if (currentGame === 'memory') {
+            const pCount = config.memory.pairs[currentLvl-1];
+            let sel = [...books].sort(() => 0.5-Math.random()).slice(0, pCount);
+            let cards = [...sel, ...sel].sort(() => 0.5-Math.random());
+            const grid = document.createElement('div');
+            grid.className = 'grid'; grid.style.gridTemplateColumns = `repeat(${config.memory.cols[currentLvl-1]}, 1fr)`;
+            let flipped = [], matched = 0;
+            cards.forEach(b => {
+                const c = document.createElement('div'); c.className = 'm-card';
+                c.innerHTML = `<div class="card-inner"><div class="face back"></div><div class="face front"><img src="${b.i}"></div></div>`;
+                c.onclick = () => {
+                    if(flipped.length < 2 && !c.classList.contains('flipped')) {
+                        c.classList.add('flipped'); flipped.push({c, b});
+                        if(flipped.length === 2) {
+                            if(flipped[0].b.n === flipped[1].b.n) {
+                                matched++; score += 30 + (sec * 2); flipped = []; 
+                                if(matched === pCount) setTimeout(nextLevel, 600);
+                            } else { setTimeout(() => { flipped.forEach(x => x.c.classList.remove('flipped')); flipped = []; }, 600); }
                         }
                     }
-                }
-            };
-            div.firstChild.appendChild(c);
-        });
-    }
-
-    function initPuzzle(size) {
-        const book = books[Math.floor(Math.random()*books.length)];
-        const div = document.getElementById('content');
-        div.innerHTML = `<div class="puzzle-grid" id="pg" style="grid-template-columns:repeat(${size},1fr); width:240px; height:320px;"></div>`;
-        let pieces = Array.from({length: size*size}, (_, i) => i).sort(() => Math.random() - 0.5);
-        pieces.forEach((p) => {
-            const pc = document.createElement('div'); pc.className = 'puzzle-piece';
-            pc.style.backgroundImage = `url(${book.i})`;
-            pc.style.backgroundSize = `240px 320px`;
-            pc.style.backgroundPosition = `${(p % size) * (100/(size-1))}% ${Math.floor(p / size) * (100/(size-1))}%`;
-            pc.dataset.correctIdx = p;
-            pc.onclick = () => {
-                if(!selectedPiece) { selectedPiece = pc; pc.classList.add('selected'); }
-                else {
-                    let tPos = pc.style.backgroundPosition, tIdx = pc.dataset.correctIdx;
-                    pc.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-                    pc.dataset.correctIdx = selectedPiece.dataset.correctIdx;
-                    selectedPiece.style.backgroundPosition = tPos;
-                    selectedPiece.dataset.correctIdx = tIdx;
-                    selectedPiece.classList.remove('selected'); selectedPiece = null;
-                    checkPuzzle(size);
-                }
-            };
-            document.getElementById('pg').appendChild(pc);
-        });
-    }
-
-    function checkPuzzle(size) {
-        const ps = document.querySelectorAll('.puzzle-piece');
-        let win = true;
-        ps.forEach((p, i) => { if(parseInt(p.dataset.correctIdx) !== i) win = false; });
-        if(win) { score += 150; winLvl(); }
-    }
-
-    function initGuess(rounds, opts) {
-        let currentRound = 0;
-        const render = () => {
-            const correct = books[Math.floor(Math.random()*books.length)];
-            const div = document.getElementById('content');
-            div.innerHTML = `<img src="${correct.i}" class="guess-img blur-lvl${currentLvl}">`;
-            let choices = [correct, ...books.filter(b=>b.n!==correct.n).sort(()=>0.5-Math.random()).slice(0, opts-1)].sort(()=>0.5-Math.random());
-            choices.forEach(ch => {
-                const b = document.createElement('button'); b.className = 'opt-btn'; b.innerText = ch.n;
-                b.onclick = () => {
-                    if(ch.n === correct.n) { score += 40; currentRound++; if(currentRound >= rounds) winLvl(); else render(); }
-                    else { b.style.borderColor = 'var(--burgundy)'; setTimeout(() => b.style.borderColor = '#ddd', 400); }
                 };
-                div.appendChild(b);
+                grid.appendChild(c);
             });
-        };
-        render();
+            div.appendChild(grid);
+        }
+
+        // 🧩 لعبة اللغز
+        if (currentGame === 'puzzle') {
+            const size = config.puzzle.sizes[currentLvl-1];
+            const book = books[Math.floor(Math.random()*books.length)];
+            const pGrid = document.createElement('div');
+            pGrid.className = 'puzzle-grid'; pGrid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            pGrid.style.width = '240px';
+            let pieces = Array.from({length: size*size}, (_, i) => i).sort(() => 0.5-Math.random());
+            pieces.forEach((pos, idx) => {
+                const p = document.createElement('div'); p.className = 'puzzle-piece';
+                p.style.width = `${240/size}px`; p.style.height = `${320/size}px`;
+                p.style.backgroundImage = `url(${book.i})`;
+                p.style.backgroundPosition = `${-(pos % size) * (240/size)}px ${-Math.floor(pos / size) * (320/size)}px`;
+                p.dataset.orig = pos;
+                p.onclick = () => {
+                    if(!selectedPiece) { selectedPiece = p; p.classList.add('selected-piece'); }
+                    else {
+                        let tmpBg = p.style.backgroundPosition, tmpO = p.dataset.orig;
+                        p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+                        p.dataset.orig = selectedPiece.dataset.orig;
+                        selectedPiece.style.backgroundPosition = tmpBg;
+                        selectedPiece.dataset.orig = tmpO;
+                        selectedPiece.classList.remove('selected-piece'); selectedPiece = null;
+                        if([...pGrid.children].every((pc, i) => parseInt(pc.dataset.orig) === i)) { 
+                            score += 50 + (sec * 5); setTimeout(nextLevel, 600); 
+                        }
+                    }
+                };
+                pGrid.appendChild(p);
+            });
+            div.appendChild(pGrid);
+        }
+
+        // 📚 لعبة التخمين
+        if (currentGame === 'guess') {
+            const book = books[Math.floor(Math.random()*books.length)];
+            div.innerHTML = `<img src="${book.i}" id="guess-img" style="width:160px; filter:blur(${config.guess.blur[currentLvl-1]}px); border-radius:10px; margin-bottom:15px; border:4px solid var(--teal); transition:0.5s;">
+                             <div id="opts" style="display:grid; gap:8px; grid-template-columns:1fr 1fr;"></div>`;
+            let opts = [book.n, ...books.filter(x=>x.n!=book.n).sort(()=>0.5-Math.random()).slice(0,3).map(x=>x.n)].sort();
+            opts.forEach(o => {
+                const btn = document.createElement('button'); btn.className = 'menu-btn'; btn.innerText = o;
+                btn.onclick = () => { 
+                    if(o === book.n) { 
+                        document.getElementById('guess-img').style.filter = "none";
+                        score += 50 + (sec * 8); setTimeout(nextLevel, 800); 
+                    } else { finish(`خطأ! الكتاب هو: ${book.n}`); } 
+                };
+                document.getElementById('opts').appendChild(btn);
+            });
+        }
     }
 
-    function showFinal(win) {
+    function nextLevel() {
+        if(currentLvl < 3) { currentLvl++; loadGame(); }
+        else finish("🏆 عبقري! أتممت التحدي بنجاح مذهل.");
+    }
+
+    function finish(msg) {
         clearInterval(timer);
-        let highScore = localStorage.getItem('litScore') || 0;
-        if (score > highScore) localStorage.setItem('litScore', score);
-        const final = document.createElement('div');
-        final.className = 'final-screen';
-        let starCount = score > 800 ? 3 : (score > 400 ? 2 : 1);
-        final.innerHTML = `
-            <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" style="width: 120px; margin-bottom: 10px;">
-            <div class="badge">${win ? 'إنجاز أدبي مذهل' : 'محاولة جيدة'}</div>
-            <h2 style="color:var(--teal); margin: 5px 0;">${win ? 'تهانينا يا بطل! 🎉' : 'انتهى الوقت! 🕒'}</h2>
-            <div style="font-size: 2.5rem; margin: 10px 0;">${'⭐'.repeat(starCount)}${'<span style="color:#ddd">⭐</span>'.repeat(3-starCount)}</div>
-            <div class="result-card">
-                <div style="display: flex; justify-content: space-around; align-items: center;">
-                    <div style="text-align: center;">
-                        <span style="color: #999; font-size: 0.75rem; display: block;">النقاط</span>
-                        <span style="color: var(--burgundy); font-size: 1.8rem; font-weight: 900;">${score}</span>
+        const rank = updateLeaderboard(playerName, score);
+        showFinalScreen(msg, rank);
+    }
+
+    function updateLeaderboard(n, s) {
+        let b = JSON.parse(localStorage.getItem('adab_leaderboard_2026') || '[]');
+        b.push({n, s, t: Date.now()}); 
+        b.sort((x,y) => y.s - x.s);
+        localStorage.setItem('adab_leaderboard_2026', JSON.stringify(b.slice(0, 10)));
+        return b.findIndex(i => i.n === n && i.s === s) + 1;
+    }
+
+    function showFinalScreen(msg, rank) {
+        let coupon = "READ10", discount = "10%";
+        if(rank === 1) { coupon = "WIN30"; discount = "30%"; }
+        else if(rank === 2) { coupon = "WIN20"; discount = "20%"; }
+        else if(rank === 3) { coupon = "WIN15"; discount = "15%"; }
+
+        let html = `<h2 style="color:var(--burgundy); margin:0;">${msg}</h2>
+                    <p style="font-weight:bold; color:var(--teal)">اللاعب: ${playerName} | نقاطك: ${score}</p>
+                    <div class="coupon-box">
+                        <p style="margin:0; color:#856404; font-weight:bold;">المركز الذي حققته: ${rank}</p>
+                        <h1 style="margin:10px 0; color:var(--burgundy); letter-spacing:3px;">${coupon}</h1>
+                        <p style="margin:0; font-size:0.9rem;">كود خصم حصري بقيمة <b>${discount}</b></p>
+                        <button class="copy-btn" onclick="copyText('${coupon}')">نسخ الكود 📋</button>
                     </div>
-                    <div style="width: 1px; height: 40px; background: #eee;"></div>
-                    <div style="text-align: center;">
-                        <span style="color: #999; font-size: 0.75rem; display: block;">الأفضل</span>
-                        <span style="color: var(--teal); font-size: 1.8rem; font-weight: 900;">${localStorage.getItem('litScore')}</span>
-                    </div>
-                </div>
-            </div>
-            <button class="menu-btn" onclick="location.reload()" style="width: 85%; height: 50px; background: var(--teal); color: white; border: none; margin-top: 25px;">العودة للرئيسية ↩️</button>
-        `;
-        document.getElementById('container').appendChild(final);
-        if(win || score > 400) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    <div style="display:flex; gap:8px;">
+                        <button class="share-btn" style="flex:1;" onclick="shareWA('${coupon}', ${score}, ${rank})">واتساب 💬</button>
+                        <button class="menu-btn" style="flex:1; margin:10px 0 0 0;" onclick="window.open('https://adab-book.com','_blank')">المتجر 🛒</button>
+                    </div>`;
+        
+        let b = JSON.parse(localStorage.getItem('adab_leaderboard_2026') || '[]');
+        html += `<h3 style="margin:20px 0 10px 0; color:var(--teal);">🏆 أفضل 5 متسابقين</h3><table class="lb-table"><tr><th>المركز</th><th>الاسم</th><th>النقاط</th></tr>`;
+        b.slice(0, 5).forEach((i, idx) => {
+            html += `<tr class="${i.n === playerName && idx+1 === rank ? 'highlight' : ''}"><td>${idx+1}</td><td>${i.n}</td><td>${i.s}</td></tr>`;
+        });
+        html += `</table><button class="menu-btn" onclick="location.reload()" style="margin-top:20px; background:var(--teal); color:white;">لعب مرة أخرى 🔄</button>`;
+        
+        document.getElementById('game-content').innerHTML = html;
+        document.getElementById('timer-line').parentElement.style.display = 'none';
+        document.querySelector('.stats-header').style.display = 'none';
+    }
+
+    function copyText(txt) {
+        navigator.clipboard.writeText(txt);
+        alert("تم نسخ الكود! استخدمه في موقع أدب بوك.");
+    }
+
+    function shareWA(c, s, r) {
+        const text = `🔥 حققت ${s} نقطة في تحدي مركز الأدب العربي وحصلت على المركز ${r}! كودي هو [${c}]. جرب حظك الآن! 📚`;
+        window.open(`https://adab-book.com/{encodeURIComponent(text)}`, '_blank');
     }
 </script>
 </body>
