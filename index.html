@@ -14,21 +14,15 @@
         .name-field { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; outline: none; }
         .start-btn { background: var(--teal); color: white; border: none; padding: 14px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(26, 147, 151, 0.3); transition: 0.2s; margin-top: 5px; text-decoration: none; display: block; }
         .start-btn:disabled { opacity: 0.3; background: #ccc; cursor: not-allowed; }
-        
-        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; }
+        #countdown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; align-items: center; justify-content: center; border-radius: 30px; pointer-events: none; }
         #countdown-text { font-size: 5rem; font-weight: bold; color: var(--teal); }
-
         .stats-header { display: flex; justify-content: space-around; padding: 8px; background: #f0fafa; border-radius: 12px; margin-bottom: 8px; font-size: 0.85rem; color: var(--teal); font-weight: bold; }
-        #score-num { color: #e67e22; font-size: 1.1rem; }
         .timer-container { background: #eee; height: 8px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
         #timer-line { height: 100%; background: var(--teal); width: 100%; transition: 1s linear; }
-        
-        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; touch-action: none; }
-        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.5px solid rgba(255,255,255,0.2); }
+        .puzzle-grid { display: grid; gap: 0px; margin: 10px auto; background: #eee; border: 4px solid var(--teal); border-radius: 10px; overflow: hidden; }
+        .puzzle-piece { cursor: pointer; background-repeat: no-repeat; border: 0.1px solid rgba(255,255,255,0.2); }
         .selected-piece { outline: 4px solid var(--gold); outline-offset: -4px; z-index: 10; transform: scale(0.98); }
-        
         .memory-card { height: 85px; background: var(--teal); border-radius: 10px; cursor: pointer; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
-        .rank-item { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #eee; align-items: center; font-size: 0.85rem; }
     </style>
 </head>
 <body onload="initApp()">
@@ -56,7 +50,7 @@
 
 <script>
     const books = [
-      
+        
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -99,12 +93,12 @@
         { type: 'puzzle', t: 40, s: 2, d: "رتب الغلاف (2×2) 🧩" }
     ];
     const medPool = [
-        { type: 'guess', t: 15, blur: 5, d: "خمن الكتاب (متوسط) ⚡" },
+        { type: 'guess', t: 15, blur: 4, d: "خمن الكتاب (متوسط) ⚡" },
         { type: 'memory', t: 35, pairs: 3, d: "تحدي الذاكرة (متوسط) 🃏" },
         { type: 'puzzle', t: 50, s: 3, d: "رتب الغلاف (3×3) 🧩" }
     ];
     const hardPool = [
-        { type: 'guess', t: 12, blur: 8, d: "خمن الكتاب (صعب) 🔥" },
+        { type: 'guess', t: 12, blur: 6, d: "خمن الكتاب (صعب) 🔥" },
         { type: 'memory', t: 45, pairs: 4, d: "الذاكرة الفولاذية (صعب) 🃏" },
         { type: 'puzzle', t: 70, s: 4, d: "المرحلة الكبرى (4×4) 🏆" }
     ];
@@ -113,21 +107,21 @@
 
     function initApp() {
         const d = new Date().toDateString();
-        let t = JSON.parse(localStorage.getItem('adab_v15_limit') || '{"date":"","count":0}');
+        let t = JSON.parse(localStorage.getItem('adab_v16_limit') || '{"date":"","count":0}');
         if (t.date !== d) t = { date: d, count: 0 };
-        localStorage.setItem('adab_v15_limit', JSON.stringify(t));
+        localStorage.setItem('adab_v16_limit', JSON.stringify(t));
         document.getElementById('tries-text').innerText = `محاولاتك اليوم: ${3 - t.count}`;
     }
 
     function validateInput() {
         const v = document.getElementById('player-name').value.trim();
-        const t = JSON.parse(localStorage.getItem('adab_v15_limit'));
+        const t = JSON.parse(localStorage.getItem('adab_v16_limit'));
         document.getElementById('btn-start').disabled = (v.length < 2 || t.count >= 3);
     }
 
     function startFestival() {
-        let t = JSON.parse(localStorage.getItem('adab_v15_limit'));
-        t.count++; localStorage.setItem('adab_v15_limit', JSON.stringify(t));
+        let t = JSON.parse(localStorage.getItem('adab_v16_limit'));
+        t.count++; localStorage.setItem('adab_v16_limit', JSON.stringify(t));
         randomizedSteps = [...shuffle([...easyPool]), ...shuffle([...medPool]), ...shuffle([...hardPool])];
         playerName = document.getElementById('player-name').value.trim();
         score = 0; currentStep = 1;
@@ -197,7 +191,7 @@
                     card.innerText = ""; card.style.backgroundImage = `url(${book.i})`;
                     card.dataset.name = book.n; card.dataset.open = "true"; memoryFlipped.push(card);
                     if (memoryFlipped.length === 2) {
-                        // تصحيح الخطأ المنطقي: مقارنة العنصر الأول بالثاني
+                        // تصحيح: مقارنة العنصر الأول بالثاني
                         if (memoryFlipped[0].dataset.name === memoryFlipped[1].dataset.name) {
                             memoryFlipped.forEach(c => { c.dataset.done = "true"; c.style.opacity = "0.5"; });
                             memoryFlipped = [];
@@ -220,8 +214,6 @@
         grid.className = 'puzzle-grid'; 
         grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
         grid.style.width = "280px"; grid.style.height = "380px";
-        
-        // إصلاح مشكلة الانعكاس: إنشاء شبكة مرتبة برمجياً
         let correctOrder = Array.from({length: size*size}, (_, i) => i);
         let shuffledOrder = [...correctOrder].sort(() => Math.random() - 0.5);
 
@@ -232,35 +224,22 @@
             p.style.width = w + "px"; p.style.height = h + "px";
             p.style.backgroundImage = `url(${book.i})`;
             p.style.backgroundSize = `280px 380px`;
-            
-            // تحديد مكان الصورة بناءً على الرقم الأصلي للقطعة
             const bx = (originalPos % size) * w;
             const by = Math.floor(originalPos / size) * h;
             p.style.backgroundPosition = `-${bx}px -${by}px`;
-            p.dataset.correctId = originalPos; // هوية القطعة الحقيقية
+            p.dataset.correctId = originalPos;
 
             p.onclick = () => {
-                if (!selectedPiece) { 
-                    selectedPiece = p; 
-                    p.classList.add('selected-piece'); 
-                } else {
-                    // تبديل الخصائص البصرية والهوية بين القطعتين المغلقتين
-                    let tempBG = p.style.backgroundPosition;
-                    let tempID = p.dataset.correctId;
-                    
+                if (!selectedPiece) { selectedPiece = p; p.classList.add('selected-piece'); }
+                else {
+                    let tempBG = p.style.backgroundPosition, tempID = p.dataset.correctId;
                     p.style.backgroundPosition = selectedPiece.style.backgroundPosition;
                     p.dataset.correctId = selectedPiece.dataset.correctId;
-                    
                     selectedPiece.style.backgroundPosition = tempBG;
                     selectedPiece.dataset.correctId = tempID;
-                    
-                    selectedPiece.classList.remove('selected-piece');
-                    selectedPiece = null;
-                    
-                    // التحقق الصارم: هل كل قطعة (correctId) في مكانها الصحيح في الـ DOM؟
-                    const allPieces = document.querySelectorAll('.puzzle-piece');
-                    const isWin = Array.from(allPieces).every((piece, index) => parseInt(piece.dataset.correctId) === index);
-                    
+                    selectedPiece.classList.remove('selected-piece'); selectedPiece = null;
+                    const all = document.querySelectorAll('.puzzle-piece');
+                    const isWin = Array.from(all).every((piece, index) => parseInt(piece.dataset.correctId) === index);
                     if (isWin) { score += (sec * 10) + 200; nextStep(); }
                 }
             };
@@ -279,20 +258,33 @@
     function finish(msg) {
         clearInterval(timer);
         const today = new Date().toDateString();
-        let d = JSON.parse(localStorage.getItem('adab_v15_lb') || '[]');
+        let d = JSON.parse(localStorage.getItem('adab_v16_lb') || '[]');
         d.push({ name: playerName, score: score, date: today });
-        localStorage.setItem('adab_v15_lb', JSON.stringify(d));
+        localStorage.setItem('adab_v16_lb', JSON.stringify(d));
         const daily = d.filter(e => e.date === today).sort((a,b) => b.score - a.score);
         const rank = daily.findIndex(e => e.name === playerName && e.score === score) + 1;
         
+        // تعديل: كود خصم ثابت للمراكز الأولى وكود تحفيزي للجميع
+        let promo = "";
+        if(rank === 1) promo = "ADAB30";
+        else if(rank === 2) promo = "ADAB25";
+        else if(rank === 3) promo = "ADAB15";
+        else promo = "ADAB10"; // كود خصم 10% لكل من ينهي اللعبة
+
         document.getElementById('game-content').innerHTML = `
-            <h2 style="color:var(--burgundy)">${msg}</h2>
+            <h2>${msg}</h2>
             <h1 style="font-size:3rem; color:var(--teal)">${score}⚡</h1>
             <p>ترتيبك اليوم: #${rank}</p>
+            <div style="background:#fff9e6; border:2px dashed var(--gold); padding:15px; border-radius:15px; margin:15px 0;">
+                <p style="font-size:0.9rem">كود خصمك المكتسب:</p>
+                <h2 style="color:var(--burgundy); letter-spacing:2px; margin:5px 0;">${promo}</h2>
+                <button class="start-btn" style="font-size:0.8rem; padding:8px;" onclick="navigator.clipboard.writeText('${promo}');alert('تم نسخ الكود')">نسخ الكود 📋</button>
+            </div>
             <div style="background:#f9f9f9; border-radius:15px; padding:12px; margin:10px 0; max-height:180px; overflow-y:auto; text-align:right;">
                 <h4 style="border-bottom:1px solid #ddd; padding-bottom:5px;">🏆 أفضل 10 اليوم:</h4>
                 ${daily.slice(0, 10).map((u, i) => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee; font-size:0.8rem;"><span>${i+1}. ${u.name}</span><span>${u.score}⚡</span></div>`).join('')}
             </div>
+            <a href="https://adab-book.com" target="_blank" class="start-btn" style="background:var(--burgundy)">زيارة المتجر 🛒</a>
             <button onclick="location.reload()" class="start-btn" style="background:#888;">العودة للرئيسية</button>
         `;
     }
