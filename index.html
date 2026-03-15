@@ -320,15 +320,25 @@ function _play(freq,type,dur,vol,delay){
     }catch(e){}
 }
 function playSound(t){
-    unlockAudio();
-    setTimeout(function(){
-        if(t==='correct'){_play(523,'sine',0.15);_play(659,'sine',0.2,0.15,0.1);}
-        else if(t==='wrong'){_play(220,'sawtooth',0.3,0.12);}
-        else if(t==='win'){[523,659,784,1046].forEach(function(f,i){_play(f,'triangle',0.3,0.12,i*0.13);});}
-        else if(t==='timer'){for(var i=0;i<3;i++)_play(880,'square',0.08,0.08,i*0.18);}
-        else if(t==='click'){_play(600,'sine',0.05,0.05);}
-        else if(t==='combo'){[659,784,1046].forEach(function(f,i){_play(f,'triangle',0.15,0.12,i*0.1);});}
-    },10);
+    if(!audioContext) initAudio();
+    if(audioContext && audioContext.state==='suspended'){
+        audioContext.resume().then(function(){
+            soundsUnlocked=true;
+            _playNow(t);
+        });
+    } else {
+        soundsUnlocked=true;
+        _playNow(t);
+    }
+}
+function _playNow(t){
+    if(isMuted) return;
+    if(t==='correct'){_play(523,'sine',0.15);_play(659,'sine',0.2,0.15,0.1);}
+    else if(t==='wrong'){_play(220,'sawtooth',0.3,0.12);}
+    else if(t==='win'){[523,659,784,1046].forEach(function(f,i){_play(f,'triangle',0.3,0.12,i*0.13);});}
+    else if(t==='timer'){for(var i=0;i<3;i++)_play(880,'square',0.08,0.08,i*0.18);}
+    else if(t==='click'){_play(600,'sine',0.05,0.05);}
+    else if(t==='combo'){[659,784,1046].forEach(function(f,i){_play(f,'triangle',0.15,0.12,i*0.1);});}
 }
 function toggleMute(){isMuted=!isMuted;document.getElementById('mute-btn').innerText=isMuted?'🔇':'🔊';}
 document.addEventListener('click',unlockAudio,{once:true});
@@ -646,7 +656,7 @@ function renderMemory(pairs){
                         },600);
                     }
                 } else {
-                    // خطأ - انتظر اكتمال الفليب ثم أظهر الصورة وعزف الصوت
+                    unlockAudio();
                     setTimeout(function(){
                         playSound('wrong'); combo=0;
                         setTimeout(function(){
@@ -813,36 +823,37 @@ function finish(msg,wonAll){
 
 // ===== زر المشاركة الموحد =====
 function shareResult(sc, rk){
-    var text = '🎉 لعبت لعبة العيد من مركز الأدب العربي!\n⚡ نقاطي: '+sc+'\n🏆 مركزي: #'+rk+' اليوم\n\nجرب أنت! 📚';
-    if(navigator.share){
-        navigator.share({ title:'لعبة العيد - مركز الأدب العربي', text:text })
-        .catch(function(){ showShareOptions(sc, rk, text); });
-    } else {
-        showShareOptions(sc, rk, text);
-    }
+    var text = 'لعبت لعبة العيد من مركز الأدب العربي!\nنقاطي: '+sc+'\nمركزي: #'+rk+' اليوم\n\nجرب أنت!';
+    showShareOptions(sc, rk, text);
 }
 
 function showShareOptions(sc, rk, text){
+    // احذف القائمة القديمة لو موجودة
+    var old=document.getElementById('share-panel');
+    if(old) old.remove();
+
     var encoded = encodeURIComponent(text);
     var div = document.createElement('div');
     div.id = 'share-panel';
-    div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:white;border-radius:20px 20px 0 0;padding:20px;box-shadow:0 -8px 30px rgba(0,0,0,0.15);z-index:9999;text-align:center;';
+    div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:white;border-radius:24px 24px 0 0;padding:24px 20px 30px;box-shadow:0 -8px 30px rgba(0,0,0,0.2);z-index:9999;text-align:center;font-family:Tajawal,sans-serif;';
     div.innerHTML =
-        '<p style="font-weight:900;color:var(--teal);margin-bottom:15px;font-size:1rem;">📢 شارك عبر</p>'+
-        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:15px;">'+
-        '<a href="https://wa.me/?text='+encoded+'" target="_blank" style="background:#25D366;color:white;padding:10px 18px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.85rem;">واتساب 💬</a>'+
-        '<a href="https://twitter.com/intent/tweet?text='+encoded+'" target="_blank" style="background:#000;color:white;padding:10px 18px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.85rem;">X 𝕏</a>'+
-        '<button onclick="downloadResultImage('+sc+','+rk+')" style="background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:white;padding:10px 18px;border-radius:50px;border:none;font-weight:bold;font-size:0.85rem;cursor:pointer;">صورة للستوري 📸</button>'+
+        '<div style="width:40px;height:4px;background:#eee;border-radius:10px;margin:0 auto 18px;"></div>'+
+        '<p style="font-weight:900;color:#1a9397;margin-bottom:18px;font-size:1.15rem;">&#128226; شارك عبر</p>'+
+        '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">'+
+        '<a href="https://wa.me/?text='+encoded+'" target="_blank" style="background:#25D366;color:white;padding:12px 22px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.9rem;display:inline-flex;align-items:center;gap:6px;">&#128172; واتساب</a>'+
+        '<a href="https://twitter.com/intent/tweet?text='+encoded+'" target="_blank" style="background:#000;color:white;padding:12px 22px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.9rem;display:inline-flex;align-items:center;gap:6px;">&#120143; X</a>'+
+        '<button onclick="downloadResultImage('+sc+','+rk+')" style="background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:white;padding:12px 22px;border-radius:50px;border:none;font-weight:bold;font-size:0.9rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">&#128247; ستوري</button>'+
         '</div>'+
-        '<button onclick="navigator.clipboard.writeText(\''+text.replace(/'/g,"\\'").replace(/\n/g,'\\n')+'\');this.innerText=\'✅ تم النسخ!\'" style="background:#f0fdfd;border:1.5px solid #c5eaea;color:var(--teal);padding:9px 25px;border-radius:50px;font-weight:bold;cursor:pointer;font-size:0.85rem;margin-bottom:8px;">نسخ النص 📋</button><br>'+
-        '<button onclick="document.getElementById(\'share-panel\').remove()" style="background:none;border:none;color:#aaa;font-size:0.85rem;cursor:pointer;padding:5px;">إغلاق ✕</button>';
+        '<button onclick="var t=\''+text.replace(/'/g,"\\'").replace(/\n/g,'\\n')+'\';\nnavigator.clipboard.writeText(t).then(function(){this.innerText=\'تم النسخ!\';}.bind(this));" style="background:#f0fdfd;border:1.5px solid #c5eaea;color:#1a9397;padding:10px 28px;border-radius:50px;font-weight:bold;cursor:pointer;font-size:0.85rem;margin-bottom:10px;">&#128203; نسخ النص</button><br>'+
+        '<button onclick="document.getElementById(\'share-panel\').remove()" style="background:none;border:none;color:#aaa;font-size:0.9rem;cursor:pointer;padding:8px 20px;margin-top:4px;">اغلاق</button>';
     document.body.appendChild(div);
+
     setTimeout(function(){
         document.addEventListener('click', function closeShare(e){
-            var panel = document.getElementById('share-panel');
+            var panel=document.getElementById('share-panel');
             if(panel && !panel.contains(e.target)){ panel.remove(); document.removeEventListener('click',closeShare); }
         });
-    }, 300);
+    },300);
 }
 
 // ===== تحميل صورة النتيجة للستوري =====
