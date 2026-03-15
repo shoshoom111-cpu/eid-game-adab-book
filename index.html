@@ -144,6 +144,7 @@
 // ===== البيانات =====
 const books = [
     
+        
         { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
         { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
         { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
@@ -181,6 +182,13 @@ const books = [
         { n: "جنون كاتب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2112536d-526b-4b38-8100-00cf09f4e128.jpg" },
         { n: "دجن دعجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c3a260c7-9699-49e3-92c8-241989269be7.jpg" },
         { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
+       { n: "سمكة غبية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16a21843-6fd0-4643-a3e9-7d312d252eda.jpg" },
+       { n: "خمسة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/417664a2-0624-4029-87d2-c2672caff9ed.jpg" },
+       { n: "سيالة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/f657b3cc-e493-40ae-b38b-82b87743e635.jpg" },
+       { n: "عروس برشلونة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/98eab481-7db2-44b2-80a4-c4a54ad3e496.jpg" },
+       { n: "طريق سريع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/9c445b08-72d7-4091-8827-22eae9748cfb.jpg" },
+       { n: "لعنة الصمت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a0d91083-e89a-4098-a31e-619fec13925c.jpg" },
+       { n: "عطر الكلام", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/913bfc82-1e66-461b-9694-6b9c44031e11.jpg" },
 ];
 
 let score=0, currentStep=1, sec=30, timer, playerName="", selectedPiece=null, randomizedSteps=[];
@@ -188,19 +196,19 @@ let gameActive=true, animationFrame=null, isMuted=false, combo=0;
 let validBooks=[...books], audioContext=null, soundsUnlocked=false;
 
 const easyPool=[
-    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب (سهل)"},
-    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات (سهل)"},
-    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف (2×2)"}
+    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب "},
+    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات "},
+    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف "}
 ];
 const medPool=[
-    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب (متوسط)"},
-    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة (متوسط)"},
-    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف (3×3)"}
+    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب "},
+    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة "},
+    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف "}
 ];
 const hardPool=[
-    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب (صعب)"},
-    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية (صعب)"},
-    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى (4×4)"}
+    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب "},
+    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية "},
+    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى "}
 ];
 
 // ===== الصوت =====
