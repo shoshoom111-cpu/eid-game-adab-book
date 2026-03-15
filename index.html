@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>مهرجان ألعاب مركز الأدب العربي ⚡</title>
     <meta property="og:title" content="لعبة العيد - مركز الأدب العربي 🎁">
-<meta property="og:description" content="9 مراحل • 3 ألعاب • جوائز حصرية!">
-<meta property="og:image" content="https://i.ibb.co/qMpfp1Qg/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.ibb.co/qMpfp1Qg/og-image.png">
+    <meta property="og:description" content="9 مراحل • 3 ألعاب • جوائز حصرية! هل أنت من عشاق الكتب؟ جرب حظك!">
+    <meta property="og:image" content="https://i.ibb.co/qMpfp1Qg/og-image.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="لعبة العيد - مركز الأدب العربي 🎁">
+    <meta name="twitter:description" content="9 مراحل • 3 ألعاب • جوائز حصرية!">
+    <meta name="twitter:image" content="https://i.ibb.co/qMpfp1Qg/og-image.png">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --teal:#1a9397; --teal-dark:#127a7e; --burgundy:#a11f2a; --gold:#c6922a; }
         * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-family:'Tajawal',sans-serif; margin:0; padding:0; }
-        body { background:linear-gradient(135deg,#e8f5f5 0%,#fdf6ec 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; touch-action:manipulation; }
-        .main-card { background:white; padding:1.4rem; border-radius:32px; box-shadow:0 20px 60px rgba(26,147,151,0.18),0 4px 15px rgba(0,0,0,0.08); width:95%; max-width:410px; text-align:center; border-top:8px solid var(--teal); max-height:98vh; overflow-y:auto; position:relative; animation:cardIn 0.5s cubic-bezier(.175,.885,.32,1.275); }
+        body { background:linear-gradient(135deg,#e8f5f5 0%,#fdf6ec 100%); min-height:100vh; display:flex; align-items:flex-start; justify-content:center; touch-action:manipulation; padding:10px 0 30px; }
+        .main-card { background:white; padding:1.4rem; border-radius:32px; box-shadow:0 20px 60px rgba(26,147,151,0.18),0 4px 15px rgba(0,0,0,0.08); width:95%; max-width:410px; text-align:center; border-top:8px solid var(--teal); position:relative; animation:cardIn 0.5s cubic-bezier(.175,.885,.32,1.275); margin:16px auto; }
         @keyframes cardIn { from{opacity:0;transform:translateY(30px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
         .logo { width:100%; max-width:170px; margin-bottom:8px; border-radius:14px; filter:drop-shadow(0 4px 12px rgba(26,147,151,0.2)); animation:logoPulse 3s ease-in-out infinite; }
         @keyframes logoPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
@@ -90,7 +93,7 @@
         .adabbook-feature { display:flex; align-items:center; gap:6px; font-size:0.8rem; color:#555; margin-bottom:4px; font-weight:bold; }
         .shop-btn-new { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--burgundy),#7a1520); color:white; padding:12px 20px; border-radius:14px; text-decoration:none; font-weight:900; font-size:0.95rem; box-shadow:0 4px 15px rgba(161,31,42,0.35); transition:0.2s; white-space:nowrap; }
         .shop-btn-new:active { transform:scale(0.97); }
-        .leaderboard { background:#f8fdfd; border-radius:16px; padding:12px; margin:12px 0; max-height:175px; overflow-y:auto; text-align:right; border:1.5px solid #e0f0f0; }
+        .leaderboard { background:#f8fdfd; border-radius:16px; padding:12px; margin:12px 0; text-align:right; border:1.5px solid #e0f0f0; }
         .leaderboard-item { display:flex; justify-content:space-between; padding:5px 4px; border-bottom:1px solid #eef8f8; font-size:0.82rem; align-items:center; }
         .leaderboard-item:last-child { border-bottom:none; }
         .lb-rank { font-weight:900; color:var(--teal); margin-left:6px; }
@@ -328,14 +331,35 @@ function shuffle(arr){
     return a;
 }
 
+var _imagesChecked=false;
 function filterBrokenImages(){
+    // لو سبق فحصنا الصور، ارجع فوراً بدون تحميل
+    if(_imagesChecked) return Promise.resolve();
     return new Promise(function(resolve){
         var done=0, working=[];
+        var total=books.length;
         books.forEach(function(book){
             var img=new Image();
-            function check(){done++;if(done===books.length){validBooks=working.length>=4?working:[...books];resolve();}}
-            img.onload=function(){working.push(book);check();};
-            img.onerror=check;
+            // timeout 4 ثواني لكل صورة بدل الانتظار للأبد
+            var t=setTimeout(function(){done++;if(done===total)finish_check();},4000);
+            function finish_check(){
+                if(done===total){
+                    _imagesChecked=true;
+                    validBooks=working.length>=4?working:[...books];
+                    resolve();
+                }
+            }
+            img.onload=function(){
+                clearTimeout(t);
+                working.push(book);
+                done++;
+                finish_check();
+            };
+            img.onerror=function(){
+                clearTimeout(t);
+                done++;
+                finish_check();
+            };
             img.src=book.i;
         });
     });
@@ -384,6 +408,14 @@ function startFestival(){
     document.getElementById('home').style.display='none';
     document.getElementById('game-area').style.display='block';
     document.getElementById('score-num').innerText='0';
+
+    function _startGame(){
+        randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
+        score=0; currentStep=1; gameActive=true; combo=0; selectedPiece=null;
+        buildProgressDots();
+        showCountdown(loadStep);
+    }
+    if(_imagesChecked){ _startGame(); return; }
     document.getElementById('game-content').innerHTML='<div class="loading-wrap"><div class="loading-spinner"></div><p style="color:var(--teal);font-weight:bold;">جاري تحميل الصور...</p><div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div></div>';
     var prog=0;
     var li=setInterval(function(){
@@ -395,12 +427,7 @@ function startFestival(){
         clearInterval(li);
         var b=document.getElementById('load-bar');
         if(b)b.style.width='100%';
-        setTimeout(function(){
-            randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
-            score=0; currentStep=1; gameActive=true; combo=0;
-            buildProgressDots();
-            showCountdown(loadStep);
-        },300);
+        setTimeout(function(){ _startGame(); },300);
     });
 }
 
@@ -430,7 +457,7 @@ function showCountdown(cb){
         setTimeout(function(){txt.className='';},400);
         if(c>0){txt.innerText=c;_play(440,'sine',0.15,0.2);}
         else if(c===0){txt.innerText='🚀';lbl.innerText='انطلق!';_play(523,'triangle',0.3,0.25);_play(659,'triangle',0.3,0.2,0.1);_play(784,'triangle',0.3,0.2,0.2);}
-        else{clearInterval(ct);ov.style.display='none';cb();}
+        else{clearInterval(ct);ov.style.display='none';if(gameActive)cb();}
     },750);
 }
 
@@ -459,13 +486,18 @@ function loadStep(){
         var pct=sec/s.t*100;
         tl.style.width=pct+'%';
         if(pct<30)tl.classList.add('danger');
-        if(sec===5)playSound('timer');
-        if(sec<=0){clearInterval(timer);gameActive=false;finish("للأسف، انتهى الوقت! ⏰",false);}
+        if(sec===5){playSound('timer');}
+        if(sec<=0){clearInterval(timer);gameActive=false;combo=0;finish("للأسف، انتهى الوقت! ⏰",false);}
     },1000);
 }
 
 function renderGuess(blur){
-    var correct=validBooks[Math.floor(Math.random()*validBooks.length)];
+    // اختار كتاب مختلف في كل مرحلة إذا ممكن
+    var usedNames = randomizedSteps.slice(0, currentStep-1).map(function(s){return s._usedBook;}).filter(Boolean);
+    var pool = validBooks.filter(function(b){ return usedNames.indexOf(b.n)===-1; });
+    if(pool.length < 4) pool = validBooks;
+    var correct = pool[Math.floor(Math.random()*pool.length)];
+    randomizedSteps[currentStep-1]._usedBook = correct.n;
     var options=shuffle(validBooks.filter(function(b){return b.n!==correct.n;})).slice(0,3);
     options.push(correct); options=shuffle(options);
     var div=document.getElementById('game-content');
@@ -490,6 +522,7 @@ function checkGuess(selected,correct,btn,grid){
     var img=document.getElementById('guess-img');
     if(img)img.style.filter='blur(0)';
     if(selected===correct){
+        clearInterval(timer); // أوقف الوقت فوراً عند الإجابة الصحيحة
         combo++;
         var pts=(sec*5)+50+(combo>1?combo*20:0);
         score+=pts; document.getElementById('score-num').innerText=score;
@@ -497,14 +530,14 @@ function checkGuess(selected,correct,btn,grid){
         playSound(combo>1?'combo':'correct');
         btn.classList.add('bounce');
         setTimeout(function(){
-            if(currentStep===9){gameActive=false;clearInterval(timer);playSound('win');finish("🎉 مبروك! أكملت جميع المراحل!",true);}
+            if(currentStep===9){gameActive=false;playSound('win');finish("🎉 مبروك! أكملت جميع المراحل!",true);}
             else nextStep();
         },900);
     } else {
         combo=0; clearInterval(timer); gameActive=false;
         btn.classList.add('wrong-ans','shake');
         vibrateDevice(); playSound('wrong');
-        setTimeout(function(){finish("إجابة خاطئة ❌",false);},1000);
+        setTimeout(function(){if(!gameActive)finish("إجابة خاطئة ❌",false);},1000);
     }
 }
 
@@ -553,6 +586,7 @@ function renderMemory(pairs){
                     a.el.classList.add('matched'); b.el.classList.add('matched');
                     flipped=[]; isChecking=false; matchedCount++;
                     if(matchedCount===pairs){
+                        clearInterval(timer); // أوقف الوقت فوراً
                         combo++;
                         var pts=(sec*8)+100+(combo>1?combo*20:0);
                         score+=pts; document.getElementById('score-num').innerText=score;
@@ -565,8 +599,9 @@ function renderMemory(pairs){
                     }
                 } else {
                     unlockAudio();
+                    combo=0; // reset combo on wrong match
                     setTimeout(function(){
-                        playSound('wrong'); combo=0;
+                        playSound('wrong');
                         setTimeout(function(){
                             [a,b].forEach(function(x){x.el.dataset.open='false';x.el.classList.remove('flipped');});
                             flipped=[]; isChecking=false;
@@ -624,6 +659,7 @@ function renderPuzzle(size){
                 var all=grid.querySelectorAll('.puzzle-piece'),won=true;
                 all.forEach(function(pc,i){if(parseInt(pc.dataset.ci)!==i)won=false;});
                 if(won){
+                    clearInterval(timer); // أوقف الوقت فوراً
                     combo++;
                     var pts=(sec*10)+200+(combo>1?combo*30:0);
                     score+=pts; document.getElementById('score-num').innerText=score;
@@ -653,10 +689,13 @@ function nextStep(){
 
 function finish(msg,wonAll){
     clearInterval(timer);
+    gameActive=false; // تأكد دايم
     document.getElementById('lvl-desc').style.display='none';
     document.querySelector('.game-topbar').style.display='none';
     document.querySelector('.progress-wrap').style.display='none';
 
+    // اتصل بـ Firebase هنا بس — لما اللعبة تخلص
+    if(!db) initFirebase();
     if(!db){showResult(msg,wonAll,[],1);return;}
 
     // لو خسر ولا نقاط، اعرض القائمة بدون حفظ
@@ -665,8 +704,10 @@ function finish(msg,wonAll){
         var fb0=setTimeout(function(){showResult(msg,false,[],null);},5000);
         db.ref('leaderboard/'+getTodayKey()).orderByChild('score').limitToLast(5).once('value').then(function(snap){
             clearTimeout(fb0);
-            var daily=[]; snap.forEach(function(c){daily.unshift(c.val());});
-            showResult(msg,false,daily,null);
+        var daily=[];
+        snap.forEach(function(c){daily.push(c.val());});
+        daily.sort(function(a,b){return b.score - a.score;}); // ترتيب تنازلي صحيح
+        showResult(msg,false,daily,null);
         }).catch(function(){clearTimeout(fb0);showResult(msg,false,[],null);});
         return;
     }
@@ -683,9 +724,14 @@ function finish(msg,wonAll){
         return db.ref('leaderboard/'+todayKey).orderByChild('score').limitToLast(5).once('value');
     }).then(function(snap){
         clearTimeout(fallback);
-        var daily=[]; snap.forEach(function(child){daily.unshift(child.val());});
-        var rank=1;
-        for(var i=0;i<daily.length;i++){if(daily[i].name===playerName){rank=i+1;break;}}
+        // Firebase يرجع من الأصغر للأكبر — نبني المصفوفة مرتبة تنازلياً
+        var daily=[];
+        snap.forEach(function(child){daily.push(child.val());});
+        daily.sort(function(a,b){return b.score - a.score;}); // ترتيب تنازلي صحيح
+        var rank=daily.length; // افتراضي آخر مركز
+        for(var i=0;i<daily.length;i++){
+            if(daily[i].name===playerName){rank=i+1;break;}
+        }
         showResult(msg,true,daily,rank);
     }).catch(function(){clearTimeout(fallback);showResult(msg,true,[],1);});
 }
@@ -907,6 +953,14 @@ function playAgain(){
     document.getElementById('game-area').style.display='block';
     document.getElementById('home').style.display='none';
     document.getElementById('score-num').innerText='0';
+
+    function _startGame(){
+        randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
+        score=0; currentStep=1; gameActive=true; combo=0; selectedPiece=null;
+        buildProgressDots();
+        showCountdown(loadStep);
+    }
+    if(_imagesChecked){ _startGame(); return; }
     document.getElementById('game-content').innerHTML='<div class="loading-wrap"><div class="loading-spinner"></div><p style="color:var(--teal);font-weight:bold;">جاري تحميل الصور...</p><div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div></div>';
     var prog=0;
     var li=setInterval(function(){
@@ -918,19 +972,16 @@ function playAgain(){
         clearInterval(li);
         var b=document.getElementById('load-bar');
         if(b)b.style.width='100%';
-        setTimeout(function(){
-            randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
-            score=0; currentStep=1; gameActive=true; combo=0;
-            buildProgressDots();
-            showCountdown(loadStep);
-        },300);
+        setTimeout(function(){ _startGame(); },300);
     });
 }
 
 initAudio();
 initApp();
-initFirebase();
 initParticles();
+// تحميل مسبق للصور فور فتح الصفحة بدون تأخير
+filterBrokenImages();
+// Firebase يتصل بس لما اللاعب يخلص اللعبة — مو عند فتح الصفحة
 </script>
 </body>
 </html>
