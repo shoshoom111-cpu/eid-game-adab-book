@@ -49,7 +49,7 @@
         .guess-btn.correct-ans { background:linear-gradient(135deg,#1a9397,#127a7e); color:white; border-color:var(--teal); }
         .guess-btn.wrong-ans { background:linear-gradient(135deg,#e74c3c,#c0392b); color:white; border-color:#e74c3c; }
         .memory-grid { display:grid; gap:8px; margin:8px 0; }
-        .memory-card { height:80px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform 0.25s; box-shadow:0 3px 10px rgba(26,147,151,0.2); position:relative; overflow:hidden; }
+        .memory-card { perspective:800px; background:none !important; height:130px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform 0.25s; box-shadow:0 3px 10px rgba(26,147,151,0.2); position:relative; overflow:hidden; }
         .memory-card:active { transform:scale(0.93); }
         .memory-card[data-done="true"] { opacity:0.45; pointer-events:none; }
         .memory-card[data-open="true"] { pointer-events:none; }
@@ -104,6 +104,80 @@
         .loading-bar { height:100%; background:var(--teal); border-radius:10px; width:0%; transition:width 0.3s; }
         ::-webkit-scrollbar { width:4px; }
         ::-webkit-scrollbar-thumb { background:#c5eaea; border-radius:10px; }
+
+        /* ===== خلفية جزيئات ===== */
+        #particles-canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+        .main-card { position:relative; z-index:1; }
+
+        /* ===== تأثير فليب البطاقات ===== */
+        .memory-card { perspective:800px; background:none !important; height:110px; }
+        .card-inner { position:relative; width:100%; height:100%; transition:transform 0.35s ease-in-out; transform-style:preserve-3d; border-radius:12px; }
+        .memory-card.flipped .card-inner { transform:rotateY(180deg); }
+        .card-back {
+            backface-visibility:hidden; -webkit-backface-visibility:hidden;
+            background: #127a7e url('https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024') center/65% no-repeat !important;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
+        }
+        .card-back::after { content:''; }
+        .card-back span { display:none; }
+        .card-front { backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); opacity:1 !important; }
+
+        /* ===== منصة المتصدرين ===== */
+        .podium-wrap { display:flex; align-items:flex-end; justify-content:center; gap:8px; margin:16px 0; }
+        .podium-item { display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .podium-avatar { font-size:1.8rem; }
+        .podium-name { font-size:0.72rem; font-weight:900; color:#333; max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; }
+        .podium-score { font-size:0.7rem; font-weight:bold; color:var(--teal); }
+        .podium-bar { width:70px; border-radius:10px 10px 0 0; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .podium-1 .podium-bar { height:90px; background:linear-gradient(to top,#f5d78e,#c6922a); }
+        .podium-2 .podium-bar { height:65px; background:linear-gradient(to top,#d5d5d5,#a0a0a0); }
+        .podium-3 .podium-bar { height:45px; background:linear-gradient(to top,#d4a57a,#a0622a); }
+
+        /* ===== رسالة شخصية ===== */
+        .personal-msg { background:linear-gradient(135deg,#f0fdfd,#fff9ec); border:1.5px solid #c5eaea; border-radius:14px; padding:10px 14px; margin:10px 0; font-size:0.88rem; font-weight:bold; color:var(--teal-dark); }
+
+        /* ===== اهتزاز ===== */
+        @keyframes vibrate { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-4px) rotate(-1deg)} 30%{transform:translateX(4px) rotate(1deg)} 45%{transform:translateX(-4px)} 60%{transform:translateX(4px)} 75%{transform:translateX(-2px)} 90%{transform:translateX(2px)} }
+        .vibrate { animation:vibrate 0.4s ease; }
+        .motivation-overlay {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            background:rgba(255,255,255,0.97); z-index:200;
+            display:none; align-items:center; justify-content:center;
+            border-radius:32px; flex-direction:column; gap:12px;
+            animation:fadeInUp 0.4s ease;
+        }
+        .motivation-emoji { font-size:4rem; animation:bounce 0.6s ease infinite; }
+        .motivation-title { font-size:1.5rem; font-weight:900; color:var(--teal); }
+        .motivation-sub { font-size:0.95rem; color:#888; font-weight:bold; text-align:center; padding:0 20px; }
+        .motivation-btn {
+            background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+            color:white; border:none; padding:14px 35px;
+            border-radius:50px; font-weight:900; font-size:1.1rem;
+            cursor:pointer; box-shadow:0 6px 20px rgba(26,147,151,0.35);
+            margin-top:8px;
+        }
+
+        /* ===== أزرار المشاركة ===== */
+        .share-section {
+            margin:14px 0;
+            background:#f8fdfd;
+            border:1.5px solid #e0f0f0;
+            border-radius:16px;
+            padding:14px;
+        }
+        .share-title { font-size:0.88rem; color:#888; font-weight:bold; margin-bottom:10px; }
+        .share-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+        .share-btn {
+            display:inline-flex; align-items:center; gap:5px;
+            padding:9px 16px; border-radius:50px;
+            font-weight:bold; font-size:0.82rem;
+            border:none; cursor:pointer; transition:0.2s;
+            color:white;
+        }
+        .share-btn:active { transform:scale(0.95); }
+        .share-wa { background:#25D366; }
+        .share-tw { background:#000; }
+        .share-copy { background:var(--teal); }
     </style>
 </head>
 <body>
@@ -113,14 +187,24 @@
         <div id="countdown-text">3</div>
         <div id="countdown-label">استعد!</div>
     </div>
+
+    <!-- رسالة تحفيزية -->
+    <div id="motivation-overlay" class="motivation-overlay">
+        <div class="motivation-emoji" id="motiv-emoji">🔥</div>
+        <div class="motivation-title" id="motiv-title">رائع!</div>
+        <div class="motivation-sub" id="motiv-sub">أكملت 3 مراحل بنجاح!</div>
+        <button class="motivation-btn" onclick="closeMotivation()">واصل التحدي ⚡</button>
+    </div>
+
     <div id="home">
         <img src="https://ibharbooks.com/cdn/shop/collections/markez-adab.png?v=1738877582&width=1024" class="logo" alt="مركز الأدب العربي">
-        <div class="home-title"> لعبة العيد  🎁</div>
-        <div class="home-subtitle">9 مراحل • 3 ألعاب • جوائز </div>
+        <div class="home-title">لعبة العيد 🎁</div>
+        <div class="home-subtitle">9 مراحل • 3 ألعاب • جوائز</div>
         <div class="tries-badge" id="tries-text">المحاولات المتبقية: ...</div>
         <input type="text" id="player-name" class="name-field" placeholder="اكتب اسمك للبدء..." maxlength="12" oninput="validateInput()" onkeypress="if(event.key==='Enter') startFestival()">
         <button class="start-btn" id="btn-start" onclick="startFestival()" disabled>ابدأ التحدي 🚀</button>
     </div>
+
     <div id="game-area" style="display:none;">
         <div class="game-topbar">
             <div class="stat-pill">⭐ <span class="val" id="score-num">0</span></div>
@@ -135,80 +219,84 @@
         <div id="game-content"></div>
     </div>
 </div>
+<canvas id="particles-canvas"></canvas>
 <canvas id="confetti-canvas"></canvas>
 
-<!-- Firebase SDK - يتحمل أولاً ثم يشغل اللعبة -->
 <script src="https://unpkg.com/firebase@8.10.1/firebase-app.js"></script>
 <script src="https://unpkg.com/firebase@8.10.1/firebase-database.js"></script>
 <script>
-// ===== البيانات =====
 const books = [
-    
-        
-        { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
-        { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
-        { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
-        { n: "بيتشيني", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/83aea5be-3950-4056-b793-be588d6d6fd8.jpg" },
-        { n: "قصّاص", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/32a21b7b-f3c9-400a-bb27-9c104f13f32a.png" },
-        { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" },
-        { n: "لأنها كيارا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0579a21c-9a8a-4110-a706-d11747f904cb.png" },
-        { n: "قوت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd25b623-314d-4d3c-9b40-04f32216e854.jpg" },
-        { n: "عزير", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0691769a-513b-4e54-8d36-f68ac0f80a1a.png" },
-        { n: "بيت الخناس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/679c4645-834e-42f9-a351-8cde94d5a123.png" },
-        { n: "حسناء الدم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c32925e4-2631-4e5f-8041-2097e8b1c36b.jpg" },
-        { n: "طائفة الشعيبة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a178864f-98f0-4682-b36e-c21344d49f96.png" },
-        { n: "جمنون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8d3a83f9-7dd5-4939-88d2-31aaa09c4119.jpg" },
-        { n: "لج", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/95e264c6-5f16-4d89-b6fa-11bd8866bcda.png" },
-        { n: "فندق المقبرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/27ee3566-761c-40f1-b5eb-37df72dd242e.png" },
-        { n: "هلاك مبهم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/795aee56-ca9c-45f5-a686-5ee25b243456.jpg" },
-        { n: "خربوشة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/80fc325c-722c-47cb-9b4d-d5c7d6642b83.png" },
-        { n: "إخلاد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/b8f4b8bc-40a4-477e-a6d0-395053b6e192.jpg" },
-        { n: "سكاى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/6485a3a0-8234-4623-b9f8-21b80ccfb175.jpg" },
-        { n: "زيروس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/7c8a684e-81a3-4875-9182-41328fd2c313.jpg" },
-        { n: "اكاسيا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/625d085f-9b81-4e5f-ab85-b26c08a8bafb.png" },
-        { n: "الممر الرابع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/62c01320-e152-4dfd-a780-07aa439264e4.jpg" },
-        { n: "ذكريات ومخبوزات", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16c54ecf-6295-47fd-bd62-ab2d13d61426.png" },
-        { n: "بصمة مبهرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/da7534a6-eb04-49c4-841a-4f556322eaed.jpg" },
-        { n: "فردوس بوعلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/edc7725c-73f7-443f-a7b1-872502d3b4c3.jpg" },
-        { n: "فندق السيد إنسان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/97e24005-045e-4ea3-be60-531d1f165259.jpg" }, 
-        { n: "الأعمدة والكجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd3e1d97-4baa-4d29-93ac-a9dbb677cc48.jpg" },
-        { n: "نحن موتى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a9bf694e-1c06-4b78-91f4-fc3565077f3e.jpg" },
-        { n: "مذكرات محامية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/18bdeeb2-e433-4ee3-a1a2-1e1cbcd7639d.jpg" },
-        { n: "هجرة مزارع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/999e6b0b-cdb9-4f58-a992-a97a68bcddfe.jpg" },
-        { n: "بساتين عربستان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/9b0bb488-fde6-40ce-863b-58b712316992.jpg" },
-        { n: "البارون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/fdf02b08-b4cb-4e4d-b594-804bad8cf800.jpg" },
-        { n: "رجاء", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8aec23a8-3c6f-45fd-a68e-9bc606375242.jpg" },
-        { n: "خليل", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc84cefe-29ca-4a13-b6f7-9c798ef7bffd.jpg" },
-        { n: "جنون كاتب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2112536d-526b-4b38-8100-00cf09f4e128.jpg" },
-        { n: "دجن دعجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c3a260c7-9699-49e3-92c8-241989269be7.jpg" },
-        { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
-       { n: "سمكة غبية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16a21843-6fd0-4643-a3e9-7d312d252eda.jpg" },
-       { n: "خمسة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/417664a2-0624-4029-87d2-c2672caff9ed.jpg" },
-       { n: "سيالة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/f657b3cc-e493-40ae-b38b-82b87743e635.jpg" },
-       { n: "عروس برشلونة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/98eab481-7db2-44b2-80a4-c4a54ad3e496.jpg" },
-       { n: "طريق سريع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/9c445b08-72d7-4091-8827-22eae9748cfb.jpg" },
-       { n: "لعنة الصمت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a0d91083-e89a-4098-a31e-619fec13925c.jpg" },
-       { n: "عطر الكلام", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/913bfc82-1e66-461b-9694-6b9c44031e11.jpg" },
+    { n: "متلازمة فريجولي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/5de7db3d-393a-4443-a7d9-38a313196d3d.jpg" },
+    { n: "شجرة العهد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc433276-1d38-4214-9e39-041c675d42e1.jpg" },
+    { n: "خوف", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/ffc54c3e-9843-4401-be4c-e69329593574.png" },
+    { n: "بيتشيني", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/83aea5be-3950-4056-b793-be588d6d6fd8.jpg" },
+    { n: "قصّاص", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/32a21b7b-f3c9-400a-bb27-9c104f13f32a.png" },
+    { n: "الغيهب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0ef78de9-8505-472e-867e-0889f360e5f9.jpg" },
+    { n: "لأنها كيارا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0579a21c-9a8a-4110-a706-d11747f904cb.png" },
+    { n: "قوت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd25b623-314d-4d3c-9b40-04f32216e854.jpg" },
+    { n: "عزير", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/0691769a-513b-4e54-8d36-f68ac0f80a1a.png" },
+    { n: "بيت الخناس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/679c4645-834e-42f9-a351-8cde94d5a123.png" },
+    { n: "حسناء الدم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c32925e4-2631-4e5f-8041-2097e8b1c36b.jpg" },
+    { n: "طائفة الشعيبة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a178864f-98f0-4682-b36e-c21344d49f96.png" },
+    { n: "جمنون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8d3a83f9-7dd5-4939-88d2-31aaa09c4119.jpg" },
+    { n: "لج", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/95e264c6-5f16-4d89-b6fa-11bd8866bcda.png" },
+    { n: "فندق المقبرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/27ee3566-761c-40f1-b5eb-37df72dd242e.png" },
+    { n: "هلاك مبهم", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/795aee56-ca9c-45f5-a686-5ee25b243456.jpg" },
+    { n: "خربوشة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/80fc325c-722c-47cb-9b4d-d5c7d6642b83.png" },
+    { n: "إخلاد", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/b8f4b8bc-40a4-477e-a6d0-395053b6e192.jpg" },
+    { n: "سكاى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/6485a3a0-8234-4623-b9f8-21b80ccfb175.jpg" },
+    { n: "زيروس", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/7c8a684e-81a3-4875-9182-41328fd2c313.jpg" },
+    { n: "اكاسيا", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/625d085f-9b81-4e5f-ab85-b26c08a8bafb.png" },
+    { n: "الممر الرابع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/62c01320-e152-4dfd-a780-07aa439264e4.jpg" },
+    { n: "ذكريات ومخبوزات", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16c54ecf-6295-47fd-bd62-ab2d13d61426.png" },
+    { n: "بصمة مبهرة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/da7534a6-eb04-49c4-841a-4f556322eaed.jpg" },
+    { n: "فردوس بوعلي", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/edc7725c-73f7-443f-a7b1-872502d3b4c3.jpg" },
+    { n: "فندق السيد إنسان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/97e24005-045e-4ea3-be60-531d1f165259.jpg" },
+    { n: "الأعمدة والكجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/cd3e1d97-4baa-4d29-93ac-a9dbb677cc48.jpg" },
+    { n: "نحن موتى", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a9bf694e-1c06-4b78-91f4-fc3565077f3e.jpg" },
+    { n: "مذكرات محامية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/18bdeeb2-e433-4ee3-a1a2-1e1cbcd7639d.jpg" },
+    { n: "هجرة مزارع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/999e6b0b-cdb9-4f58-a992-a97a68bcddfe.jpg" },
+    { n: "بساتين عربستان", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/9b0bb488-fde6-40ce-863b-58b712316992.jpg" },
+    { n: "البارون", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/fdf02b08-b4cb-4e4d-b594-804bad8cf800.jpg" },
+    { n: "رجاء", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/8aec23a8-3c6f-45fd-a68e-9bc606375242.jpg" },
+    { n: "خليل", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/dc84cefe-29ca-4a13-b6f7-9c798ef7bffd.jpg" },
+    { n: "جنون كاتب", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2112536d-526b-4b38-8100-00cf09f4e128.jpg" },
+    { n: "دجن دعجة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/c3a260c7-9699-49e3-92c8-241989269be7.jpg" },
+    { n: "نشوة الغفران", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/2c098ab0-5118-4f17-985f-40c2c71d10b4.jpg" },
+    { n: "سمكة غبية", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/16a21843-6fd0-4643-a3e9-7d312d252eda.jpg" },
+    { n: "خمسة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/417664a2-0624-4029-87d2-c2672caff9ed.jpg" },
+    { n: "سيالة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/f657b3cc-e493-40ae-b38b-82b87743e635.jpg" },
+    { n: "عروس برشلونة", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/98eab481-7db2-44b2-80a4-c4a54ad3e496.jpg" },
+    { n: "طريق سريع", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/9c445b08-72d7-4091-8827-22eae9748cfb.jpg" },
+    { n: "لعنة الصمت", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/a0d91083-e89a-4098-a31e-619fec13925c.jpg" },
+    { n: "عطر الكلام", i: "https://media.zid.store/6052bbcf-b8c0-410f-908a-5a67cebb4c73/913bfc82-1e66-461b-9694-6b9c44031e11.jpg" },
 ];
 
-let score=0, currentStep=1, sec=30, timer, playerName="", selectedPiece=null, randomizedSteps=[];
-let gameActive=true, animationFrame=null, isMuted=false, combo=0;
-let validBooks=[...books], audioContext=null, soundsUnlocked=false;
+var score=0, currentStep=1, sec=30, timer, playerName="", selectedPiece=null, randomizedSteps=[];
+var gameActive=true, animationFrame=null, isMuted=false, combo=0;
+var validBooks=[...books], audioContext=null, soundsUnlocked=false;
+var motivationCallback=null;
 
-const easyPool=[
-    {type:'guess',t:20,blur:1,d:"🔍 خمن الكتاب "},
-    {type:'memory',t:35,pairs:2,d:"🃏 طابق البطاقات "},
-    {type:'puzzle',t:45,s:2,d:"🧩 رتب الغلاف "}
+// رسائل تحفيزية بعد كل 3 مراحل
+var motivationMessages = [
+    { step:3, emoji:'🔥', title:'أنت نجم!', sub:'"الكتب تفتح أبواباً لا تُغلق"\nواصل التحدي وأثبت معرفتك! 💪' },
+    { step:6, emoji:'⭐', title:'مذهل!', sub:'"من قرأ كثيراً، أبدع كثيراً"\nثلاث مراحل فقط تفصلك عن الفوز! 🏆' },
 ];
-const medPool=[
-    {type:'guess',t:15,blur:3,d:"⚡ خمن الكتاب "},
-    {type:'memory',t:40,pairs:3,d:"🧠 تحدي الذاكرة "},
-    {type:'puzzle',t:55,s:3,d:"🧩 رتب الغلاف "}
+
+var easyPool=[
+    {type:'guess',t:12,blur:1,d:"🔍 خمن الكتاب "},
+    {type:'memory',t:20,pairs:2,d:"🃏 طابق البطاقات "},
+    {type:'puzzle',t:25,s:2,d:"🧩 رتب الغلاف "}
 ];
-const hardPool=[
-    {type:'guess',t:12,blur:6,d:"🔥 خمن الكتاب "},
-    {type:'memory',t:50,pairs:4,d:"💪 الذاكرة الفولاذية "},
-    {type:'puzzle',t:75,s:4,d:"🏆 المرحلة الكبرى "}
+var medPool=[
+    {type:'guess',t:10,blur:3,d:"⚡ خمن الكتاب "},
+    {type:'memory',t:25,pairs:3,d:"🧠 تحدي الذاكرة "},
+    {type:'puzzle',t:35,s:3,d:"🧩 رتب الغلاف "}
+];
+var hardPool=[
+    {type:'guess',t:8,blur:6,d:"🔥 خمن الكتاب "},
+    {type:'memory',t:35,pairs:4,d:"💪 الذاكرة الفولاذية "},
+    {type:'puzzle',t:50,s:4,d:"🏆 المرحلة الكبرى "}
 ];
 
 // ===== الصوت =====
@@ -216,7 +304,7 @@ function initAudio(){try{audioContext=new(window.AudioContext||window.webkitAudi
 function unlockAudio(){
     if(soundsUnlocked)return;
     if(!audioContext)initAudio();
-    if(audioContext&&audioContext.state==='suspended'){audioContext.resume().then(()=>{soundsUnlocked=true;});}
+    if(audioContext&&audioContext.state==='suspended'){audioContext.resume().then(function(){soundsUnlocked=true;});}
     else soundsUnlocked=true;
 }
 function _play(freq,type,dur,vol,delay){
@@ -305,6 +393,23 @@ function filterBrokenImages(){
     });
 }
 
+// ===== رسالة تحفيزية =====
+function showMotivation(msg, cb){
+    motivationCallback = cb;
+    document.getElementById('motiv-emoji').innerText = msg.emoji;
+    document.getElementById('motiv-title').innerText = msg.title;
+    document.getElementById('motiv-sub').innerText = msg.sub;
+    var ov = document.getElementById('motivation-overlay');
+    ov.style.display = 'flex';
+    playSound('win');
+}
+
+function closeMotivation(){
+    document.getElementById('motivation-overlay').style.display = 'none';
+    if(motivationCallback) motivationCallback();
+    motivationCallback = null;
+}
+
 // ===== تهيئة =====
 function initApp(){
     var d=new Date().toDateString();
@@ -326,7 +431,6 @@ function validateInput(){
     document.getElementById('btn-start').disabled=!(v.length>=2&&t.count<3);
 }
 
-// ===== بدء اللعبة =====
 function startFestival(){
     var t=JSON.parse(localStorage.getItem('adab_v20_limit')||'{"date":"","count":0}');
     var today=new Date().toDateString();
@@ -384,12 +488,22 @@ function showCountdown(cb){
     var lbl=document.getElementById('countdown-label');
     ov.style.display='flex';
     var c=3; txt.innerText=c; lbl.innerText='استعد!';
+    _play(440,'sine',0.15,0.2); // صوت البداية
     var ct=setInterval(function(){
         c--;
         txt.className='count-pop';
         setTimeout(function(){txt.className='';},400);
-        if(c>0)txt.innerText=c;
-        else if(c===0){txt.innerText='🚀';lbl.innerText='انطلق!';}
+        if(c>0){
+            txt.innerText=c;
+            _play(440,'sine',0.15,0.2); // تكتك
+        }
+        else if(c===0){
+            txt.innerText='🚀';
+            lbl.innerText='انطلق!';
+            _play(523,'triangle',0.3,0.25); // صوت الانطلاق
+            _play(659,'triangle',0.3,0.2,0.1);
+            _play(784,'triangle',0.3,0.2,0.2);
+        }
         else{clearInterval(ct);ov.style.display='none';cb();}
     },750);
 }
@@ -397,6 +511,13 @@ function showCountdown(cb){
 function loadStep(){
     if(!gameActive)return;
     clearInterval(timer); selectedPiece=null;
+    // إعادة إظهار العناصر
+    var topbar=document.querySelector('.game-topbar');
+    var progress=document.querySelector('.progress-wrap');
+    var lvlDesc=document.getElementById('lvl-desc');
+    if(topbar) topbar.style.display='flex';
+    if(progress) progress.style.display='block';
+    if(lvlDesc) lvlDesc.style.display='block';
     updateProgressDots();
     var s=randomizedSteps[currentStep-1];
     document.getElementById('lvl-num').innerText=currentStep;
@@ -458,6 +579,7 @@ function checkGuess(selected,correct,btn,grid){
     } else {
         combo=0; clearInterval(timer); gameActive=false;
         btn.classList.add('wrong-ans','shake');
+        vibrateDevice();
         playSound('wrong');
         setTimeout(function(){finish("إجابة خاطئة ❌",false);},1000);
     }
@@ -471,6 +593,9 @@ function renderMemory(pairs){
     sel.forEach(function(b){cards.push({n:b.n,i:b.i,id:b.n});cards.push({n:b.n,i:b.i,id:b.n});});
     cards=shuffle(cards);
     var cols=pairs<=2?2:pairs<=3?3:4;
+    // بطاقتين في الصف لتكون بالطول
+    if(pairs===4) cols=4;
+    else cols=2;
     var grid=document.createElement('div');
     grid.className='memory-grid';
     grid.style.gridTemplateColumns='repeat('+cols+', 1fr)';
@@ -478,8 +603,10 @@ function renderMemory(pairs){
     cards.forEach(function(card){
         var el=document.createElement('div');
         el.className='memory-card';
+        var inner=document.createElement('div');
+        inner.className='card-inner';
         var back=document.createElement('div');
-        back.className='card-back'; back.innerText='❓';
+        back.className='card-back';
         var front=document.createElement('div');
         front.className='card-front';
         var img=document.createElement('img');
@@ -488,11 +615,12 @@ function renderMemory(pairs){
             front.style.background='linear-gradient(135deg,var(--teal-dark),#0a5a5e)';
             img.style.display='none';
             var t=document.createElement('div');
-            t.style.cssText='color:white;font-size:0.7rem;font-weight:bold;padding:6px;text-align:center;position:absolute;';
+            t.style.cssText='color:white;font-size:0.7rem;font-weight:bold;padding:6px;text-align:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;';
             t.innerText=card.n; front.appendChild(t);
         };
         front.appendChild(img);
-        el.appendChild(back); el.appendChild(front);
+        inner.appendChild(back); inner.appendChild(front);
+        el.appendChild(inner);
         el.onclick=function(){
             if(!gameActive||isChecking||el.dataset.done==='true'||el.dataset.open==='true')return;
             el.dataset.open='true'; el.classList.add('flipped');
@@ -501,6 +629,7 @@ function renderMemory(pairs){
                 isChecking=true;
                 var a=flipped[0],b=flipped[1];
                 if(a.card.id===b.card.id){
+                    // تطابق - صوت فوري
                     playSound('correct');
                     a.el.dataset.done='true'; b.el.dataset.done='true';
                     a.el.classList.add('matched'); b.el.classList.add('matched');
@@ -517,11 +646,17 @@ function renderMemory(pairs){
                         },600);
                     }
                 } else {
-                    playSound('wrong'); combo=0;
+                    // خطأ - انتظر اكتمال الفليب ثم أظهر الصورة وعزف الصوت
                     setTimeout(function(){
-                        [a,b].forEach(function(x){x.el.dataset.open='false';x.el.classList.remove('flipped');});
-                        flipped=[]; isChecking=false;
-                    },900);
+                        playSound('wrong'); combo=0;
+                        setTimeout(function(){
+                            [a,b].forEach(function(x){
+                                x.el.dataset.open='false';
+                                x.el.classList.remove('flipped');
+                            });
+                            flipped=[]; isChecking=false;
+                        },700);
+                    },350);
                 }
             }
         };
@@ -539,37 +674,69 @@ function renderPuzzle(size){
     grid.style.gridTemplateColumns='repeat('+size+', 1fr)';
     grid.style.direction='ltr';
     var W=280,H=380;
-    var arr=[];for(var k=0;k<size*size;k++)arr.push(k);
-    var shuffled=shuffle(arr);
-    shuffled.forEach(function(pos,idx){
+    var total=size*size;
+    var arr=[];
+    for(var k=0;k<total;k++) arr.push(k);
+
+    // تأكد إن الترتيب مش مرتب أصلاً
+    var shuffled;
+    do { shuffled=shuffle(arr); } while(isInOrder(shuffled));
+
+    shuffled.forEach(function(originalIndex, slotIndex){
         var p=document.createElement('div');
         p.className='puzzle-piece';
-        var w=W/size,h=H/size;
+        var w=W/size, h=H/size;
+        var col=originalIndex%size;
+        var row=Math.floor(originalIndex/size);
         p.style.backgroundImage='url('+book.i+')';
         p.style.backgroundSize=W+'px '+H+'px';
-        p.style.backgroundPosition='-'+(pos%size)*w+'px -'+Math.floor(pos/size)*h+'px';
-        p.dataset.correctPosition=pos;
+        p.style.backgroundPosition='-'+col*w+'px -'+row*h+'px';
+        // correctIndex = الصورة الصحيحة لهذه الخانة = originalIndex
+        p.dataset.correctIndex=originalIndex;
+        grid.appendChild(p);
+    });
+
+    div.appendChild(grid);
+
+    var pieces=grid.querySelectorAll('.puzzle-piece');
+    pieces.forEach(function(p, slotIndex){
         p.onclick=function(){
             if(!gameActive)return;
             playSound('click');
-            if(!selectedPiece){selectedPiece=p;p.classList.add('selected-piece');}
-            else if(selectedPiece===p){selectedPiece.classList.remove('selected-piece');selectedPiece=null;}
-            else{
-                var p1=selectedPiece,p2=p;
-                var tmp=p1.style.backgroundPosition;
+            if(!selectedPiece){
+                selectedPiece=p;
+                p.classList.add('selected-piece');
+            } else if(selectedPiece===p){
+                selectedPiece.classList.remove('selected-piece');
+                selectedPiece=null;
+            } else {
+                var p1=selectedPiece, p2=p;
+
+                // تبادل الخلفيتين
+                var tmpBg=p1.style.backgroundPosition;
                 p1.style.backgroundPosition=p2.style.backgroundPosition;
-                p2.style.backgroundPosition=tmp;
-                var tc=p1.dataset.correctPosition;
-                p1.dataset.correctPosition=p2.dataset.correctPosition;
-                p2.dataset.correctPosition=tc;
-                p1.classList.remove('selected-piece'); selectedPiece=null;
-                var all=document.querySelectorAll('.puzzle-piece');
+                p2.style.backgroundPosition=tmpBg;
+
+                // تبادل الـ correctIndex
+                var tmpIdx=p1.dataset.correctIndex;
+                p1.dataset.correctIndex=p2.dataset.correctIndex;
+                p2.dataset.correctIndex=tmpIdx;
+
+                p1.classList.remove('selected-piece');
+                selectedPiece=null;
+
+                // تحقق من الفوز
+                var allPieces=grid.querySelectorAll('.puzzle-piece');
                 var won=true;
-                all.forEach(function(pc,i){if(parseInt(pc.dataset.correctPosition)!==i)won=false;});
+                allPieces.forEach(function(pc, i){
+                    if(parseInt(pc.dataset.correctIndex)!==i) won=false;
+                });
+
                 if(won){
                     combo++;
                     var pts=(sec*10)+200+(combo>1?combo*30:0);
-                    score+=pts; document.getElementById('score-num').innerText=score;
+                    score+=pts;
+                    document.getElementById('score-num').innerText=score;
                     showScorePopup(pts,combo>1);
                     playSound('win');
                     setTimeout(function(){
@@ -579,39 +746,58 @@ function renderPuzzle(size){
                 }
             }
         };
-        grid.appendChild(p);
     });
-    div.appendChild(grid);
 }
 
-function nextStep(){clearInterval(timer);if(currentStep<9){currentStep++;loadStep();}}
+function isInOrder(arr){
+    for(var i=0;i<arr.length;i++) if(arr[i]!==i) return false;
+    return true;
+}
+
+// ===== الانتقال للمرحلة التالية مع رسائل تحفيزية =====
+function nextStep(){
+    clearInterval(timer);
+    if(currentStep<9){
+        currentStep++;
+        // تحقق هل في رسالة تحفيزية لهذه المرحلة
+        var msg = null;
+        for(var i=0;i<motivationMessages.length;i++){
+            if(motivationMessages[i].step === currentStep-1){ // بعد إكمال المرحلة
+                msg = motivationMessages[i];
+                break;
+            }
+        }
+        if(msg){
+            showMotivation(msg, loadStep);
+        } else {
+            loadStep();
+        }
+    }
+}
 
 // ===== النتيجة مع Firebase =====
 function finish(msg,wonAll){
     clearInterval(timer);
-
-    // لو Firebase مو متاح
+    // إخفاء شريط المعلومات وعنوان المرحلة
+    document.getElementById('lvl-desc').style.display='none';
+    document.querySelector('.game-topbar').style.display='none';
+    document.querySelector('.progress-wrap').style.display='none';
     if(!db){
         showResult(msg,wonAll,[],1);
         return;
     }
-
     document.getElementById('game-content').innerHTML='<div class="loading-wrap"><div class="loading-spinner"></div><p style="color:var(--teal);font-weight:bold;margin-top:10px;">جاري حفظ نتيجتك...</p></div>';
-
     var todayKey=getTodayKey();
     var safeName=playerName.replace(/[.#$\[\]/]/g,'_');
     var playerRef=db.ref('leaderboard/'+todayKey+'/'+safeName);
-
-    // timeout احتياطي 5 ثواني
     var fallback=setTimeout(function(){showResult(msg,wonAll,[],1);},5000);
-
     playerRef.once('value').then(function(snap){
         var existing=snap.val();
         if(!existing||score>existing.score){
             return playerRef.set({name:playerName,score:score,time:Date.now()});
         }
     }).then(function(){
-        return db.ref('leaderboard/'+todayKey).orderByChild('score').limitToLast(10).once('value');
+        return db.ref('leaderboard/'+todayKey).orderByChild('score').limitToLast(5).once('value');
     }).then(function(snap){
         clearTimeout(fallback);
         var daily=[];
@@ -623,6 +809,157 @@ function finish(msg,wonAll){
         clearTimeout(fallback);
         showResult(msg,wonAll,[],1);
     });
+}
+
+// ===== زر المشاركة الموحد =====
+function shareResult(sc, rk){
+    var text = '🎉 لعبت لعبة العيد من مركز الأدب العربي!\n⚡ نقاطي: '+sc+'\n🏆 مركزي: #'+rk+' اليوم\n\nجرب أنت! 📚';
+    if(navigator.share){
+        navigator.share({ title:'لعبة العيد - مركز الأدب العربي', text:text })
+        .catch(function(){ showShareOptions(sc, rk, text); });
+    } else {
+        showShareOptions(sc, rk, text);
+    }
+}
+
+function showShareOptions(sc, rk, text){
+    var encoded = encodeURIComponent(text);
+    var div = document.createElement('div');
+    div.id = 'share-panel';
+    div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:white;border-radius:20px 20px 0 0;padding:20px;box-shadow:0 -8px 30px rgba(0,0,0,0.15);z-index:9999;text-align:center;';
+    div.innerHTML =
+        '<p style="font-weight:900;color:var(--teal);margin-bottom:15px;font-size:1rem;">📢 شارك عبر</p>'+
+        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:15px;">'+
+        '<a href="https://wa.me/?text='+encoded+'" target="_blank" style="background:#25D366;color:white;padding:10px 18px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.85rem;">واتساب 💬</a>'+
+        '<a href="https://twitter.com/intent/tweet?text='+encoded+'" target="_blank" style="background:#000;color:white;padding:10px 18px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:0.85rem;">X 𝕏</a>'+
+        '<button onclick="downloadResultImage('+sc+','+rk+')" style="background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:white;padding:10px 18px;border-radius:50px;border:none;font-weight:bold;font-size:0.85rem;cursor:pointer;">صورة للستوري 📸</button>'+
+        '</div>'+
+        '<button onclick="navigator.clipboard.writeText(\''+text.replace(/'/g,"\\'").replace(/\n/g,'\\n')+'\');this.innerText=\'✅ تم النسخ!\'" style="background:#f0fdfd;border:1.5px solid #c5eaea;color:var(--teal);padding:9px 25px;border-radius:50px;font-weight:bold;cursor:pointer;font-size:0.85rem;margin-bottom:8px;">نسخ النص 📋</button><br>'+
+        '<button onclick="document.getElementById(\'share-panel\').remove()" style="background:none;border:none;color:#aaa;font-size:0.85rem;cursor:pointer;padding:5px;">إغلاق ✕</button>';
+    document.body.appendChild(div);
+    setTimeout(function(){
+        document.addEventListener('click', function closeShare(e){
+            var panel = document.getElementById('share-panel');
+            if(panel && !panel.contains(e.target)){ panel.remove(); document.removeEventListener('click',closeShare); }
+        });
+    }, 300);
+}
+
+// ===== تحميل صورة النتيجة للستوري =====
+function downloadResultImage(sc, rk){
+    var canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1920;
+    var ctx = canvas.getContext('2d');
+
+    // خلفية
+    var bg = ctx.createLinearGradient(0,0,1080,1920);
+    bg.addColorStop(0,'#e8f5f5');
+    bg.addColorStop(1,'#fdf6ec');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0,0,1080,1920);
+
+    // بطاقة
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'rgba(26,147,151,0.15)';
+    ctx.shadowBlur = 60;
+    roundRect(ctx,80,200,920,1500,60);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // شريط علوي
+    var topGrad = ctx.createLinearGradient(80,200,1000,200);
+    topGrad.addColorStop(0,'#1a9397');
+    topGrad.addColorStop(1,'#a11f2a');
+    ctx.fillStyle = topGrad;
+    roundRectTop(ctx,80,200,920,160,60);
+    ctx.fill();
+
+    // اسم المتجر
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 52px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('📚 مركز الأدب العربي', 540, 305);
+
+    // إيموجي الترتيب
+    var emoji = rk===1?'🥇':rk===2?'🥈':rk===3?'🥉':'🎯';
+    ctx.font = '200px Arial';
+    ctx.fillText(emoji, 540, 680);
+
+    // النقاط
+    var scoreGrad = ctx.createLinearGradient(200,700,880,700);
+    scoreGrad.addColorStop(0,'#1a9397');
+    scoreGrad.addColorStop(1,'#c6922a');
+    ctx.fillStyle = scoreGrad;
+    ctx.font = 'bold 160px Arial';
+    ctx.fillText(sc+'⚡', 540, 880);
+
+    // المركز
+    ctx.fillStyle = '#1a9397';
+    ctx.font = 'bold 70px Arial';
+    ctx.fillText('المركز #'+rk+' اليوم', 540, 990);
+
+    // خط فاصل
+    ctx.strokeStyle = '#e0f0f0';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(160,1060);
+    ctx.lineTo(920,1060);
+    ctx.stroke();
+
+    // اسم اللاعب
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 65px Arial';
+    ctx.fillText(playerName, 540, 1160);
+
+    // نص تحفيزي
+    ctx.fillStyle = '#888';
+    ctx.font = '45px Arial';
+    ctx.fillText('لعبة العيد 🎁', 540, 1260);
+    ctx.fillText('جرب أنت الآن!', 540, 1340);
+
+    // رابط
+    ctx.fillStyle = '#1a9397';
+    ctx.font = 'bold 42px Arial';
+    ctx.fillText('adab-book.com', 540, 1560);
+
+    // تحميل
+    canvas.toBlob(function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.download = 'نتيجتي-لعبة-العيد.png';
+        a.href = url;
+        a.click();
+        URL.revokeObjectURL(url);
+        // إغلاق القائمة
+        var panel = document.getElementById('share-panel');
+        if(panel) panel.remove();
+        alert('✅ تم تحميل الصورة! شاركيها في الستوري 📸');
+    });
+}
+
+function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+    ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r);
+    ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h);
+    ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
+}
+
+function roundRectTop(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+    ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h);
+    ctx.lineTo(x,y+h);
+    ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
 }
 
 function showResult(msg,wonAll,daily,rank){
@@ -642,57 +979,183 @@ function showResult(msg,wonAll,daily,rank){
     } else {
         lbHtml='<p style="color:#aaa;font-size:0.85rem;padding:10px;">لا يوجد لاعبون بعد اليوم</p>';
     }
+
+    var shareHtml =
+        '<div class="share-section">'+
+        '<div class="share-title">📢 شارك نتيجتك مع أصدقائك!</div>'+
+        '<button class="share-btn" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark));width:100%;justify-content:center;font-size:0.95rem;padding:12px;" onclick="shareResult(\''+score+'\',\''+rank+'\')">مشاركة النتيجة 🚀</button>'+
+        '</div>';
+
+    var warningHtml =
+        '<div style="margin-top:10px;background:#fff3cd;border:1.5px solid #f0ad4e;border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;">'+
+        '<span style="font-size:1rem;flex-shrink:0;">⚠️</span>'+
+        '<p style="font-size:0.75rem;color:#856404;font-weight:bold;line-height:1.4;text-align:right;">الكود شخصي — لا تنشره على السوشال ميديا.</p>'+
+        '</div>';
+
     document.getElementById('game-content').innerHTML=
         '<div class="result-screen">'+
-        '<h2 style="color:'+(wonAll?'var(--teal)':'var(--burgundy)')+';margin:10px 0;font-size:1.3rem;">'+msg+'</h2>'+
+        '<h2 style="color:'+(wonAll?'var(--teal)':'var(--burgundy)')+';margin:14px 0;font-size:1.4rem;">'+msg+'</h2>'+
         '<div class="result-score">'+score+'⚡</div>'+
-        '<div class="rank-badge '+rankClass+'">'+rankEmoji+' المركز #'+rank+' اليوم</div>'+
+        '<div class="rank-badge '+rankClass+'" style="font-size:1.3rem;padding:10px 30px;margin:10px 0;">'+rankEmoji+' المركز #'+rank+'</div>'+
+        '<div style="font-size:0.82rem;color:#888;margin-bottom:12px;">'+getPersonalMsg(score)+'</div>'+
+        shareHtml+
         '<div class="promo-box '+(wonAll?'glow-anim':'')+'">'+
         '<p style="font-size:0.9rem;color:#888;margin-bottom:4px;">'+prizeMsg+'</p>'+
         '<div class="promo-code">'+promo+'</div>'+
         '<button class="copy-btn" onclick="navigator.clipboard.writeText(\''+promo+'\').then(function(){this.innerText=\'✅ تم النسخ!\';}.bind(this))">نسخ الكود 📋</button>'+
+        warningHtml+
         '</div>'+
         '<div class="adabbook-section">'+
-        '<div class="adabbook-header"><div class="adabbook-logo-text">📚 أدب بوك</div><div class="adabbook-tagline">وجهتك الأولى للكتب الأدبية العربية</div></div>'+
-        '<div class="adabbook-body"><div class="adabbook-features"><div class="adabbook-feature">✅ أحدث الإصدارات الأدبية</div><div class="adabbook-feature">🚚 توصيل سريع لكل مكان</div><div class="adabbook-feature">🎁 عروض وخصومات حصرية</div></div>'+
-        '<a href="https://adab-book.com/" target="_blank" class="shop-btn-new">تسوق الآن 🛒</a></div></div>'+
-        '<div class="leaderboard"><h4 style="padding-bottom:6px;border-bottom:1px solid #e0f0f0;margin-bottom:6px;color:var(--teal);">🏆 أفضل 10 اليوم</h4>'+lbHtml+'</div>'+
-        '<button onclick="location.reload()" class="start-btn" style="background:linear-gradient(135deg,#666,#444);margin-top:10px;">العودة للرئيسية 🏠</button>'+
+        '<div class="adabbook-header" style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">'+
+        '<div><div class="adabbook-logo-text" style="font-size:1.1rem;margin:0;">📚 أدب بوك</div><div class="adabbook-tagline">أفضل الكتب الأدبية</div></div>'+
+        '<a href="https://adab-book.com/" target="_blank" class="shop-btn-new" style="padding:9px 16px;font-size:0.85rem;">تسوق الآن 🛒</a>'+
+        '</div></div>'+
+        '<div class="leaderboard"><h4 style="padding-bottom:6px;border-bottom:1px solid #e0f0f0;margin-bottom:6px;color:var(--teal);">🏆 المتصدرون</h4>'+buildPodium(daily,playerName)+'</div>'+
+        '<div style="display:flex;gap:8px;margin-top:10px;">'+
+        '<button onclick="playAgain()" class="start-btn" style="flex:1;">العب مرة ثانية 🔄</button>'+
+        '<button onclick="location.reload()" class="start-btn" style="flex:0.5;background:linear-gradient(135deg,#666,#444);font-size:0.9rem;">🏠</button>'+
+        '</div>'+
         '</div>';
 }
 
-// ===== تشغيل التطبيق =====
-initAudio();
-initApp();
-
 // ===== Firebase =====
-var db = null;
-var firebaseConfig = {
-    apiKey: "AIzaSyBcTfWBMS-smnVRl3Nd4MpE044iGiKrLFU",
-    authDomain: "adab-game.firebaseapp.com",
-    databaseURL: "https://adab-game-default-rtdb.firebaseio.com",
-    projectId: "adab-game",
-    storageBucket: "adab-game.firebasestorage.app",
-    messagingSenderId: "36956959518",
-    appId: "1:36956959518:web:918430202cbf5629ca0f0f"
+var db=null;
+var firebaseConfig={
+    apiKey:"AIzaSyBcTfWBMS-smnVRl3Nd4MpE044iGiKrLFU",
+    authDomain:"adab-game.firebaseapp.com",
+    databaseURL:"https://adab-game-default-rtdb.firebaseio.com",
+    projectId:"adab-game",
+    storageBucket:"adab-game.firebasestorage.app",
+    messagingSenderId:"36956959518",
+    appId:"1:36956959518:web:918430202cbf5629ca0f0f"
 };
-
-function getTodayKey(){
-    var d=new Date();
-    return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-}
-
+function getTodayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function initFirebase(){
     try{
-        if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
         db=firebase.database();
-        console.log('✅ Firebase جاهز');
-    }catch(e){
-        console.warn('Firebase غير متاح:',e);
-    }
+    }catch(e){console.warn('Firebase:',e);}
 }
-// Firebase يتهيأ مباشرة لأن الـ SDK فوقنا في نفس الصفحة
+
+// ===== خلفية جزيئات =====
+function initParticles(){
+    var canvas=document.getElementById('particles-canvas');
+    if(!canvas)return;
+    var ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    var pts=[];
+    for(var i=0;i<35;i++) pts.push({
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+        r:Math.random()*3+1, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+        a:Math.random(), va:Math.random()*0.008+0.003,
+        c:['rgba(26,147,151,','rgba(198,146,42,','rgba(161,31,42,'][Math.floor(Math.random()*3)]
+    });
+    function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pts.forEach(function(p){
+            p.x+=p.vx; p.y+=p.vy; p.a+=p.va;
+            if(p.x<0||p.x>canvas.width) p.vx*=-1;
+            if(p.y<0||p.y>canvas.height) p.vy*=-1;
+            var alpha=Math.abs(Math.sin(p.a))*0.25;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle=p.c+alpha+')';
+            ctx.fill();
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ===== اهتزاز الجهاز =====
+function vibrateDevice(){
+    if(navigator.vibrate) navigator.vibrate([80,30,80]);
+    var card=document.querySelector('.main-card');
+    if(card){ card.classList.add('vibrate'); setTimeout(function(){card.classList.remove('vibrate');},400); }
+}
+
+// ===== رسالة شخصية حسب النقاط =====
+function getPersonalMsg(sc){
+    if(sc>=3000) return '🌟 أسطورة الأدب! معرفتك لا حدود لها';
+    if(sc>=2000) return '📚 قارئ نهم! أنت من عشاق الكتب';
+    if(sc>=1000) return '🎯 محترف! معرفتك الأدبية رائعة';
+    if(sc>=500)  return '👏 جيد جداً! في طريقك للقمة';
+    return '💪 بداية موفقة! كل محاولة تعلمك أكثر';
+}
+
+// ===== منصة المتصدرين =====
+function buildPodium(daily, myName){
+    if(daily.length<1) return '';
+    var order=[1,0,2];
+    var emojis=['🥇','🥈','🥉'];
+    // المنصة: الثاني على اليمين، الأول في المنتصف، الثالث على اليسار
+    var order=[1,0,2];
+    var html='<div class="podium-wrap">';
+    order.forEach(function(pos){
+        var idx=pos; // idx = الترتيب الحقيقي (0=أول, 1=ثاني, 2=ثالث)
+        if(!daily[idx]) return;
+        var u=daily[idx];
+        var isMe=u.name===myName;
+        html+='<div class="podium-item podium-'+(idx+1)+'">';
+        html+='<div class="podium-avatar">'+(isMe?'⭐':emojis[idx])+'</div>';
+        html+='<div class="podium-name" style="'+(isMe?'color:var(--teal)':'')+'">'+u.name+'</div>';
+        html+='<div class="podium-score">'+u.score+'⚡</div>';
+        html+='<div class="podium-bar" style="font-size:0.9rem;font-weight:900;">'+(idx+1)+'</div>';
+        html+='</div>';
+    });
+    html+='</div>';
+    // المراكز 4-5
+    if(daily.length>3){
+        html+='<div style="border-top:2px solid #e0f0f0;padding-top:8px;margin-top:4px;">';
+        var limit=Math.min(daily.length,5);
+        for(var i=3;i<limit;i++){
+            var u=daily[i];
+            var isMe=u.name===myName;
+            html+='<div class="leaderboard-item '+(isMe?'lb-me':'')+'">';
+            html+='<span><span class="lb-rank">'+(i+1)+'.</span> '+u.name+' '+(isMe?'⭐':'')+'</span>';
+            html+='<span style="font-weight:bold;color:var(--teal)">'+u.score+'⚡</span>';
+            html+='</div>';
+        }
+        html+='</div>';
+    }
+    return html;
+}
+
+// ===== العب مرة ثانية =====
+function playAgain(){
+    var t=JSON.parse(localStorage.getItem('adab_v20_limit')||'{"date":"","count":0}');
+    var today=new Date().toDateString();
+    if(t.date!==today){t.date=today;t.count=0;}
+    if(t.count>=3){ alert("استنفذت محاولاتك اليوم! تعال غداً 🎮"); return; }
+    t.count++; localStorage.setItem('adab_v20_limit',JSON.stringify(t));
+    updateTriesDisplay();
+    document.getElementById('game-area').style.display='block';
+    document.getElementById('home').style.display='none';
+    document.getElementById('score-num').innerText='0';
+    document.getElementById('game-content').innerHTML='<div class="loading-wrap"><div class="loading-spinner"></div><p style="color:var(--teal);font-weight:bold;">جاري تحميل الصور...</p><div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div></div>';
+    var prog=0;
+    var li=setInterval(function(){
+        prog=Math.min(prog+Math.random()*15,90);
+        var b=document.getElementById('load-bar');
+        if(b)b.style.width=prog+'%';
+    },200);
+    filterBrokenImages().then(function(){
+        clearInterval(li);
+        var b=document.getElementById('load-bar');
+        if(b)b.style.width='100%';
+        setTimeout(function(){
+            randomizedSteps=[...shuffle(easyPool),...shuffle(medPool),...shuffle(hardPool)];
+            score=0; currentStep=1; gameActive=true; combo=0;
+            buildProgressDots();
+            showCountdown(loadStep);
+        },300);
+    });
+}
+
+initAudio();
+initApp();
 initFirebase();
+initParticles();
 </script>
 </body>
 </html>
