@@ -16,8 +16,8 @@
     <style>
         :root { --teal:#1a9397; --teal-dark:#127a7e; --burgundy:#a11f2a; --gold:#c6922a; }
         * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-family:'Tajawal',sans-serif; margin:0; padding:0; }
-        body { background:linear-gradient(135deg,#e8f5f5 0%,#fdf6ec 100%); min-height:100vh; display:flex; align-items:flex-start; justify-content:center; touch-action:manipulation; padding:10px 0 30px; }
-        .main-card { background:white; padding:1.4rem; border-radius:32px; box-shadow:0 20px 60px rgba(26,147,151,0.18),0 4px 15px rgba(0,0,0,0.08); width:95%; max-width:410px; text-align:center; border-top:8px solid var(--teal); position:relative; animation:cardIn 0.5s cubic-bezier(.175,.885,.32,1.275); margin:16px auto; }
+        body { background:linear-gradient(135deg,#e8f5f5 0%,#fdf6ec 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; touch-action:manipulation; padding:16px 0; }
+        .main-card { background:white; padding:1.4rem; border-radius:32px; box-shadow:0 20px 60px rgba(26,147,151,0.18),0 4px 15px rgba(0,0,0,0.08); width:95%; max-width:410px; text-align:center; border-top:8px solid var(--teal); position:relative; animation:cardIn 0.5s cubic-bezier(.175,.885,.32,1.275); margin:16px auto; max-height:96vh; overflow-y:auto; }
         @keyframes cardIn { from{opacity:0;transform:translateY(30px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
         .logo { width:100%; max-width:170px; margin-bottom:8px; border-radius:14px; filter:drop-shadow(0 4px 12px rgba(26,147,151,0.2)); animation:logoPulse 3s ease-in-out infinite; }
         @keyframes logoPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
